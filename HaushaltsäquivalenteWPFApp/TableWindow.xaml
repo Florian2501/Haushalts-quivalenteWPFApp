@@ -1,0 +1,26 @@
+﻿<Window x:Class="HaushaltsäquivalenteWPFApp.TableWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
+        mc:Ignorable="d"
+        Title="Table" Height="600" Width="1000"
+        Loaded="Window_Loaded">
+    <Border Padding="10">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        
+    <FlowDocumentReader Grid.Column="1" ViewingMode="Scroll" x:Name="TableReader">
+        <FlowDocument x:Name="FlowDoc">
+
+            
+        </FlowDocument>
+    </FlowDocumentReader>
+    </Grid>
+    </Border>
+</Window>
