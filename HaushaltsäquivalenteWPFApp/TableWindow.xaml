@@ -6,16 +6,18 @@
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
         Title="Table" Height="600" Width="1000"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+		Background="#BFBFBF">
     <Border Padding="10">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        
-    <FlowDocumentReader Grid.Column="1" ViewingMode="Scroll" x:Name="TableReader">
+
+			<Button Grid.Column="0" Width="100" Height="30" Content="Aufgabe eintragen" Background="Pink" x:Name="Button1"/>
+
+			<FlowDocumentReader Grid.Column="1" ViewingMode="Scroll" x:Name="TableReader">
         <FlowDocument x:Name="FlowDoc">
 
             
