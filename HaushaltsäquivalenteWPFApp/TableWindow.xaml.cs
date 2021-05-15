@@ -93,16 +93,35 @@ namespace HaushaltsäquivalenteWPFApp
             //Add a new RowGroup to the table where the points will be displayed
             table.RowGroups.Add(new TableRowGroup());
 
+            //Array to count and sum up the points per Person a day
+            int[] sumOfPersons = new int[numberOfPersons];
+            
             for(int i=0; i < numberOfDays; i++)
             {
+                int personIndex = 0;
                 table.RowGroups[1].Rows.Add(new TableRow());
                 currentRow = table.RowGroups[1].Rows[i];
                 currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DateTime.Today.AddDays(-1 * i).ToString("dd.MM.yy")))));
                 foreach (string name in Persons.Names)
                 {
+                    sumOfPersons[personIndex] += DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i));
                     currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i)).ToString()))));
+                    personIndex++;
                 }
+
                 //TODO add sum function and improve the design
+            }
+
+            //Add a sum line to the Table under the names in tablerowgroup 0
+            table.RowGroups[0].Rows.Add(new TableRow());
+            currentRow = table.RowGroups[0].Rows[2];
+            //Add the first cell descriptiom "Summe"
+            currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Summe"))));
+
+            //Add for each person a cell with the sum of the points
+            foreach (int sum in sumOfPersons)
+            {
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(sum.ToString()))));
             }
         }
     }
