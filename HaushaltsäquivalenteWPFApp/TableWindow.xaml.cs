@@ -47,8 +47,11 @@ namespace HaushaltsäquivalenteWPFApp
             Table table = new Table();
             FlowDoc.Blocks.Clear();
             FlowDoc.Blocks.Add(table);
+            table.FontFamily = new FontFamily("Arial");
             table.CellSpacing = 10;
             table.Background = Brushes.Gray;
+            table.BorderThickness = new Thickness(2);
+            table.BorderBrush = Brushes.Black;
 
             //Add columns to the Table until every person has its own column
             int numberOfPersons = Persons.NumberOfPersons;
@@ -57,9 +60,11 @@ namespace HaushaltsäquivalenteWPFApp
                 table.Columns.Add(new TableColumn());
 
                 if (i % 2 == 0)
-                    table.Columns[i].Background = Brushes.Gray;
+                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B8378"));
                 else
-                    table.Columns[i].Background = Brushes.LightGray;
+                {
+                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CDC0B0"));
+                }
             }
 
             //Adds the first row to the Table
@@ -67,7 +72,8 @@ namespace HaushaltsäquivalenteWPFApp
             table.RowGroups[0].Rows.Add(new TableRow());
             TableRow currentRow = table.RowGroups[0].Rows[0];
             //Customizes the first row
-            currentRow.Background = Brushes.Silver;
+            Color color = (Color)ColorConverter.ConvertFromString("#00acd3");
+            currentRow.Background = new SolidColorBrush(color);
             currentRow.FontSize = 40;
             currentRow.FontWeight = System.Windows.FontWeights.Bold;
             //Adds new cell to the first row that spans all over the Table. This is the headline
@@ -93,16 +99,35 @@ namespace HaushaltsäquivalenteWPFApp
             //Add a new RowGroup to the table where the points will be displayed
             table.RowGroups.Add(new TableRowGroup());
 
+            //Array to count and sum up the points per Person a day
+            int[] sumOfPersons = new int[numberOfPersons];
+            
             for(int i=0; i < numberOfDays; i++)
             {
+                int personIndex = 0;
                 table.RowGroups[1].Rows.Add(new TableRow());
                 currentRow = table.RowGroups[1].Rows[i];
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DateTime.Today.AddDays(-1 * i).ToString("dd.MM.yy")))));
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DateTime.Today.AddDays(-1 * i).ToString("ddd: dd.MM.yy")))));
                 foreach (string name in Persons.Names)
                 {
+                    sumOfPersons[personIndex] += DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i));
                     currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i)).ToString()))));
+                    personIndex++;
                 }
+
                 //TODO add sum function and improve the design
+            }
+
+            //Add a sum line to the Table under the names in tablerowgroup 0
+            table.RowGroups[0].Rows.Add(new TableRow());
+            currentRow = table.RowGroups[0].Rows[2];
+            //Add the first cell descriptiom "Summe"
+            currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Summe"))));
+
+            //Add for each person a cell with the sum of the points
+            foreach (int sum in sumOfPersons)
+            {
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(sum.ToString()))));
             }
         }
     }
