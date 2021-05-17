@@ -15,14 +15,48 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-			<Button Grid.Column="0" Width="100" Height="30" Content="Aufgabe eintragen" Background="Pink" x:Name="Button1"/>
+        <!--Left side of the Window, Menu list-->
+            <Border Background="AliceBlue">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        <!--Number of days entry-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-			<FlowDocumentReader Grid.Column="1" ViewingMode="Scroll" x:Name="TableReader">
-        <FlowDocument x:Name="FlowDoc">
+                            <TextBlock Grid.Column="0" Margin="5,5,0,5">Anzahl Tage:</TextBlock>
+                            <TextBox x:Name="DaysTextBox" Grid.Column="1" Margin="5">7</TextBox>
+                            <Button Content="OK" Grid.Column="2" Margin="0,5,5,5" Click="DaysButton_Click"/>
+                        </Grid>
 
-            
-        </FlowDocument>
-    </FlowDocumentReader>
+                        <!--Places List-->
+                        <TextBlock Margin="5">Platzierungen:</TextBlock>
+                        <!--Empty panel for the places to be entered by the program-->
+                        <StackPanel x:Name="TopMenu"></StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1">
+                        <Button Content="Ergebnis eintragen" Margin="5"></Button>
+                        <Button Content="Neue Aufgabe erstellen" Margin="5"></Button>
+                        <Button Content="Hauptmenü" Margin="5, 30,5,5"></Button>
+                    </StackPanel>
+                    
+                </Grid>
+            </Border>
+
+        <!--Right side of the window, the table-->
+            <FlowDocumentReader Grid.Column="1" ViewingMode="Scroll" x:Name="TableReader">
+                <FlowDocument x:Name="FlowDoc"></FlowDocument>
+            </FlowDocumentReader>
     </Grid>
     </Border>
 </Window>

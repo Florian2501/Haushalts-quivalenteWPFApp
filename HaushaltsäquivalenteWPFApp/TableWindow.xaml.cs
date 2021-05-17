@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,11 +31,45 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Es gibt "+ Persons.NumberOfPersons.ToString()+" Personen, die teilnehmen.");
+            //MessageBox.Show("Es gibt "+ Persons.NumberOfPersons.ToString()+" Personen, die teilnehmen.");
+
+            //Check wether a file is not in the correct format or older than one year and delete it if yes
+            string path = @"Data\Days";
+            //Get the file sfrom the data directory
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            FileInfo[] fileInfos = directoryInfo.GetFiles();
+
+            foreach (FileInfo file in fileInfos)
+            {
+                //Extract the date out of the file name and try to convert it
+                DateTime date = new DateTime();
+                string[] day = file.Name.Split(".");
+                try
+                {
+                    date = Convert.ToDateTime(day[0]+"."+day[1]+"."+day[2]);
+                }
+                //Deltete if its not in the correct format
+                catch (Exception)
+                {
+                    MessageBox.Show(file.Name + " konnte nicht gelesen werden und wird deshalb gelöscht.");
+                    File.Delete(file.FullName);
+                    continue;
+                }
+                //delete if its too old
+                if (date < DateTime.Today.AddYears(-1))
+                {
+                    MessageBox.Show(file.Name + " ist älter als ein Jahr und wird deshalb gelöscht.");
+                    File.Delete(file.FullName);
+                    continue;
+                }
+                //MessageBox.Show(file.Name + " wurde korrekt gelesen und ist nicht älter als ein jahr.");
+            }
+
+            //create a table with the default value of days 7
             createTable(7);
-            //TODO check wether a file is more than a year old and delete it if yes
-            //add a scrollbar to enter the timespan
-            //improve the main window an create a new one to enter your tasks, to enter a new task and to enter a new person
+
+
+            //improve the main window and create a new one to enter your tasks, to enter a new task and to enter a new person
         }
 
         /// <summary>
@@ -52,18 +87,18 @@ namespace HaushaltsäquivalenteWPFApp
             table.Background = Brushes.Gray;
             table.BorderThickness = new Thickness(2);
             table.BorderBrush = Brushes.Black;
-
+            
             //Add columns to the Table until every person has its own column
             int numberOfPersons = Persons.NumberOfPersons;
             for (int i =0; i < numberOfPersons+1; i++)
-            {
+            {               
                 table.Columns.Add(new TableColumn());
 
                 if (i % 2 == 0)
-                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B8378"));
+                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B8378"));//Color of the first column
                 else
                 {
-                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CDC0B0"));
+                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CDC0B0"));//Color of the second column
                 }
             }
 
@@ -72,8 +107,7 @@ namespace HaushaltsäquivalenteWPFApp
             table.RowGroups[0].Rows.Add(new TableRow());
             TableRow currentRow = table.RowGroups[0].Rows[0];
             //Customizes the first row
-            Color color = (Color)ColorConverter.ConvertFromString("#00acd3");
-            currentRow.Background = new SolidColorBrush(color);
+            currentRow.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00acd3"));//Color of the Headline
             currentRow.FontSize = 40;
             currentRow.FontWeight = System.Windows.FontWeights.Bold;
             //Adds new cell to the first row that spans all over the Table. This is the headline
@@ -129,185 +163,102 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 currentRow.Cells.Add(new TableCell(new Paragraph(new Run(sum.ToString()))));
             }
+
+            //create array of names and points of the persons that it can be sorted
+            (int, string)[] places = new (int, string)[numberOfPersons];
+            for(int i=0; i<numberOfPersons; i++)
+            {
+                places[i] = (sumOfPersons[i], Persons.Names[i]);
+            }
+
+            //sort the array by points descending ;
+            for(int i=1; i< places.Length-1; i++)
+            {
+                for(int j=0; j<places.Length-i; j++)
+                {
+                    if (places[j].Item1 < places[j + 1].Item1)
+                    {
+                        (int, string) help = places[j];
+                        places[j] = places[j + 1];
+                        places[j + 1] = help;
+                    }
+                }
+            }
+
+            //define a variable to count up for the places
+            int place = 1;
+
+            //make a new grid in which the places will be listed with 2 columns for names and points
+            Grid placeGrid = new Grid();
+            ColumnDefinition column1 = new ColumnDefinition();
+            ColumnDefinition column2 = new ColumnDefinition();
+            placeGrid.ColumnDefinitions.Add(column1);
+            placeGrid.ColumnDefinitions.Add(column2);
+
+            //make a new stackPanel for the names in which alle the names and the places will be added to list them up
+            StackPanel namePanel = new StackPanel();
+            namePanel.Orientation = Orientation.Vertical;
+            Grid.SetColumn(namePanel, 0);
+
+            //make a new StackPanel for the points in the 2. column of the grid
+            StackPanel pointPanel = new StackPanel();
+            pointPanel.Orientation = Orientation.Vertical;
+            Grid.SetColumn(pointPanel, 1);
+
+            //Add the stackpanels to the grid
+            placeGrid.Children.Add(namePanel);
+            placeGrid.Children.Add(pointPanel);
+
+            //delete the last table of places
+            TopMenu.Children.Clear();
+            //Add the grid to the menu bar
+            TopMenu.Children.Add(placeGrid);
+
+
+            foreach ((int points, string name) in places)
+            {
+                
+
+                TextBlock nameBlock = new TextBlock();
+                nameBlock.Margin = new Thickness(15, 5, 0,0);
+                nameBlock.Text = place.ToString() + ". " + name;
+
+                TextBlock pointsBlock = new TextBlock();
+                pointsBlock.Text = points.ToString();
+                pointsBlock.Margin = new Thickness(15, 5, 0, 0);
+
+                namePanel.Children.Add(nameBlock);
+                pointPanel.Children.Add(pointsBlock);
+
+                place++;
+            }
+        }
+
+        /// <summary>
+        /// When the OK Button for the days gets clicked this procedure will be executed and tries to create a table with the entered amount of days
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DaysButton_Click(object sender, RoutedEventArgs e)
+        {
+            int numberOfDays = 0;
+            try
+            {
+                numberOfDays = Convert.ToInt32(DaysTextBox.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Die eingegebene Anzahl Tage ist ungültig.");
+                return;
+            }
+            if (numberOfDays <= 0 || numberOfDays>365)
+            {
+                MessageBox.Show("Die Anzahl Tage muss zwischen 1 und 365 liegen.");
+                return;
+            }
+
+            createTable(numberOfDays);
+            
         }
     }
 }
-
-/*
-  <Table CellSpacing="5" x:Name="Table1" >
-
-                <Table.Columns>
-                    <TableColumn Width="*"/>
-                    <TableColumn Width="*"/>
-                    <TableColumn Width="*"/>
-                    <TableColumn Width="*"/>
-                </Table.Columns>
-
-                <TableRowGroup>
-
-                    <!-- Title row for the table. -->
-                    <TableRow Background="SkyBlue">
-                        <TableCell ColumnSpan="4" TextAlignment="Center">
-                            <Paragraph FontSize="24pt" FontWeight="Bold">Planetary Information</Paragraph>
-                        </TableCell>
-                    </TableRow>
-
-                    <!-- Header row for the table. -->
-                    <TableRow Background="LightGoldenrodYellow">
-                        <TableCell>
-                            <Paragraph FontSize="14pt" FontWeight="Bold">Planet</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph FontSize="14pt" FontWeight="Bold">Mean Distance from Sun</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph FontSize="14pt" FontWeight="Bold">Mean Diameter</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph FontSize="14pt" FontWeight="Bold">Approximate Mass</Paragraph>
-                        </TableCell>
-                    </TableRow>
-
-                    <!-- Sub-title row for the inner planets. -->
-                    <TableRow>
-                        <TableCell ColumnSpan="4">
-                            <Paragraph FontSize="14pt" FontWeight="Bold">The Inner Planets</Paragraph>
-                        </TableCell>
-                    </TableRow>
-
-                    <!-- Four data rows for the inner planets. -->
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>Mercury</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>57,910,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>4,880 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>3.30e23 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow Background="lightgray">
-                        <TableCell>
-                            <Paragraph>Venus</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>108,200,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>12,103.6 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>4.869e24 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>Earth</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>149,600,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>12,756.3 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>5.972e24 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow Background="lightgray">
-                        <TableCell>
-                            <Paragraph>Mars</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>227,940,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>6,794 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>6.4219e23 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-
-                    <!-- Sub-title row for the outter planets. -->
-                    <TableRow>
-                        <TableCell ColumnSpan="4">
-                            <Paragraph FontSize="14pt" FontWeight="Bold">The Major Outer Planets</Paragraph>
-                        </TableCell>
-                    </TableRow>
-
-                    <!-- Four data rows for the major outter planets. -->
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>Jupiter</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>778,330,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>142,984 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>1.900e27 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow Background="lightgray">
-                        <TableCell>
-                            <Paragraph>Saturn</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>1,429,400,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>120,536 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>5.68e26 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>Uranus</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>2,870,990,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>51,118 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>8.683e25 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow Background="lightgray">
-                        <TableCell>
-                            <Paragraph>Neptune</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>4,504,000,000 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>49,532 km</Paragraph>
-                        </TableCell>
-                        <TableCell>
-                            <Paragraph>1.0247e26 kg</Paragraph>
-                        </TableCell>
-                    </TableRow>
-
-                    <!-- Footer row for the table. -->
-                    <TableRow>
-                        <TableCell ColumnSpan="4">
-                            <Paragraph FontSize="10pt" FontStyle="Italic">
-                                Information from the
-                                <Hyperlink NavigateUri="http://encarta.msn.com/encnet/refpages/artcenter.aspx">Encarta</Hyperlink>
-                                web site.
-                            </Paragraph>
-                        </TableCell>
-                    </TableRow>
-
-                </TableRowGroup>
-            </Table>*/
