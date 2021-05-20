@@ -72,6 +72,7 @@ namespace HaushaltsäquivalenteWPFApp
             //improve the main window and create a new one to enter your tasks, to enter a new task and to enter a new person
             //activate the buttons to other windows when they are made
             //add a button to list only the current day but with more details of the tasks
+            //color theme auswahl
         }
 
         /// <summary>
