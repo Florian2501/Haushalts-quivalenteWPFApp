@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
 
         <!--Left side of the Window, Menu list-->
-            <Border Background="AliceBlue">
+            <Border x:Name="SideMenu">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>

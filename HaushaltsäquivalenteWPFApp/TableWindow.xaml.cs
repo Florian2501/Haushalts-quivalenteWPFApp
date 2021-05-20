@@ -31,6 +31,10 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //set the Color of the Background and the Menu to the Color of the Theme
+            this.Background = new SolidColorBrush(ColorTheme.design.Background);
+            SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
+            
             //MessageBox.Show("Es gibt "+ Persons.NumberOfPersons.ToString()+" Personen, die teilnehmen.");
 
             //Check wether a file is not in the correct format or older than one year and delete it if yes
@@ -98,10 +102,10 @@ namespace HaushaltsäquivalenteWPFApp
                 table.Columns.Add(new TableColumn());
 
                 if (i % 2 == 0)
-                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B8378"));//Color of the first column
+                    table.Columns[i].Background = new SolidColorBrush(ColorTheme.design.TableColumn1);//Color of the first column
                 else
                 {
-                    table.Columns[i].Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CDC0B0"));//Color of the second column
+                    table.Columns[i].Background = new SolidColorBrush(ColorTheme.design.TableColumn2);//Color of the second column
                 }
             }
 
@@ -110,7 +114,7 @@ namespace HaushaltsäquivalenteWPFApp
             table.RowGroups[0].Rows.Add(new TableRow());
             TableRow currentRow = table.RowGroups[0].Rows[0];
             //Customizes the first row
-            currentRow.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00acd3"));//Color of the Headline
+            currentRow.Background = new SolidColorBrush(ColorTheme.design.TableHeader);//Color of the Headline
             currentRow.FontSize = 40;
             currentRow.FontWeight = System.Windows.FontWeights.Bold;
             //Adds new cell to the first row that spans all over the Table. This is the headline
