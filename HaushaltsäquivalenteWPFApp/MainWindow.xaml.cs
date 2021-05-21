@@ -81,17 +81,3 @@ namespace HaushaltsäquivalenteWPFApp
         }
     }
 }
-
-/*<ListBox Name="lb" Width="100" Height="55" SelectionMode="Single">
-            <ListBoxItem>Item 1</ListBoxItem>
-            <ListBoxItem>Item 2</ListBoxItem>
-            <ListBoxItem>Item 3</ListBoxItem>
-            <ListBoxItem>Item 4</ListBoxItem>
-            <ListBoxItem>Item 5</ListBoxItem>
-            <ListBoxItem>Item 6</ListBoxItem>
-            <ListBoxItem>Item 7</ListBoxItem>
-            <ListBoxItem>Item 8</ListBoxItem>
-            <ListBoxItem>Item 9</ListBoxItem>
-            <ListBoxItem>Item 10</ListBoxItem>
-        </ListBox>
-*/
