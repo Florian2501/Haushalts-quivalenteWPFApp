@@ -36,10 +36,25 @@ namespace HaushaltsäquivalenteWPFApp
             tableWindow.Show();
             this.Close();
         }
-
+        
+        /// <summary>
+        /// The function that will be executed when the window gets loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
+        }
+
+        /// <summary>
+        /// Ends the program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EndButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

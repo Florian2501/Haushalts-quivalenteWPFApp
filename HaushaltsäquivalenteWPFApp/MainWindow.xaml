@@ -35,7 +35,7 @@
             </StackPanel>
             
             <StackPanel Grid.Row="1">
-                <Button x:Name="EndButton" Content="Beenden" Margin="0,20,0,0"/>
+                <Button x:Name="EndButton" Content="Beenden" Margin="0,20,0,0" Click="EndButton_Click"/>
             </StackPanel>
 
         </Grid>
