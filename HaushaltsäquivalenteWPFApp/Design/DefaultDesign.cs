@@ -7,7 +7,7 @@ namespace HaushaltsäquivalenteWPFApp
 {
     class DefaultDesign : Design
     {
-        public DefaultDesign() : base((Color)ColorConverter.ConvertFromString("#8B8378"), (Color)ColorConverter.ConvertFromString("#8B8378"), (Color)ColorConverter.ConvertFromString("#8B8378"), (Color)ColorConverter.ConvertFromString("#7B8378"), (Color)ColorConverter.ConvertFromString("#7B8378"))
+        public DefaultDesign() : base((Color)ColorConverter.ConvertFromString("#bfbfbf"), (Color)ColorConverter.ConvertFromString("#7a7a7a"), (Color)ColorConverter.ConvertFromString("#bdbdbd"), (Color)ColorConverter.ConvertFromString("#ebebeb"), (Color)ColorConverter.ConvertFromString("#7a7a7a"))
         {
         }
 
