@@ -25,11 +25,21 @@ namespace HaushaltsäquivalenteWPFApp
             InitializeComponent();
         }
 
+        /// <summary>
+        /// The function behind the Table Button to open the TableWindow
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TableButton_Click(object sender, RoutedEventArgs e)
         {
             TableWindow tableWindow = new TableWindow();
             tableWindow.Show();
             this.Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Background = new SolidColorBrush(ColorTheme.design.Background);
         }
     }
 }
