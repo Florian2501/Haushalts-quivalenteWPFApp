@@ -10,5 +10,6 @@ namespace HaushaltsäquivalenteWPFApp
         public DefaultDesign() : base((Color)ColorConverter.ConvertFromString("#8B8378"), (Color)ColorConverter.ConvertFromString("#8B8378"), (Color)ColorConverter.ConvertFromString("#8B8378"), (Color)ColorConverter.ConvertFromString("#7B8378"), (Color)ColorConverter.ConvertFromString("#7B8378"))
         {
         }
+
     }
 }
