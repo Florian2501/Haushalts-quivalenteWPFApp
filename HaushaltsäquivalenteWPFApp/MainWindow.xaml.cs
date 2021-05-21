@@ -56,6 +56,29 @@ namespace HaushaltsäquivalenteWPFApp
         {
             this.Close();
         }
+
+        /// <summary>
+        /// The function that will be executed when a item of the Color combobox is selscted. It changes the whole color theme to this.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ColorSelection_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            //When the combobox selction changes it will change the Colortheme of the App to:
+            switch (ColorSelection.SelectedIndex)
+            {
+                case 1://The red design
+                    ColorTheme.design = new RedDesign();
+                    break;
+                case 2://The blue design
+                    ColorTheme.design = new BlueDesign();
+                    break;
+                default://The default design
+                    ColorTheme.design = new DefaultDesign();
+                    break;
+            }
+            this.Background = new SolidColorBrush(ColorTheme.design.Background);
+        }
     }
 }
 
