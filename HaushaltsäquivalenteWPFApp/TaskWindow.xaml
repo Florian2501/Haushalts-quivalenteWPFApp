@@ -35,6 +35,41 @@
                 </Grid>
             </Border>
 
+            <Border Margin="10" Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Margin="5">Wer bist du?</TextBlock>
+                        <ComboBox x:Name="PersonComboBox" Margin="5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Margin="5">Was hast du gemacht?</TextBlock>
+                        <ComboBox x:Name="TaskComboBox" Margin="5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Margin="5">Diese Aufgabe bringt dir:</TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Margin="5" IsReadOnly="True" Background="LightGray" Grid.Column="0">0</TextBox>
+                            <TextBlock Grid.Column="1" Margin="5">Punkte</TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    
+                </Grid>
+            </Border>
+            
+
         </Grid>
         </Border>
 </Window>
