@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
         Title="Table" Height="600" Width="1000"
-        Loaded="Window_Loaded"
-		Background="#BFBFBF">
+        Loaded="Window_Loaded">
     <Border Padding="10">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -35,7 +34,7 @@
 
                             <TextBlock Grid.Column="0" Margin="5,5,0,5">Anzahl Tage:</TextBlock>
                             <TextBox x:Name="DaysTextBox" Grid.Column="1" Margin="5">7</TextBox>
-                            <Button Content="OK" Grid.Column="2" Margin="0,5,5,5" Click="DaysButton_Click"/>
+                            <Button x:Name="DaysButton" Content="OK" Grid.Column="2" Margin="0,5,5,5" Click="DaysButton_Click"/>
                         </Grid>
 
                         <!--Places List-->
@@ -47,7 +46,7 @@
                     <StackPanel Grid.Column="0" Grid.Row="1">
                         <Button Content="Ergebnis eintragen" Margin="5"></Button>
                         <Button Content="Neue Aufgabe erstellen" Margin="5"></Button>
-                        <Button Content="Hauptmenü" Margin="5, 30,5,5"></Button>
+                        <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 30,5,5" Click="MainWindowButton_Click"></Button>
                     </StackPanel>
                     
                 </Grid>

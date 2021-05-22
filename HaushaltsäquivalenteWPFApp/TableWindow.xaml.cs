@@ -267,5 +267,17 @@ namespace HaushaltsäquivalenteWPFApp
             createTable(numberOfDays);
             
         }
+
+        /// <summary>
+        /// CLoses the current TableWindow and opens the Main Window again
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+        }
     }
 }
