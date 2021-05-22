@@ -5,8 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
-        Title="TaskWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="TaskWindow" Height="600" Width="1000"
+        Loaded="Window_Loaded">
+    <Border Padding="10">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Left side of the Window, Menu list-->
+            <Border x:Name="SideMenu">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1">
+                        <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="5"/>
+                        <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 30,5,5" Click="MainWindowButton_Click"></Button>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+        </Grid>
+        </Border>
 </Window>
