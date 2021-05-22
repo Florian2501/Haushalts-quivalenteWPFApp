@@ -25,6 +25,7 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="0">
                         <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du deine heute erledigten Aufgaben eintragen.</TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1">
