@@ -37,7 +37,7 @@
             <StackPanel Grid.Row="1">
                 <TextBlock Margin="0,0,0,5">Farbthema:</TextBlock>
                 <ComboBox x:Name="ColorSelection" SelectionChanged="ColorSelection_SelectionChanged">
-                    <ComboBoxItem IsSelected="True">Standard</ComboBoxItem>
+                    <ComboBoxItem>Standard</ComboBoxItem>
                     <ComboBoxItem>Rot</ComboBoxItem>
                     <ComboBoxItem>Blau</ComboBoxItem>
                 </ComboBox>

@@ -44,8 +44,26 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //Set the Colors of the Back and Foreground
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
+
+            //Check which design is the current design and choose it as the selected one in the ComboBox
+            //Red
+            if (ColorTheme.design is RedDesign)
+            {
+                ColorSelection.SelectedItem = ColorSelection.Items[1];
+            }
+            //Blue
+            else if (ColorTheme.design is BlueDesign)
+            {
+                ColorSelection.SelectedItem = ColorSelection.Items[2];
+            }
+            //default
+            else
+            {
+                ColorSelection.SelectedItem = ColorSelection.Items[0];
+            }
         }
 
         /// <summary>
