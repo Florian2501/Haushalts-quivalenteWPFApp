@@ -67,7 +67,7 @@
                         </Grid>
                     </StackPanel>
 
-                    <Button Grid.Column="3" Margin="5,30,5,5" Height="20">Bestätigen</Button>
+                    <Button x:Name="ConfirmButton" Grid.Column="3" Margin="5,30,5,5" Height="20" Click="ConfirmButton_Click">Bestätigen</Button>
 
                 </Grid>
             </Border>
