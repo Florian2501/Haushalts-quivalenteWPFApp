@@ -38,9 +38,9 @@
             <Border Margin="10" Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -65,7 +65,9 @@
                             <TextBlock Grid.Column="1" Margin="5">Punkte</TextBlock>
                         </Grid>
                     </StackPanel>
-                    
+
+                    <Button Grid.Column="3" Margin="5,30,5,5" Height="20">Bestätigen</Button>
+
                 </Grid>
             </Border>
             
