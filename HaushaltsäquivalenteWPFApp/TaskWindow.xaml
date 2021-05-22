@@ -52,7 +52,7 @@
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Margin="5">Was hast du gemacht?</TextBlock>
-                        <ComboBox x:Name="TaskComboBox" Margin="5"/>
+                        <ComboBox x:Name="TaskComboBox" Margin="5" SelectionChanged="TaskComboBox_SelectionChanged"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
@@ -62,7 +62,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Margin="5" IsReadOnly="True" Background="LightGray" Grid.Column="0">0</TextBox>
+                            <TextBox x:Name="PointsTextBox" Margin="5" IsReadOnly="True" Background="LightGray" Grid.Column="0">0</TextBox>
                             <TextBlock Grid.Column="1" Margin="5">Punkte</TextBlock>
                         </Grid>
                     </StackPanel>

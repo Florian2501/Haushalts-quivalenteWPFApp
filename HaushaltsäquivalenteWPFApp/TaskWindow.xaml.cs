@@ -75,5 +75,18 @@ namespace HaushaltsäquivalenteWPFApp
             this.Close();
         }
 
+        /// <summary>
+        /// This function is executed when the TaskCB value changes and then updates the point value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TaskComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = TaskComboBox.SelectedIndex;
+            if (index >= 0)
+            {
+                PointsTextBox.Text = TaskList.Tasks[index].Value.ToString();
+            }
+        }
     }
 }
