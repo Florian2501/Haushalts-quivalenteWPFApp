@@ -9,9 +9,10 @@ namespace HaushaltsäquivalenteWPFApp
     public class Design
     {
         //Constructor
-        public Design(Color background, Color tableHeader, Color tableColumn1, Color tableColumn2, Color sideMenu)
+        public Design(Color background, Color foreground, Color tableHeader, Color tableColumn1, Color tableColumn2, Color sideMenu)
         {
             this.Background = background;
+            this.foreground = foreground;
             this.TableHeader = tableHeader;
             this.TableColumn1 = tableColumn1;
             this.TableColumn2 = tableColumn2;
@@ -31,6 +32,26 @@ namespace HaushaltsäquivalenteWPFApp
                 try
                 {
                     background = value;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Farbe konnte nicht übernommen werden.");
+                }
+            }
+        }
+
+        private Color foreground;
+        public Color Foreground
+        {
+            get
+            {
+                return foreground;
+            }
+            set
+            {
+                try
+                {
+                    foreground = value;
                 }
                 catch (Exception)
                 {

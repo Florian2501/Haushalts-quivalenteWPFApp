@@ -45,6 +45,7 @@ namespace HaushaltsäquivalenteWPFApp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
+            this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
         }
 
         /// <summary>
@@ -78,6 +79,7 @@ namespace HaushaltsäquivalenteWPFApp
                     break;
             }
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
+            this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
         }
     }
 }

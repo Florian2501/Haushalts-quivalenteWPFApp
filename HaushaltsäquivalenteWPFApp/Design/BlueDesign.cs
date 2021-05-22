@@ -7,7 +7,12 @@ namespace HaushaltsäquivalenteWPFApp
 {
     class BlueDesign : Design
     {
-        public BlueDesign() : base((Color)ColorConverter.ConvertFromString("#b4daee"), (Color)ColorConverter.ConvertFromString("#19709d"), (Color)ColorConverter.ConvertFromString("#5ac7ff"), (Color)ColorConverter.ConvertFromString("#c6dbe5"), (Color)ColorConverter.ConvertFromString("#19709d"))
+        public BlueDesign() : base(background: (Color)ColorConverter.ConvertFromString("#b4daee"),
+                                   foreground: (Color)ColorConverter.ConvertFromString("#000000"),
+                                   tableHeader: (Color)ColorConverter.ConvertFromString("#19709d"),
+                                   tableColumn1: (Color)ColorConverter.ConvertFromString("#5ac7ff"),
+                                   tableColumn2: (Color)ColorConverter.ConvertFromString("#c6dbe5"),
+                                   sideMenu: (Color)ColorConverter.ConvertFromString("#19709d"))
         {
         }
     }
