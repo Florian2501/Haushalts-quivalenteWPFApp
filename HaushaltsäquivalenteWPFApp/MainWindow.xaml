@@ -5,22 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    
     <Grid>
-        <TextBlock Text="Hallo"/>
-        <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click"/>
-        <TextBox Name="tb" Width="140" Height="30"></TextBox>
-        <ListBox Name="lb" Width="100" Height="55" SelectionMode="Single">
-            <ListBoxItem>Item 1</ListBoxItem>
-            <ListBoxItem>Item 2</ListBoxItem>
-            <ListBoxItem>Item 3</ListBoxItem>
-            <ListBoxItem>Item 4</ListBoxItem>
-            <ListBoxItem>Item 5</ListBoxItem>
-            <ListBoxItem>Item 6</ListBoxItem>
-            <ListBoxItem>Item 7</ListBoxItem>
-            <ListBoxItem>Item 8</ListBoxItem>
-            <ListBoxItem>Item 9</ListBoxItem>
-            <ListBoxItem>Item 10</ListBoxItem>
-        </ListBox>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <TextBlock Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold">Willkommen in der Haushaltsäquivalente-App</TextBlock>
+
+        <!--Buttons in the Middle-->
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="0,20,0,0"/>
+                <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="TableButton_Click" Margin="0,20,0,0"/>
+                <Button x:Name="NewTaskButton" Content="Neue Aufgabe erstellen" Click="TableButton_Click" Margin="0,20,0,0"/>
+                <Button x:Name="NewPersonButton" Content="Neue Person hinzufügen" Click="TableButton_Click" Margin="0,20,0,0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="1">
+                <TextBlock Margin="0,0,0,5">Farbthema:</TextBlock>
+                <ComboBox x:Name="ColorSelection" SelectionChanged="ColorSelection_SelectionChanged">
+                    <ComboBoxItem>Standard</ComboBoxItem>
+                    <ComboBoxItem>Rot</ComboBoxItem>
+                    <ComboBoxItem>Blau</ComboBoxItem>
+                </ComboBox>
+                <Button x:Name="EndButton" Content="Beenden" Margin="0,20,0,0" Click="EndButton_Click"/>
+            </StackPanel>
+
+        </Grid>
+        
+        
     </Grid>
 </Window>
