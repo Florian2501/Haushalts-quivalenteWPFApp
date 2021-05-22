@@ -41,9 +41,26 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //Sets the correct colors of the ColorTheme
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
             SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
+
+            //Loads the Names of all persons to the PersonCB
+            foreach(string name in Persons.Names)
+            {
+                ComboBoxItem comboBoxItem = new ComboBoxItem();
+                comboBoxItem.Content = name;
+                PersonComboBox.Items.Add(comboBoxItem);
+            }
+
+            //Loads the Names of all Tasks to the TasksCB
+            foreach(Task task in TaskList.Tasks)
+            {
+                ComboBoxItem comboBoxItem = new ComboBoxItem();
+                comboBoxItem.Content = task.Name;
+                TaskComboBox.Items.Add(comboBoxItem);
+            }
         }
 
         /// <summary>

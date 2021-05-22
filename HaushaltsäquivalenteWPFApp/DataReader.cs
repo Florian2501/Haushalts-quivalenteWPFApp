@@ -20,7 +20,7 @@ namespace HaushaltsäquivalenteWPFApp
                 {
                     //if the date file exists open it
                     string line = "";
-                    //go through the file line by line
+                    //go through the date file line by line
                     while ((line = sr.ReadLine()) != null)
                     {
                         //check for empty line and skip it
