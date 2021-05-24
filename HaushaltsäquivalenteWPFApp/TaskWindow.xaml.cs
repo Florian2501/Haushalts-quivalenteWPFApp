@@ -234,7 +234,9 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
-
+            NewTaskWindow newTaskWindow = new NewTaskWindow();
+            newTaskWindow.Show();
+            this.Close();
         }
     }
 }
