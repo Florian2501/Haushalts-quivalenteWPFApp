@@ -113,7 +113,7 @@ namespace HaushaltsäquivalenteWPFApp
                 //check wether the file of the day exists
                 try
                 {
-                    using (StreamReader sr = new StreamReader(path))
+                    using (StreamReader sr = new StreamReader(path, Encoding.UTF7))
                     {
                         //if the date file exists open it
                         string line = "";
