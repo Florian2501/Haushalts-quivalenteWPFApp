@@ -45,7 +45,7 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="1">
                         <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="5"/>
-                        <Button Content="Neue Aufgabe erstellen" Margin="5"></Button>
+                        <Button x:Name="NewTaskButton" Content="Neue Aufgabe erstellen" Click="NewTaskButton_Click" Margin="5"/>
                         <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 30,5,5" Click="MainWindowButton_Click"></Button>
                     </StackPanel>
                     

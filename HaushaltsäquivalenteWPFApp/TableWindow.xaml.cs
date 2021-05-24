@@ -291,5 +291,17 @@ namespace HaushaltsäquivalenteWPFApp
             taskWindow.Show();
             this.Close();
         }
+
+        /// <summary>
+        /// Opens a new Window where you can enter new Tasks
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewTaskWindow newTaskWindow = new NewTaskWindow();
+            newTaskWindow.Show();
+            this.Close();
+        }
     }
 }
