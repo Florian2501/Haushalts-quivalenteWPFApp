@@ -226,5 +226,15 @@ namespace HaushaltsäquivalenteWPFApp
                 MessageBox.Show("Es müssen sowohl eine Person, als auch eine Aufgabe ausgewählt sein!");
             }
         }
+
+        /// <summary>
+        /// Opens a new Window where you can enter new Tasks
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
