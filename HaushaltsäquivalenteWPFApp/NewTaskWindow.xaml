@@ -31,7 +31,7 @@
 
                         <StackPanel Grid.Column="0" Grid.Row="1">
                             <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="5"/>
-                            <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 30,5,5" Click="MainWindowButton_Click"></Button>
+                            <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 15,5,5" Click="MainWindowButton_Click"></Button>
                         </StackPanel>
 
                     </Grid>
@@ -40,7 +40,8 @@
                 <!--Right side of the window-->
                 <Border Margin="10" Grid.Column="1">
                     <StackPanel>
-                        
+                        <TextBlock Margin="5">Gib hier den Name der neuen Aufgabe ein.</TextBlock>
+                        <TextBox x:Name="TaskNameTextBox" Margin="5" Background="LightGray" Width="250" HorizontalAlignment="Left"></TextBox>
                     </StackPanel>
                 </Border>
 
