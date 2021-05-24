@@ -30,7 +30,7 @@
             <StackPanel>
                 <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="0,20,0,0"/>
                 <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="0,20,0,0"/>
-                <Button x:Name="NewTaskButton" Content="Neue Aufgabe erstellen" Click="TableButton_Click" Margin="0,20,0,0"/>
+                <Button x:Name="NewTaskButton" Content="Neue Aufgabe erstellen" Click="NewTaskButton_Click" Margin="0,20,0,0"/>
                 <Button x:Name="NewPersonButton" Content="Neue Person hinzufügen" Click="TableButton_Click" Margin="0,20,0,0"/>
             </StackPanel>
             
