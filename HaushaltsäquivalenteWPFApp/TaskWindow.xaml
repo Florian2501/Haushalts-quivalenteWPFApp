@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
-        Title="TaskWindow" Height="600" Width="1000"
+        Title="TaskWindow" Height="450" Width="800"
         Loaded="Window_Loaded">
     <Border Padding="10">
 
@@ -85,7 +85,7 @@
                     
                     <!--Button to the Window to enter a new Task that doesnt exist-->
                     <StackPanel Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center">
-                        <TextBlock Margin="5">Wenn deine erledigte Aufgabe nicht dabei ist, klicke hier!</TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap" TextAlignment="Center">Wenn deine erledigte Aufgabe nicht dabei ist, klicke hier!</TextBlock>
                         <Button x:Name="NewTaskButton" Content="Neue Aufgabe erstellen" Click="NewTaskButton_Click" Margin="5" Width="150"/>
                     </StackPanel>
                     

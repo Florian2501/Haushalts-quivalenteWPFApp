@@ -21,5 +21,44 @@ namespace HaushaltsäquivalenteWPFApp
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Sets the correct Design of the Window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Sets the correct colors of the ColorTheme
+            this.Background = new SolidColorBrush(ColorTheme.design.Background);
+            this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
+            SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
+        }
+
+        /// <summary>
+        /// The function behind the Table Button to open the TableWindow
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TableButton_Click(object sender, RoutedEventArgs e)
+        {
+            TableWindow tableWindow = new TableWindow();
+            tableWindow.Show();
+            this.Close();
+        }
+
+        /// <summary>
+        /// CLoses the current TableWindow and opens the Main Window again
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+        }
+
+
     }
 }

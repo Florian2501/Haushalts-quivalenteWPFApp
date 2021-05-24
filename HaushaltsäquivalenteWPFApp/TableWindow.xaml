@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
-        Title="Table" Height="600" Width="1000"
+        Title="Table" Height="450" Width="800"
         Loaded="Window_Loaded">
     <Border Padding="10">
     <Grid>
@@ -46,7 +46,7 @@
                     <StackPanel Grid.Column="0" Grid.Row="1">
                         <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="5"/>
                         <Button x:Name="NewTaskButton" Content="Neue Aufgabe erstellen" Click="NewTaskButton_Click" Margin="5"/>
-                        <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 30,5,5" Click="MainWindowButton_Click"></Button>
+                        <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 15,5,5" Click="MainWindowButton_Click"></Button>
                     </StackPanel>
                     
                 </Grid>
