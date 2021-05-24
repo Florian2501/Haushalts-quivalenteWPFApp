@@ -87,6 +87,7 @@ namespace HaushaltsäquivalenteWPFApp
             if (index >= 0)
             {
                 PointsTextBox.Text = TaskList.Tasks[index].Value.ToString();
+                DescriptionTextBlock.Text = TaskList.Tasks[index].Name + ":\n" + TaskList.Tasks[index].Description;
             }
         }
 

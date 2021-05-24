@@ -36,6 +36,7 @@
                 </Grid>
             </Border>
 
+            <!--Right side of the window-->
             <Border Margin="10" Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -45,16 +46,24 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!--Person area-->
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <TextBlock Margin="5">Wer bist du?</TextBlock>
                         <ComboBox x:Name="PersonComboBox" Margin="5"/>
                     </StackPanel>
 
+                    <!--Task Area-->
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Margin="5">Was hast du gemacht?</TextBlock>
                         <ComboBox x:Name="TaskComboBox" Margin="5" SelectionChanged="TaskComboBox_SelectionChanged"/>
                     </StackPanel>
 
+                    <!--Points Area-->
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                         <TextBlock Margin="5">Diese Aufgabe bringt dir:</TextBlock>
                         <Grid>
@@ -67,8 +76,11 @@
                         </Grid>
                     </StackPanel>
 
+                    <!--Confirm Button-->
                     <Button x:Name="ConfirmButton" Grid.Column="3" Margin="5,30,5,5" Height="20" Click="ConfirmButton_Click">Bestätigen</Button>
 
+                    <!--Description Area for the task-->
+                    <TextBlock x:Name="DescriptionTextBlock" Grid.Row="1" Grid.ColumnSpan="4" Margin="5" TextWrapping="Wrap"/>
                 </Grid>
             </Border>
             
