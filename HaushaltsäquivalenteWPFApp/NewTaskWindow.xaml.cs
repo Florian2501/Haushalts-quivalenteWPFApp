@@ -58,7 +58,38 @@ namespace HaushaltsäquivalenteWPFApp
             mainWindow.Show();
             this.Close();
         }
+        
+        /// <summary>
+        ///Tests the input in the TextBoxes and if its correct writes the new Task in the File 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(TaskNameTextBox.Text))
+            {
+                MessageBox.Show("Es muss ein Aufgabenname vergeben sein!");
+                return;
+            }
 
-
+            if (String.IsNullOrEmpty(TaskDescriptionTextBox.Text))
+            {
+                MessageBox.Show("Es muss eine Aufgabenbeschreibung vergeben sein!");
+                return;
+            }
+            //Replace the ; with , because it could destroy the whole file format
+            string name = TaskNameTextBox.Text.Replace(';', ',');
+            string description = TaskDescriptionTextBox.Text.Replace(';', ',');
+            int points = 0;
+            try
+            {
+                points = Convert.ToInt32(TaskPointsTextBox.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Die Punkteanzahl war in einem ungültigen Format.\nDie Punktzahl muss größer als 0 sein.");
+                return;
+            }
+        }
     }
 }

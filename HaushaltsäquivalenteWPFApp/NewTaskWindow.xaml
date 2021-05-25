@@ -47,7 +47,7 @@
                         <TextBlock Margin="5">Gib hier die Punktzahl der neuen Aufgabe ein:</TextBlock>
                         <TextBox x:Name="TaskPointsTextBox" Margin="5" Background="LightGray" Width="50" HorizontalAlignment="Left"></TextBox>
                         <TextBlock Margin="5, 50,5,5">Wenn alles korrekt eingegeben ist, klicke auf den Button!</TextBlock>
-                        <Button x:Name="ConfirmButton" Width="100" HorizontalAlignment="Left" Margin="5">Bestätigen</Button>
+                        <Button x:Name="ConfirmButton" Width="100" HorizontalAlignment="Left" Margin="5" Click="ConfirmButton_Click">Bestätigen</Button>
                     </StackPanel>
                 </Border>
 
