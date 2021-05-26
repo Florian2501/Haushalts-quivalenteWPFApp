@@ -207,6 +207,7 @@ namespace HaushaltsäquivalenteWPFApp
                 //Write the data into the file
                 using(StreamWriter sw = new StreamWriter(path))
                 {
+                    sw.AutoFlush = true;
                     //if the file didnt already exist the writeback string is empty so it should create a new file and write only the info of the donetask into the file
                     if (String.IsNullOrEmpty(writeBack))
                     {

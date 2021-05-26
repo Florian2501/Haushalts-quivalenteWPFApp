@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -66,6 +67,8 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            //Test the TextBoxes wether they are empty
+            //if yes return and show a Message Box
             if (String.IsNullOrEmpty(TaskNameTextBox.Text))
             {
                 MessageBox.Show("Es muss ein Aufgabenname vergeben sein!");
@@ -89,6 +92,18 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 MessageBox.Show("Die Punkteanzahl war in einem ungültigen Format.\nDie Punktzahl muss größer als 0 sein.");
                 return;
+            }
+            //if it comes here all fields are correctly filled based on the design
+            //Gets the highest forgiven ID and increase it to the new ID of the new Task
+            int newID = TaskList.Tasks[TaskList.Tasks.Count - 1].ID + 1;
+            //creates the new line that will represent the new task in the File
+            string newTask = newID.ToString() + ";" + description + ";" + points.ToString();
+
+            string path = @"Data\Tasks.txt";
+
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.AutoFlush = true;
             }
         }
     }
