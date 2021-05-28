@@ -109,6 +109,9 @@ namespace HaushaltsäquivalenteWPFApp
             }
             //Confirm that it worked out
             MessageBox.Show(name + " wurde als neue Aufgabe eingetragen.");
+            TaskNameTextBox.Text = "";
+            TaskDescriptionTextBox.Text = "";
+            TaskPointsTextBox.Text = "";
         }
 
         /// <summary>
