@@ -25,7 +25,7 @@ namespace HaushaltsäquivalenteWPFApp
 
             try//try to open the Tasks.txt file to read all the possible tasks
             {
-                using (StreamReader sr = new StreamReader(@"Data\Tasks.txt"))
+                using (StreamReader sr = new StreamReader(@"Data\Tasks.txt", Encoding.UTF8))
                 {
                     if (sr == null) return;
                     string line = "";

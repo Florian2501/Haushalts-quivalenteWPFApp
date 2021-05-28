@@ -99,5 +99,29 @@ namespace HaushaltsäquivalenteWPFApp
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
         }
+
+        /// <summary>
+        /// Opens the TaskWindow and closes this window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DoneTasksButton_Click(object sender, RoutedEventArgs e)
+        {
+            TaskWindow taskWindow = new TaskWindow();
+            taskWindow.Show();
+            this.Close();
+        }
+
+        /// <summary>
+        /// Opens a new Window where you can enter new Tasks
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewTaskWindow newTaskWindow = new NewTaskWindow();
+            newTaskWindow.Show();
+            this.Close();
+        }
     }
 }

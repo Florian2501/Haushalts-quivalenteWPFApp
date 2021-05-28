@@ -1,2 +1,2 @@
-1;Geschirrspüler ausräumen;Die Aufgabe gilt als erfüllt, wenn der gesamte Geschirrspüler ausgeräumt und das Geschirr korrekt eingeräumt wurde.;3
-2;Räder wechseln;Die Aufgabe gilt als erfüllt, wenn alle 4 Räder eines Autos ordnungsgemäß entfernt wurden und anschließend die der Saison entsprechenden neuen Räder wieder angebracht wurden.;4
+1;GeschirrspÃ¼ler ausrÃ¤umen;Die Aufgabe gilt als erfÃ¼llt, wenn der gesamte GeschirrspÃ¼ler ausgerÃ¤umt und das Geschirr korrekt eingerÃ¤umt wurde.;3
+2;RÃ¤der wechseln;Die Aufgabe gilt als erfÃ¼llt, wenn alle 4 RÃ¤der eines Autos ordnungsgemÃ¤ÃŸ entfernt wurden und anschlieÃŸend die der Saison entsprechenden neuen RÃ¤der wieder angebracht wurden.;4
