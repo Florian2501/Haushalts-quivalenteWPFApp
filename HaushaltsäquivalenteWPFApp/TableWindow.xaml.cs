@@ -236,6 +236,9 @@ namespace HaushaltsäquivalenteWPFApp
 
                 place++;
             }
+
+            //TODO
+            //Add a new Canvas to the TopMenu StackPanel
         }
 
         /// <summary>
