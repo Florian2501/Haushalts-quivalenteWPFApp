@@ -93,7 +93,7 @@ namespace HaushaltsäquivalenteWPFApp
                 MessageBox.Show("Die Punkteanzahl war in einem ungültigen Format.\nDie Punktzahl muss größer als 0 sein.");
                 return;
             }
-            //if it comes here all fields are correctly filled based on the design
+            //if it comes here all fields are correctly filled, based on the design
             //Gets the highest forgiven ID and increase it to the new ID of the new Task
             int newID = TaskList.Tasks[TaskList.Tasks.Count - 1].ID + 1;
             //creates the new line that will represent the new task in the File
@@ -101,9 +101,11 @@ namespace HaushaltsäquivalenteWPFApp
 
             string path = @"Data\Tasks.txt";
 
-            using (StreamWriter sw = new StreamWriter(path))
+            //automatically utf 8 encoded writing, only adds it to the end
+            using (StreamWriter sw = File.AppendText(path))
             {
                 sw.AutoFlush = true;
+                sw.WriteLine("\n" + newTask);
             }
         }
     }

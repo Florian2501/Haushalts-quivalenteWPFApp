@@ -35,7 +35,7 @@ namespace HaushaltsäquivalenteWPFApp
 
             try
             {
-                using (StreamReader sr = new StreamReader(@"Data\Persons.txt", Encoding.UTF7))
+                using (StreamReader sr = new StreamReader(@"Data\Persons.txt", Encoding.UTF8))
                 {
                     if (sr == null) return;
                     string line = "";

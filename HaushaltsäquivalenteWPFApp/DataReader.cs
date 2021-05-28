@@ -16,7 +16,7 @@ namespace HaushaltsäquivalenteWPFApp
             string path = @"Data\Days\" + date.ToString("yyyy.MM.dd") + ".txt"; 
             try 
             { 
-                using (StreamReader sr = new StreamReader(path, Encoding.UTF7))
+                using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
                 {
                     //if the date file exists open it
                     string line = "";

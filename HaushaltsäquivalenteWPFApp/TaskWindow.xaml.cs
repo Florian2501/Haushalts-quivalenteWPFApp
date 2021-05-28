@@ -113,7 +113,7 @@ namespace HaushaltsäquivalenteWPFApp
                 //check wether the file of the day exists
                 try
                 {
-                    using (StreamReader sr = new StreamReader(path, Encoding.UTF7))
+                    using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
                     {
                         //if the date file exists open it
                         string line = "";
@@ -205,7 +205,7 @@ namespace HaushaltsäquivalenteWPFApp
                 }
 
                 //Write the data into the file
-                using(StreamWriter sw = new StreamWriter(path))
+                using(StreamWriter sw = new StreamWriter(File.Open(path, FileMode.Create), Encoding.UTF8))
                 {
                     sw.AutoFlush = true;
                     //if the file didnt already exist the writeback string is empty so it should create a new file and write only the info of the donetask into the file
