@@ -31,6 +31,7 @@
 
                         <StackPanel Grid.Column="0" Grid.Row="1">
                             <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="5"/>
+                            <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="5"/>
                             <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 15,5,5" Click="MainWindowButton_Click"></Button>
                         </StackPanel>
 

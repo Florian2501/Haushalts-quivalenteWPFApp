@@ -110,5 +110,17 @@ namespace HaushaltsäquivalenteWPFApp
             //Confirm that it worked out
             MessageBox.Show(name + " wurde als neue Aufgabe eingetragen.");
         }
+
+        /// <summary>
+        /// Opens the TaskWindow and closes this window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DoneTasksButton_Click(object sender, RoutedEventArgs e)
+        {
+            TaskWindow taskWindow = new TaskWindow();
+            taskWindow.Show();
+            this.Close();
+        }
     }
 }
