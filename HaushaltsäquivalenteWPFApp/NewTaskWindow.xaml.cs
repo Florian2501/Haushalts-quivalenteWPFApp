@@ -97,7 +97,7 @@ namespace HaushaltsäquivalenteWPFApp
             //Gets the highest forgiven ID and increase it to the new ID of the new Task
             int newID = TaskList.Tasks[TaskList.Tasks.Count - 1].ID + 1;
             //creates the new line that will represent the new task in the File
-            string newTask = newID.ToString() + ";" + description + ";" + points.ToString();
+            string newTask = newID.ToString() + ";" + name + ";" + description + ";" + points.ToString();
 
             string path = @"Data\Tasks.txt";
 
@@ -105,8 +105,10 @@ namespace HaushaltsäquivalenteWPFApp
             using (StreamWriter sw = File.AppendText(path))
             {
                 sw.AutoFlush = true;
-                sw.WriteLine("\n" + newTask);
+                sw.WriteLine(newTask);
             }
+            //Confirm that it worked out
+            MessageBox.Show(name + " wurde als neue Aufgabe eingetragen.");
         }
     }
 }
