@@ -12,7 +12,8 @@ namespace HaushaltsäquivalenteWPFApp
                                   tableHeader: (Color)ColorConverter.ConvertFromString("#ac2d2d"),
                                   tableColumn1: (Color)ColorConverter.ConvertFromString("#f53f26"),
                                   tableColumn2: (Color)ColorConverter.ConvertFromString("#ffa598"),
-                                  sideMenu: (Color)ColorConverter.ConvertFromString("#ac2d2d"))
+                                  sideMenu: (Color)ColorConverter.ConvertFromString("#ac2d2d"),
+                                  barChart: (Color)ColorConverter.ConvertFromString("#ffa598"))
         {
         }
     }
