@@ -40,7 +40,7 @@
                         <!--Places List-->
                         <TextBlock Margin="5">Platzierungen:</TextBlock>
                         <!--Empty panel for the places to be entered by the program-->
-                        <StackPanel x:Name="TopMenu"></StackPanel>
+                        <StackPanel x:Name="TopMenu" Orientation="Vertical"></StackPanel>
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1">

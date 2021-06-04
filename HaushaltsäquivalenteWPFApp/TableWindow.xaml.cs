@@ -73,10 +73,7 @@ namespace HaushaltsäquivalenteWPFApp
             createTable(7);
 
 
-            //improve the main window and create a new one to enter your tasks, to enter a new task and to enter a new person
-            //activate the buttons to other windows when they are made
             //add a button to list only the current day but with more details of the tasks
-            //color theme auswahl
         }
 
         /// <summary>
@@ -202,43 +199,56 @@ namespace HaushaltsäquivalenteWPFApp
             placeGrid.ColumnDefinitions.Add(column1);
             placeGrid.ColumnDefinitions.Add(column2);
 
-            //make a new stackPanel for the names in which alle the names and the places will be added to list them up
-            StackPanel namePanel = new StackPanel();
-            namePanel.Orientation = Orientation.Vertical;
-            Grid.SetColumn(namePanel, 0);
-
-            //make a new StackPanel for the points in the 2. column of the grid
-            StackPanel pointPanel = new StackPanel();
-            pointPanel.Orientation = Orientation.Vertical;
-            Grid.SetColumn(pointPanel, 1);
-
-            //Add the stackpanels to the grid
-            placeGrid.Children.Add(namePanel);
-            placeGrid.Children.Add(pointPanel);
+            //creates 2 rows for every Person for the name + points and the bar
+            for(int i=0; i<numberOfPersons*2; i++)
+            {
+                placeGrid.RowDefinitions.Add(new RowDefinition());
+            }
 
             //delete the last table of places
             TopMenu.Children.Clear();
             //Add the grid to the menu bar
             TopMenu.Children.Add(placeGrid);
 
-
             foreach ((int points, string name) in places)
             {
-                
-
+                //Build the Textbloxk of place and Name
                 TextBlock nameBlock = new TextBlock();
                 nameBlock.Margin = new Thickness(15, 5, 0,0);
                 nameBlock.Text = place.ToString() + ". " + name;
+                Grid.SetRow(nameBlock, (place-1) * 2);//every second row
 
+                //Build the text block with the points
                 TextBlock pointsBlock = new TextBlock();
                 pointsBlock.Text = points.ToString();
                 pointsBlock.Margin = new Thickness(15, 5, 0, 0);
+                Grid.SetRow(pointsBlock, (place - 1) * 2);
+                Grid.SetColumn(pointsBlock, 1);//every second row and in the second column
 
-                namePanel.Children.Add(nameBlock);
-                pointPanel.Children.Add(pointsBlock);
+                //add the textblocks to the fitting Gridcell in the Menu
+                placeGrid.Children.Add(nameBlock);
+                placeGrid.Children.Add(pointsBlock);
+
+                //create a rectangle in the correct length and in relation to the first place -> will be always the whole line (190)
+                Rectangle bar = new Rectangle();
+                bar.Width = 189.0 * ((double)points / (double)places[0].Item1) + 1.0;//+1 that there is even something if the points are 0
+                bar.Height = 20;
+                bar.Fill = new SolidColorBrush(ColorTheme.design.BarChart);//The given color for the bar chart
+                bar.HorizontalAlignment = HorizontalAlignment.Left;
+                bar.Margin = new Thickness(5, 0, 0, 0);
+
+                //set the rectangle to the row that is empty under each name
+                Grid.SetRow(bar, (place * 2) - 1);
+                //make it over the whole width
+                Grid.SetColumnSpan(bar, 2);
+                //add the abr to the Grid
+                placeGrid.Children.Add(bar);
 
                 place++;
             }
+
+            //TODO
+            //Add a new Canvas to the TopMenu StackPanel
         }
 
         /// <summary>
