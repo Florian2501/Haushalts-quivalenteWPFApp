@@ -123,5 +123,17 @@ namespace HaushaltsäquivalenteWPFApp
             newTaskWindow.Show();
             this.Close();
         }
+
+        /// <summary>
+        /// Opens a new Window of the NewPerson Window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewPersonButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewPersonWindow tableWindow = new NewPersonWindow();
+            tableWindow.Show();
+            this.Close();
+        }
     }
 }
