@@ -126,6 +126,7 @@ namespace HaushaltsäquivalenteWPFApp
                 GivenNames.Children.Add(textBlock);
             }
         }
-        //TODO add a delete button -> use the scrollbar to select
+        //TODO add a delete button -> use the listbox to select
+        //TODO Umbau zu Listbox von Scrollviewer
     }
 }
