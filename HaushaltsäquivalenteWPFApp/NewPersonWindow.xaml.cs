@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace HaushaltsäquivalenteWPFApp
 {
@@ -77,9 +78,54 @@ namespace HaushaltsäquivalenteWPFApp
             this.Close();
         }
     
+        /// <summary>
+        /// Creates a new entry in the persons file. The name from the Textbox will be taken for it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            //check wether the entered name is already forgiven
+            string newName = NewNameTextBox.Text;
+            if (Persons.Names.Contains(newName) || String.IsNullOrWhiteSpace(newName))
+            {
+                MessageBox.Show("Der Name ist schon vergeben oder leer. Alle vergebenen Namen siehst du unten. Bitte gib einen anderen ein.");
+                return;
+            }
+            //if it is here the name is not forgiven
+            //create the path
+            string path = @"Data\Persons.txt";
+            string allNames = "";
+            //create the new string to be written in the Person file
+            foreach(string name in Persons.Names)
+            {
+                allNames += name + "\n";
+            }
+            //add the new name to the others
+            allNames += newName;
 
+            MessageBox.Show(allNames);
+
+            //automatically utf 8 encoded writing, only adds it to the end
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.AutoFlush = true;
+                sw.WriteLine(allNames);
+            }
+            //Confirm that it worked out
+            MessageBox.Show(newName + " wurde als neuer Teilnehmer eingetragen.");
+            //clear the Textbox with the new Name
+            NewNameTextBox.Text = "";
+            //clear the given names
+            GivenNames.Children.Clear();
+            //update the list of the given names
+            foreach (string name in Persons.Names)
+            {
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = name;
+                GivenNames.Children.Add(textBlock);
+            }
         }
+        //TODO add a delete button -> use the scrollbar to select
     }
 }
