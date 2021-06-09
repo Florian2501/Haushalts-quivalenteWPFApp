@@ -46,13 +46,9 @@
                         <TextBlock Margin="5, 50,5,5" TextWrapping="Wrap">Wenn alles korrekt eingegeben ist, klicke auf den Button! Bitte achte darauf, dass ein Name nicht mehrfach vergeben werden darf. Gib also z.B. Doppel- oder Spitznamem ein.</TextBlock>
                         <Button x:Name="ConfirmButton" Width="100" HorizontalAlignment="Left" Margin="5" Click="ConfirmButton_Click">Bestätigen</Button>
                         <TextBlock Margin="5,20,5,0">Hier sind alle bereits vergebenen Namen aufgelistet.</TextBlock>
-                        <ScrollViewer x:Name="ScrollNames" Margin="5" Width="250" HorizontalAlignment="Left" Background="LightGray" Padding="5" MaxHeight="150" AllowDrop="True">
-                            <StackPanel x:Name="GivenNames"></StackPanel>
-                        </ScrollViewer>
-                        <ListBox>
-                            <ListBoxItem>Hallo</ListBoxItem>
-                            <ListBoxItem>Neu</ListBoxItem>
+                        <ListBox x:Name="UsedNames" Margin="5" Width="250" HorizontalAlignment="Left" Background="LightGray" Padding="5" MaxHeight="100">
                         </ListBox>
+                        <Button x:Name="DeletePersonButton" Margin="5" Width="100" HorizontalAlignment="Left" Click="DeletePersonButton_Click">Person löschen</Button>
                     </StackPanel>
                 </Border>
 

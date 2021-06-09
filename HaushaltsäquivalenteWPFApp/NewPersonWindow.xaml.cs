@@ -34,11 +34,20 @@ namespace HaushaltsäquivalenteWPFApp
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
             SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
-            foreach(string name in Persons.Names)
+            updateNameList();
+        }
+
+        /// <summary>
+        /// This function updates the names in the list of forgiven names.
+        /// </summary>
+        private void updateNameList()
+        {
+            UsedNames.Items.Clear();
+            foreach (string name in Persons.Names)
             {
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = name;
-                GivenNames.Children.Add(textBlock);
+                UsedNames.Items.Add(textBlock);
             }
         }
 
@@ -104,7 +113,7 @@ namespace HaushaltsäquivalenteWPFApp
             //add the new name to the others
             allNames += newName;
 
-            MessageBox.Show(allNames);
+            //MessageBox.Show(allNames);
 
             //automatically utf 8 encoded writing, only adds it to the end
             using (StreamWriter sw = new StreamWriter(path))
@@ -116,17 +125,48 @@ namespace HaushaltsäquivalenteWPFApp
             MessageBox.Show(newName + " wurde als neuer Teilnehmer eingetragen.");
             //clear the Textbox with the new Name
             NewNameTextBox.Text = "";
-            //clear the given names
-            GivenNames.Children.Clear();
             //update the list of the given names
+            updateNameList();
+        }
+
+        /// <summary>
+        /// This function deletes the selected Person from the file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeletePersonButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Check wether a name is selected
+            if(UsedNames.SelectedIndex <= 0)
+            {
+                MessageBox.Show("Es ist kein Name ausgewählt.");
+                return;
+            }
+            //get the name that was selected
+            string selectedName = Persons.Names[UsedNames.SelectedIndex];
+
+            //create the path
+            string path = @"Data\Persons.txt";
+            string allNames = "";
+            //create the new string to be written in the Person file
             foreach (string name in Persons.Names)
             {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = name;
-                GivenNames.Children.Add(textBlock);
+                if (name.Equals(selectedName)) continue;
+                allNames += name + "\n";
             }
+
+            //MessageBox.Show(allNames);
+
+            //automatically utf 8 encoded writing, only adds it to the end
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.AutoFlush = true;
+                sw.WriteLine(allNames);
+            }
+            //Confirm that it worked out
+            MessageBox.Show(selectedName + " wurde als Teilnehmer gelöscht eingetragen.");
+            //update the list
+            updateNameList();
         }
-        //TODO add a delete button -> use the listbox to select
-        //TODO Umbau zu Listbox von Scrollviewer
     }
 }
