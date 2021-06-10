@@ -44,6 +44,7 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            WindowPosition.CenterWindowOnScreen(this);
             //Set the Colors of the Back and Foreground
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
@@ -121,6 +122,18 @@ namespace HaushaltsäquivalenteWPFApp
         {
             NewTaskWindow newTaskWindow = new NewTaskWindow();
             newTaskWindow.Show();
+            this.Close();
+        }
+
+        /// <summary>
+        /// Opens a new Window of the NewPerson Window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewPersonButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewPersonWindow tableWindow = new NewPersonWindow();
+            tableWindow.Show();
             this.Close();
         }
     }

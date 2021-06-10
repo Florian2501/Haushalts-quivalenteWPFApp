@@ -1,0 +1,60 @@
+﻿<Window x:Class="HaushaltsäquivalenteWPFApp.NewPersonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
+        mc:Ignorable="d"
+        Title="NewPerson" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Border Padding="10">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Left side of the Window, Menu list-->
+                <Border x:Name="SideMenu">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.Row="0">
+                            <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du eine neue Person eintragen oder eine bestehende entfernen.</TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="0" Grid.Row="1">
+                            <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="5"/>
+                            <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="5"/>
+                            <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 15,5,5" Click="MainWindowButton_Click"></Button>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+
+                <!--Right side of the window-->
+                <Border Margin="10" Grid.Column="1">
+                    <StackPanel>
+                        <TextBlock Margin="5">Gib hier den Name der neuen Person ein:</TextBlock>
+                        <TextBox x:Name="NewNameTextBox" Margin="5" Background="LightGray" Width="250" HorizontalAlignment="Left"></TextBox>
+                        <TextBlock Margin="5, 50,5,5" TextWrapping="Wrap">Wenn alles korrekt eingegeben ist, klicke auf den Button! Bitte achte darauf, dass ein Name nicht mehrfach vergeben werden darf. Gib also z.B. Doppel- oder Spitznamem ein.</TextBlock>
+                        <Button x:Name="ConfirmButton" Width="100" HorizontalAlignment="Left" Margin="5" Click="ConfirmButton_Click">Bestätigen</Button>
+                        <TextBlock Margin="5,20,5,0">Hier sind alle bereits vergebenen Namen aufgelistet.</TextBlock>
+                        <ListBox x:Name="UsedNames" Margin="5" Width="250" HorizontalAlignment="Left" Background="LightGray" Padding="5" MaxHeight="100">
+                        </ListBox>
+                        <Button x:Name="DeletePersonButton" Margin="5" Width="100" HorizontalAlignment="Left" Click="DeletePersonButton_Click">Person löschen</Button>
+                    </StackPanel>
+                </Border>
+
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
+

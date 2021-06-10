@@ -31,6 +31,8 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            WindowPosition.CenterWindowOnScreen(this);
+
             //set the Color of the Background and the Menu to the Color of the Theme
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
