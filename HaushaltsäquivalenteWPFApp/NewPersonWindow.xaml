@@ -26,7 +26,7 @@
 
                         <StackPanel Grid.Column="0" Grid.Row="0">
                             <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
-                            <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du eine noch nicht existierende Aufgabe eintragen.</TextBlock>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du eine neue Person eintragen oder eine bestehende entfernen.</TextBlock>
                         </StackPanel>
 
                         <StackPanel Grid.Column="0" Grid.Row="1">
