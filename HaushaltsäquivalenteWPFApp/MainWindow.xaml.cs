@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace HaushaltsäquivalenteWPFApp
 {
@@ -44,7 +45,19 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //center the Window
             WindowPosition.CenterWindowOnScreen(this);
+
+            //check for a name and ask for one if there is no
+            if (!PersonExists())
+            {
+                OpenFirstPersonWindow();
+            }
+            //check for a task and if there is none ask for one
+            if (!TaskExists())
+            {
+                OpenFirstTaskWindow();
+            }
             //Set the Colors of the Back and Foreground
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
@@ -134,6 +147,72 @@ namespace HaushaltsäquivalenteWPFApp
         {
             NewPersonWindow tableWindow = new NewPersonWindow();
             tableWindow.Show();
+            this.Close();
+        }
+    
+        /// <summary>
+        /// This function checks wether there is at least a person in the file. It returns true if there are files with names and else false.
+        /// </summary>
+        /// <returns></returns>
+        public bool PersonExists()
+        {
+            string names = "";
+            try
+            {
+                names = File.ReadAllText(@"Data\Persons.txt");
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Die Datei Persons.txt existiert noch nicht.");
+            }
+
+            if (String.IsNullOrWhiteSpace(names))
+            {
+                return false;
+            }
+            else return true;
+        }
+
+        /// <summary>
+        /// This Function opens a new FirstPersonWindow that asks for a name
+        /// </summary>
+        public void OpenFirstPersonWindow()
+        {
+            FirstPersonWindow firstPersonWindow = new FirstPersonWindow();
+            firstPersonWindow.Show();
+            this.Close();
+        }
+
+        /// <summary>
+        /// This function checks wether there is at least a task in the file. It returns true if there are files with tasks and else false.
+        /// </summary>
+        /// <returns></returns>
+        public bool TaskExists()
+        {
+            string task = "";
+            try
+            {
+                task = File.ReadAllText(@"Data\Tasks.txt");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Die Datei Tasks.txt existiert noch nicht.");
+            }
+
+            if (String.IsNullOrWhiteSpace(task))
+            {
+                return false;
+            }
+            else return true;
+        }
+
+        /// <summary>
+        /// This Function opens a new FirstTaskWindow that asks for a name.
+        /// </summary>
+        public void OpenFirstTaskWindow()
+        {
+            FirstTaskWindow firstTaskWindow = new FirstTaskWindow();
+            firstTaskWindow.Show();
             this.Close();
         }
     }
