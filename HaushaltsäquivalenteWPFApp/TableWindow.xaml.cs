@@ -89,10 +89,10 @@ namespace HaushaltsäquivalenteWPFApp
             FlowDoc.Blocks.Clear();
             FlowDoc.Blocks.Add(table);
             table.FontFamily = new FontFamily("Arial");
-            table.CellSpacing = 10;
-            table.Background = Brushes.Gray;
+            table.CellSpacing = 2;
             table.BorderThickness = new Thickness(2);
             table.BorderBrush = Brushes.Black;
+            table.Background = Brushes.White;
             
             //Add columns to the Table until every person has its own column
             int numberOfPersons = Persons.NumberOfPersons;
@@ -100,12 +100,14 @@ namespace HaushaltsäquivalenteWPFApp
             {               
                 table.Columns.Add(new TableColumn());
 
-                if (i % 2 == 0)
-                    table.Columns[i].Background = new SolidColorBrush(ColorTheme.design.TableColumn1);//Color of the first column
+                /*if (i % 2 == 0)
+                {
+                    //table.Columns[i].Background = new SolidColorBrush(ColorTheme.design.TableColumn1);//Color of the first column
+                }
                 else
                 {
-                    table.Columns[i].Background = new SolidColorBrush(ColorTheme.design.TableColumn2);//Color of the second column
-                }
+                    //table.Columns[i].Background = new SolidColorBrush(ColorTheme.design.TableColumn2);//Color of the second column
+                }*/
             }
 
             //Adds the first row to the Table
@@ -118,7 +120,7 @@ namespace HaushaltsäquivalenteWPFApp
             currentRow.FontWeight = System.Windows.FontWeights.Bold;
             //Adds new cell to the first row that spans all over the Table. This is the headline
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run($"Haushaltsäquivalente der letzten {numberOfDays} Tage"))));
-            currentRow.Cells[0].ColumnSpan = numberOfPersons;
+            currentRow.Cells[0].ColumnSpan = numberOfPersons+1;
 
             // Add the second (header) row for the names of the Persons
             table.RowGroups[0].Rows.Add(new TableRow());
@@ -129,11 +131,27 @@ namespace HaushaltsäquivalenteWPFApp
             currentRow.FontWeight = FontWeights.Bold;
 
             //Add Table cell "Namen"
-            currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Namen"))));
+            Run run = new Run("Namen");
+            Paragraph paragraph = new Paragraph(run);
+            paragraph.Padding = new Thickness(2);
+            paragraph.BorderThickness = new Thickness(1);
+            paragraph.BorderBrush = Brushes.Black;
+            paragraph.Margin = new Thickness(2);
+            paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+            currentRow.Cells.Add(new TableCell(paragraph));
+            //currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Namen"))));
             // Add cells with the names to the second row.
             foreach(string name in Persons.Names)
             {
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
+                run = new Run(name);
+                paragraph = new Paragraph(run);
+                paragraph.Padding = new Thickness(2);
+                paragraph.BorderThickness = new Thickness(1);
+                paragraph.BorderBrush = Brushes.Black;
+                paragraph.Margin = new Thickness(2);
+                paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+                currentRow.Cells.Add(new TableCell(paragraph));
+                //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
             }
 
             //Add a new RowGroup to the table where the points will be displayed
@@ -147,27 +165,62 @@ namespace HaushaltsäquivalenteWPFApp
                 int personIndex = 0;
                 table.RowGroups[1].Rows.Add(new TableRow());
                 currentRow = table.RowGroups[1].Rows[i];
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DateTime.Today.AddDays(-1 * i).ToString("ddd: dd.MM.yy")))));
+
+                run = new Run(DateTime.Today.AddDays(-1 * i).ToString("ddd: dd.MM.yy"));
+                paragraph = new Paragraph(run);
+                paragraph.Padding = new Thickness(2);
+                paragraph.BorderThickness = new Thickness(1);
+                paragraph.BorderBrush = Brushes.Black;
+                paragraph.Margin = new Thickness(2);
+                paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+                currentRow.Cells.Add(new TableCell(paragraph));
+
+                //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DateTime.Today.AddDays(-1 * i).ToString("ddd: dd.MM.yy")))));
                 foreach (string name in Persons.Names)
                 {
                     sumOfPersons[personIndex] += DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i));
-                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i)).ToString()))));
+                    
+                    run = new Run(DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i)).ToString());
+                    paragraph = new Paragraph(run);
+                    paragraph.Padding = new Thickness(2);
+                    paragraph.BorderThickness = new Thickness(1);
+                    paragraph.BorderBrush = Brushes.Black;
+                    paragraph.Margin = new Thickness(2);
+                    currentRow.Cells.Add(new TableCell(paragraph));
+                    //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(DataReader.GetValueOf(name, DateTime.Today.AddDays(-1 * i)).ToString()))));
                     personIndex++;
                 }
 
-                //TODO add sum function and improve the design
             }
 
             //Add a sum line to the Table under the names in tablerowgroup 0
             table.RowGroups[0].Rows.Add(new TableRow());
             currentRow = table.RowGroups[0].Rows[2];
             //Add the first cell descriptiom "Summe"
-            currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Summe"))));
+            run = new Run("Summe");
+            paragraph = new Paragraph(run);
+            paragraph.Padding = new Thickness(2);
+            paragraph.FontWeight = FontWeights.Bold;
+            paragraph.BorderThickness = new Thickness(1);
+            paragraph.BorderBrush = Brushes.Black;
+            paragraph.Margin = new Thickness(2);
+            paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+            currentRow.Cells.Add(new TableCell(paragraph));
+            //currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Summe"))));
 
             //Add for each person a cell with the sum of the points
             foreach (int sum in sumOfPersons)
             {
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(sum.ToString()))));
+                run = new Run(sum.ToString());
+                paragraph = new Paragraph(run);
+                paragraph.Padding = new Thickness(2);
+                paragraph.FontWeight = FontWeights.Bold;
+                paragraph.BorderThickness = new Thickness(1);
+                paragraph.BorderBrush = Brushes.Black;
+                paragraph.Margin = new Thickness(2);
+                paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn1);
+                currentRow.Cells.Add(new TableCell(paragraph));
+                //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(sum.ToString()))));
             }
 
             //create array of names and points of the persons that it can be sorted
