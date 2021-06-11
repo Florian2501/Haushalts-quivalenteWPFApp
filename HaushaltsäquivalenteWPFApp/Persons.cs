@@ -28,7 +28,6 @@ namespace HaushaltsäquivalenteWPFApp
         /// <summary>
         /// Reads in the file with the names of the People participating in the App
         /// </summary>
-        /// <returns></returns>
         private static void readPersons()
         {
             names = new List<string>();

@@ -214,7 +214,7 @@ namespace HaushaltsäquivalenteWPFApp
 
             foreach ((int points, string name) in places)
             {
-                //Build the Textbloxk of place and Name
+                //Build the Textblock of place and Name
                 TextBlock nameBlock = new TextBlock();
                 nameBlock.Margin = new Thickness(15, 5, 0,0);
                 nameBlock.Text = place.ToString() + ". " + name;
@@ -248,9 +248,6 @@ namespace HaushaltsäquivalenteWPFApp
 
                 place++;
             }
-
-            //TODO
-            //Add a new Canvas to the TopMenu StackPanel
         }
 
         /// <summary>
