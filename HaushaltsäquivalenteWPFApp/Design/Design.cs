@@ -82,6 +82,9 @@ namespace HaushaltsäquivalenteWPFApp
         }
 
         private Color tableColumn1;
+        /// <summary>
+        /// This is the color of the sum fields. Should be more intense then the TableColumn2.
+        /// </summary>
         public Color TableColumn1
         {
             get
@@ -102,6 +105,9 @@ namespace HaushaltsäquivalenteWPFApp
         }
 
         private Color tableColumn2;
+        /// <summary>
+        /// This is the color of the date and the name fields. Should be less intense then TableColumn1.
+        /// </summary>
         public Color TableColumn2
         {
             get
