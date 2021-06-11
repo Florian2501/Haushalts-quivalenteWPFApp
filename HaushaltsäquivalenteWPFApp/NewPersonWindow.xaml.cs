@@ -138,9 +138,15 @@ namespace HaushaltsäquivalenteWPFApp
         private void DeletePersonButton_Click(object sender, RoutedEventArgs e)
         {
             //Check wether a name is selected
-            if(UsedNames.SelectedIndex <= 0)
+            if(UsedNames.SelectedIndex < 0)
             {
                 MessageBox.Show("Es ist kein Name ausgewählt.");
+                return;
+            }
+            //check wether its not the last person, but if it is return
+            if(UsedNames.Items.Count <= 1)
+            {
+                MessageBox.Show("Die letzte Person darf nicht gelöscht werden.");
                 return;
             }
             //get the name that was selected
