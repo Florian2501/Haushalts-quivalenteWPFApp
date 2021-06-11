@@ -53,7 +53,7 @@
             </Border>
 
         <!--Right side of the window, the table-->
-            <FlowDocumentReader Grid.Column="1" ViewingMode="Scroll" x:Name="TableReader">
+            <FlowDocumentReader Grid.Column="1" ViewingMode="Scroll" x:Name="TableReader"  Zoom="50">
                 <FlowDocument x:Name="FlowDoc"></FlowDocument>
             </FlowDocumentReader>
     </Grid>
