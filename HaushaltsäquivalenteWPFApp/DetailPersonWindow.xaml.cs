@@ -17,10 +17,15 @@ namespace HaushaltsäquivalenteWPFApp
     /// </summary>
     public partial class DetailPersonWindow : Window
     {
-        public DetailPersonWindow()
+        //Constructor
+        public DetailPersonWindow(string name)
         {
             InitializeComponent();
+            this.name = name;
         }
+
+        //Members
+        private string name;
 
         /// <summary>
         /// When the Table Window loads this function will be executed
@@ -33,6 +38,8 @@ namespace HaushaltsäquivalenteWPFApp
 
             //set the Color of the Background and the Menu to the Color of the Theme
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
+
+            NameHeadline.Text = this.name;
         }
     }
 }
