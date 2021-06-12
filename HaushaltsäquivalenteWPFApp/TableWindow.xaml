@@ -18,32 +18,42 @@
             <Border x:Name="SideMenu">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="2*"/>
                     </Grid.RowDefinitions>
-                    
-                    <StackPanel Grid.Column="0" Grid.Row="0">
-                        <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
-                        <!--Number of days entry-->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" Margin="5,5,0,5">Anzahl Tage:</TextBlock>
-                            <TextBox x:Name="DaysTextBox" Grid.Column="1" Margin="5">7</TextBox>
-                            <Button x:Name="DaysButton" Content="OK" Grid.Column="2" Margin="0,5,5,5" Click="DaysButton_Click"/>
-                        </Grid>
+                    <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
 
-                        <!--Places List-->
-                        <TextBlock Margin="5">Platzierungen:</TextBlock>
-                        <!--Empty panel for the places to be entered by the program-->
-                        <StackPanel x:Name="TopMenu" Orientation="Vertical"></StackPanel>
-                    </StackPanel>
+                    <ScrollViewer Grid.Column="0" Grid.Row="1">
+                        <StackPanel>
 
-                    <StackPanel Grid.Column="0" Grid.Row="1">
+
+                                <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du dir eine Übersicht der Punkte aller Teilnehmer anzeigen lassen. Den Zeitraum kannst du in der Textbox einstellen. Das Balkendiagramm wird sich dann automatisch aktualisieren.</TextBlock>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Um genauere Details speziell zu einer Person anzuzeigen, kannst du in der letzten Zeile auf deren Name klicken.</TextBlock>
+
+                                <!--Number of days entry-->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Margin="5,5,0,5">Anzahl Tage:</TextBlock>
+                                <TextBox x:Name="DaysTextBox" Grid.Column="1" Margin="5">7</TextBox>
+                                <Button x:Name="DaysButton" Content="OK" Grid.Column="2" Margin="0,5,5,5" Click="DaysButton_Click"/>
+                            </Grid>
+
+                            <!--Places List-->
+                            <TextBlock Margin="5">Platzierungen:</TextBlock>
+                            <!--Empty panel for the places to be entered by the program-->
+
+                            <StackPanel x:Name="TopMenu" Orientation="Vertical"></StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <StackPanel Grid.Column="0" Grid.Row="2">
                         <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="5"/>
                         <Button x:Name="NewTaskButton" Content="Neue Aufgabe erstellen" Click="NewTaskButton_Click" Margin="5"/>
                         <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 15,5,5" Click="MainWindowButton_Click"></Button>

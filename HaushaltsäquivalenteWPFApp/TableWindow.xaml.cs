@@ -18,11 +18,16 @@ namespace HaushaltsäquivalenteWPFApp
     /// </summary>
     public partial class TableWindow : Window
     {
+        //Constructor
         public TableWindow()
         {
             InitializeComponent();
-            
+            this.PersonTable = new Table();
         }
+
+        //Members
+        private Table PersonTable;
+
 
         /// <summary>
         /// When the Table Window loads this function will be executed
@@ -86,6 +91,9 @@ namespace HaushaltsäquivalenteWPFApp
         {
             //create a new Table in the FlowDocument FlowDoc
             Table table = new Table();
+            //make the new table accessible
+            this.PersonTable = table;
+            //Define the Doc reader
             FlowDoc.Blocks.Clear();
             FlowDoc.Blocks.Add(table);
             table.FontFamily = new FontFamily("Arial");
@@ -110,6 +118,7 @@ namespace HaushaltsäquivalenteWPFApp
                 }*/
             }
 
+            ///////////////////////////////////////////////////HEADLINE
             //Adds the first row to the Table
             table.RowGroups.Add(new TableRowGroup());
             table.RowGroups[0].Rows.Add(new TableRow());
@@ -122,6 +131,7 @@ namespace HaushaltsäquivalenteWPFApp
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run($"Haushaltsäquivalente der letzten {numberOfDays} Tage"))));
             currentRow.Cells[0].ColumnSpan = numberOfPersons+1;
 
+            //////////////////////////////////////////////////////NAMES
             // Add the second (header) row for the names of the Persons
             table.RowGroups[0].Rows.Add(new TableRow());
             currentRow = table.RowGroups[0].Rows[1];
@@ -153,9 +163,42 @@ namespace HaushaltsäquivalenteWPFApp
                 currentRow.Cells.Add(new TableCell(paragraph));
                 //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
             }
+            ///////////////////////////////////////////////////////DETAIL LINKS
 
             //Add a new RowGroup to the table where the points will be displayed
             table.RowGroups.Add(new TableRowGroup());
+            //Add the last row for the detail buttons of the Persons
+            table.RowGroups.Add(new TableRowGroup());
+            table.RowGroups[2].Rows.Add(new TableRow());
+            currentRow = table.RowGroups[2].Rows[0];
+            //Add "Details" to the left column
+                run = new Run("Details");
+                paragraph = new Paragraph(run);
+                paragraph.Padding = new Thickness(2);
+                paragraph.BorderThickness = new Thickness(1);
+                paragraph.BorderBrush = Brushes.Black;
+                paragraph.Margin = new Thickness(2);
+                paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+                currentRow.Cells.Add(new TableCell(paragraph));
+
+            //Add the names in each column
+            foreach (string name in Persons.Names)
+            {
+                run = new Run(name);
+                paragraph = new Paragraph(run);
+                paragraph.Padding = new Thickness(2);
+                paragraph.BorderThickness = new Thickness(1);
+                paragraph.BorderBrush = Brushes.Black;
+                paragraph.Margin = new Thickness(2);
+                paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+                //Make the name clickable that it opens a new DetailPersonWindow
+                paragraph.MouseLeftButtonDown += OpenDetailWindow_MouseLeftButtonDown;
+                currentRow.Cells.Add(new TableCell(paragraph));
+                //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
+            }
+
+            ///////////////////////////////////////////////////////DAYS AND POINTS
+            
 
             //Array to count and sum up the points per Person a day
             int[] sumOfPersons = new int[numberOfPersons];
@@ -193,6 +236,7 @@ namespace HaushaltsäquivalenteWPFApp
 
             }
 
+            /////////////////////////////////////////////////////////SUM
             //Add a sum line to the Table under the names in tablerowgroup 0
             table.RowGroups[0].Rows.Add(new TableRow());
             currentRow = table.RowGroups[0].Rows[2];
@@ -223,6 +267,7 @@ namespace HaushaltsäquivalenteWPFApp
                 //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(sum.ToString()))));
             }
 
+            //////////////////////////////////////////////////////BAR CHARTS
             //create array of names and points of the persons that it can be sorted
             (int, string)[] places = new (int, string)[numberOfPersons];
             for(int i=0; i<numberOfPersons; i++)
@@ -364,6 +409,20 @@ namespace HaushaltsäquivalenteWPFApp
             NewTaskWindow newTaskWindow = new NewTaskWindow();
             newTaskWindow.Show();
             this.Close();
+        }
+
+        /// <summary>
+        /// Occurs when the name in the table gets clicked. It opens a new DetailPersonWindow about the person.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenDetailWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Paragraph paragraph = sender as Paragraph;
+            TextRange textRange = new TextRange(paragraph.ContentStart, paragraph.ContentEnd);
+            string name = textRange.Text;
+            DetailPersonWindow detailPersonWindow = new DetailPersonWindow(name);
+            detailPersonWindow.Show();
         }
     }
 }
