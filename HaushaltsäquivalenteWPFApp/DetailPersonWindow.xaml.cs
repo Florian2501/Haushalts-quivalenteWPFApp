@@ -40,6 +40,29 @@ namespace HaushaltsäquivalenteWPFApp
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
 
             NameHeadline.Text = this.name;
+
+            int WeekSum = 0;
+            for(int i=0; i<7; i++)
+            {
+                WeekSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
+            }
+
+            int MonthSum = 0;
+            for (int i = 0; i < 30; i++)
+            {
+                MonthSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
+            }
+
+            int YearSum = 0;
+            for (int i = 0; i < 365; i++)
+            {
+                YearSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
+            }
+
+            LastWeek.Text = "Punkte der letzten 7 Tage: " + WeekSum.ToString();
+            LastMonth.Text = "Punkte der letzten 30 Tage: " + MonthSum.ToString();
+            LastYear.Text = "Punkte der letzten 365 Tage: " + YearSum.ToString();
+
         }
     }
 }
