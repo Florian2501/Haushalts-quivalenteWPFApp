@@ -47,6 +47,7 @@ namespace HaushaltsäquivalenteWPFApp
                 WeekSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
 
+
             int MonthSum = 0;
             for (int i = 0; i < 30; i++)
             {
@@ -59,9 +60,12 @@ namespace HaushaltsäquivalenteWPFApp
                 YearSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
 
-            LastWeek.Text = "Punkte der letzten 7 Tage: " + WeekSum.ToString();
-            LastMonth.Text = "Punkte der letzten 30 Tage: " + MonthSum.ToString();
-            LastYear.Text = "Punkte der letzten 365 Tage: " + YearSum.ToString();
+            LastWeek.Text = WeekSum.ToString();
+            AverageLastWeek.Text = (WeekSum / 7.0).ToString("F2");
+            LastMonth.Text = MonthSum.ToString();
+            AverageLastMonth.Text = (MonthSum / 30.0).ToString("F2");
+            LastYear.Text = YearSum.ToString();
+            AverageLastYear.Text = (YearSum / 365.0).ToString("F2");
 
         }
     }
