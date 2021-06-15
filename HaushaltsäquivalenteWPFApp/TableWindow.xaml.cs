@@ -331,7 +331,7 @@ namespace HaushaltsäquivalenteWPFApp
 
                 //create a rectangle in the correct length and in relation to the first place -> will be always the whole line (190)
                 Rectangle bar = new Rectangle();
-                bar.Width = 189.0 * ((double)points / (double)places[0].Item1) + 1.0;//+1 that there is even something if the points are 0
+                bar.Width = 189.0 * ((double)points /((double)places[0].Item1 + 0.001)) + 1.0;//+1 that there is even something if the points are 0
                 bar.Height = 20;
                 bar.Fill = new SolidColorBrush(ColorTheme.design.BarChart);//The given color for the bar chart
                 bar.HorizontalAlignment = HorizontalAlignment.Left;
