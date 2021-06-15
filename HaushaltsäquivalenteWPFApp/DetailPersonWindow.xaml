@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="DetailPersonWindow" Height="450" Width="250" Loaded="Window_Loaded">
     <Grid>
-        <StackPanel Margin="5">
+        <StackPanel x:Name="DetailPanel" Margin="5">
             <TextBlock x:Name="NameHeadline" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"></TextBlock>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="190"/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -36,8 +36,18 @@
                 <TextBlock FontWeight="Bold" Grid.Column="1" Grid.Row="3" x:Name="AverageLastMonth"></TextBlock>
                 <TextBlock FontWeight="Bold" Grid.Column="1" Grid.Row="4" x:Name="LastYear"></TextBlock>
                 <TextBlock FontWeight="Bold" Grid.Column="1" Grid.Row="5" x:Name="AverageLastYear"></TextBlock>
-            </Grid>        
+            </Grid>
             
+            <TextBlock>Häufigste Aufgaben der letzten 7 Tage:</TextBlock>
+
+            <Grid x:Name="LastWeekGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="45"/>
+                    <ColumnDefinition Width="45"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+
         </StackPanel>
         
     </Grid>

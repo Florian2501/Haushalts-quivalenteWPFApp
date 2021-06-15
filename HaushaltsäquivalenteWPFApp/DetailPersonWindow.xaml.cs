@@ -46,6 +46,7 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 WeekSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
+            List<int> listOfLastWeek = DataReader.GetListOfDoneTasks(7, name);
 
 
             int MonthSum = 0;
@@ -53,20 +54,59 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 MonthSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
+            List<int> listOfLastMonth = DataReader.GetListOfDoneTasks(7, name);
+
 
             int YearSum = 0;
             for (int i = 0; i < 365; i++)
             {
                 YearSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
+            List<int> listOfLastYear = DataReader.GetListOfDoneTasks(7, name);
+
 
             LastWeek.Text = WeekSum.ToString();
             AverageLastWeek.Text = (WeekSum / 7.0).ToString("F2");
+            
+            for(int i= 0; i<listOfLastWeek.Count;i++)
+            {
+                RowDefinition newRow = new RowDefinition();
+                newRow.Height = GridLength.Auto;
+                LastWeekGrid.RowDefinitions.Add(newRow);
+
+                TextBlock nameBlock = new TextBlock();
+                nameBlock.Text = TaskList.Tasks[i].Name;
+                Grid.SetColumn(nameBlock, 0);
+                Grid.SetRow(nameBlock, i);
+
+                LastWeekGrid.Children.Add(nameBlock);
+
+                TextBlock percentBlock = new TextBlock();
+                percentBlock.Text = listOfLastWeek[i].ToString();//add to divide it by the sum of done tasks
+                Grid.SetColumn(percentBlock, 1);
+                Grid.SetRow(percentBlock, i);
+
+                LastWeekGrid.Children.Add(percentBlock);
+
+                TextBlock numberBlock = new TextBlock();
+                numberBlock.Text = listOfLastWeek[i].ToString();
+                Grid.SetColumn(numberBlock, 2);
+                Grid.SetRow(numberBlock, i);
+
+                LastWeekGrid.Children.Add(numberBlock);
+            }
+            /////////////////////////////////////////////////////////////TODO///////////////////////////////////////
+            ///Add this to all the others
+            ///Add buttons to make it visible and the other two not visible
+            ///Add the sum function for the done tasks and make the percents
+            ///Perhaps sort the table
+            ///Add a graphical system for it
+
             LastMonth.Text = MonthSum.ToString();
             AverageLastMonth.Text = (MonthSum / 30.0).ToString("F2");
+
             LastYear.Text = YearSum.ToString();
             AverageLastYear.Text = (YearSum / 365.0).ToString("F2");
-
         }
     }
 }
