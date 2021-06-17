@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="LiveCharts.Wpf.NetCore3" Version="0.9.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Data\Days\2021.05.12.txt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
