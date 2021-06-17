@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"        
         Title="DetailPersonWindow" Height="450" Width="350" Loaded="Window_Loaded">
     <Grid>
         <ScrollViewer>
@@ -55,6 +56,16 @@
                         <ColumnDefinition Width="60"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
+
+                <lvc:PieChart Name="Chart" Grid.Row="1" Series="{Binding SeriesCollection}" 
+                      LegendLocation="Right" Margin="0 5 0 0" Width="320" Height="100" HorizontalAlignment="Left">
+                    <lvc:PieChart.ChartLegend>
+                        <lvc:DefaultLegend BulletSize="15" Margin="0 0 0 0"></lvc:DefaultLegend>
+                    </lvc:PieChart.ChartLegend>
+                    <lvc:PieChart.DataTooltip>
+                        <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
+                    </lvc:PieChart.DataTooltip>
+                </lvc:PieChart>
 
             </StackPanel>
         </ScrollViewer>

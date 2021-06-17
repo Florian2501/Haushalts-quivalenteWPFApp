@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 namespace HaushaltsäquivalenteWPFApp
 {
@@ -22,10 +19,16 @@ namespace HaushaltsäquivalenteWPFApp
         {
             InitializeComponent();
             this.name = name;
+            this.SeriesCollection = new SeriesCollection{};
         }
 
         //Members
         private string name;
+
+        /// <summary>
+        /// The collection of elements for the PieChart in the DetailPersonWindow.
+        /// </summary>
+        public SeriesCollection SeriesCollection { get; set; }
 
         /// <summary>
         /// When the Table Window loads this function will be executed
@@ -38,30 +41,31 @@ namespace HaushaltsäquivalenteWPFApp
 
             //set the Color of the Background and the Menu to the Color of the Theme
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
-
+            //Set the headline that is the name of the person
             NameHeadline.Text = this.name;
 
+            //sum up the points of the last week
             int WeekSum = 0;
             for(int i=0; i<7; i++)
             {
                 WeekSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
 
-
+            //sum up the points of the last month
             int MonthSum = 0;
             for (int i = 0; i < 30; i++)
             {
                 MonthSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
 
-
+            //sum up the points of the last year
             int YearSum = 0;
             for (int i = 0; i < 365; i++)
             {
                 YearSum += DataReader.GetValueOf(this.name, DateTime.Today.AddDays(-1 * i));
             }
 
-
+            //Fill the grid with the calculated values
             LastWeek.Text = WeekSum.ToString();
             AverageLastWeek.Text = (WeekSum / 7.0).ToString("F2");
 
@@ -70,6 +74,9 @@ namespace HaushaltsäquivalenteWPFApp
 
             LastYear.Text = YearSum.ToString();
             AverageLastYear.Text = (YearSum / 365.0).ToString("F2");
+
+            //Important for the pie chart but i dont really know what it is
+            DataContext = this;
         }
 
         /// <summary>
@@ -110,8 +117,13 @@ namespace HaushaltsäquivalenteWPFApp
         {
             //get the list with the values of the last several times
             List<int> listOfLastTime = DataReader.GetListOfDoneTasks(days, this.name);
+
             //Clear the Grid before refilling it
             LastTimeGrid.Children.Clear();
+
+            //Clear the pie chart before refilling
+            this.SeriesCollection.Clear();
+
             //make the headline up to date
             LastDaysHeadline.Text = "Details zur Verteilung der Aufgaben der letzten " + days.ToString() + " Tage:";
 
@@ -119,6 +131,7 @@ namespace HaushaltsäquivalenteWPFApp
             RowDefinition newRow = new RowDefinition();
             newRow.Height = GridLength.Auto;
             LastTimeGrid.RowDefinitions.Add(newRow);
+
             //Add the HEader of the grid in bold
             //add the name of the task header
             TextBlock nameHeader = new TextBlock();
@@ -126,27 +139,36 @@ namespace HaushaltsäquivalenteWPFApp
             nameHeader.FontWeight = FontWeights.Bold;
             Grid.SetColumn(nameHeader, 0);
             Grid.SetRow(nameHeader, 0);
+
             //add it to the grid
             LastTimeGrid.Children.Add(nameHeader);
+
             //add the percent header
             TextBlock percentHeader = new TextBlock();
             percentHeader.Text = "Anteil";
             percentHeader.FontWeight = FontWeights.Bold;
             Grid.SetColumn(percentHeader, 1);
             Grid.SetRow(percentHeader, 0);
+
             //add it to the grid
             LastTimeGrid.Children.Add(percentHeader);
+
             //add the number header
             TextBlock numberHeader = new TextBlock();
             numberHeader.Text = "Anzahl";
             numberHeader.FontWeight = FontWeights.Bold;
             Grid.SetColumn(numberHeader, 2);
             Grid.SetRow(numberHeader, 0);
+
             //add it to the grid
             LastTimeGrid.Children.Add(numberHeader);
+
             //Fill the table with the values of the tasks
             for (int i = 0; i < listOfLastTime.Count; i++)
             {
+                //create a new Series element for the pie chart
+                PieSeries pieSeries = new PieSeries();
+
                 //add new row to the grid
                 newRow = new RowDefinition();
                 newRow.Height = GridLength.Auto;
@@ -163,8 +185,10 @@ namespace HaushaltsäquivalenteWPFApp
 
                 //add the percentage of the current task
                 TextBlock percentBlock = new TextBlock();
+
                 //calculate the percent value
                 double percent = (double)listOfLastTime[i] / (double)sumUpDays(listOfLastTime) * 100.0;
+
                 //check wether it was divided by 0 so it is NaN
                 if (Double.IsNaN(percent))
                 {
@@ -188,10 +212,15 @@ namespace HaushaltsäquivalenteWPFApp
                 Grid.SetRow(numberBlock, i + 1);
 
                 LastTimeGrid.Children.Add(numberBlock);
+
+                //Add the values to the pie chart
+                pieSeries.Title = TaskList.Tasks[i].Name;
+                pieSeries.Values = new ChartValues<ObservableValue> { new ObservableValue(listOfLastTime[i]) };
+                pieSeries.DataLabels = true;
+
+                SeriesCollection.Add(pieSeries);
             }
-            /////////////////////////////////////////////////////////////TODO///////////////////////////////////////
-            ///Perhaps sort the table
-            ///Add a graphical system for it
+            
         }
 
         /// <summary>
