@@ -151,6 +151,7 @@ namespace HaushaltsäquivalenteWPFApp
                 newRow = new RowDefinition();
                 newRow.Height = GridLength.Auto;
                 LastTimeGrid.RowDefinitions.Add(newRow);
+
                 //add the current name of the task
                 TextBlock nameBlock = new TextBlock();
                 nameBlock.Text = TaskList.Tasks[i].Name;
@@ -159,13 +160,27 @@ namespace HaushaltsäquivalenteWPFApp
                 Grid.SetRow(nameBlock, i + 1);
 
                 LastTimeGrid.Children.Add(nameBlock);
+
                 //add the percentage of the current task
                 TextBlock percentBlock = new TextBlock();
-                percentBlock.Text = ((double)listOfLastTime[i]/(double)sumUpDays(listOfLastTime)*100.0).ToString("F2") + "%";//add to divide it by the sum of done tasks
+                //calculate the percent value
+                double percent = (double)listOfLastTime[i] / (double)sumUpDays(listOfLastTime) * 100.0;
+                //check wether it was divided by 0 so it is NaN
+                if (Double.IsNaN(percent))
+                {
+                    //default value 0 if it would be NaN
+                    percentBlock.Text = "0.00 %";
+                }
+                else
+                {
+                    //if its a accurate value set this value in the grid
+                    percentBlock.Text = (percent).ToString("F2") + " %";
+                }
                 Grid.SetColumn(percentBlock, 1);
                 Grid.SetRow(percentBlock, i + 1);
 
                 LastTimeGrid.Children.Add(percentBlock);
+
                 //add the total number of times the task was done
                 TextBlock numberBlock = new TextBlock();
                 numberBlock.Text = listOfLastTime[i].ToString();
