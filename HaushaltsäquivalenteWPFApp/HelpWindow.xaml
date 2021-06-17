@@ -5,8 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
-        Title="HelpWindow" Height="450" Width="800">
+        Title="HelpWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        
+        <ScrollViewer>
+            <StackPanel Margin="5">
+                <TextBlock FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="5">Hilfe</TextBlock>
+                <TextBlock TextWrapping="Wrap">Unter folgendem Link ist eine ausführliche <Hyperlink NavigateUri="https://github.com/Florian2501/Haushalts-quivalenteWPFApp" RequestNavigate="Hyperlink_RequestNavigate">Dokumentation</Hyperlink>  der App auf GitHub. In der README.md wird die Funktionsweise detailiert beschrieben und dort ist auch ein Link zur Code-Dokumentation.</TextBlock>
+                <TextBlock FontSize="20" FontWeight="Bold" Margin="0 10 0 0">Idee der App</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5">Diese App ist dafür gedacht, die Verteilung der anfallenden Aufgaben im Familienalltag zu dokumentieren. Es wird gespeichert, wer an welchem Tag welche Aufgaben erledigt hat. Anhand dieser Daten werden grafische und tabellarische Auswertungen angeboten, wodurch man anschaulich und einfach ungerechte Verteilungen der Aufgaben erkennen kann.</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5">Dadurch trägt die App zu mehr Gerechtigkeit im Familienalltag bei und hilft bei der Streitfrage, wer eine noch anstehende Aufgabe erledigen soll. Außerdem ist dank des entstehenden Wettkampfgedanken besonders bei Kindern ein Anstieg der Motivation zu erwarten.</TextBlock>
+                <TextBlock FontSize="20" FontWeight="Bold" Margin="0 10 0 5">Prinzipielle Funktionsweise</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5">Zur Inbetriebnahme der App sollten alle daran teilnehmenden Familienmitglieder als Personen erstellt werden. Dazu muss nur der Name im passenden Menü eingegeben werden. Personen können aber natürlich auch noch später hinzugefügt oder wieder entfernt werden.</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5">Außerdem sollten die am häufigsten erfüllten Augaben auch bereits erstellt werden. Auch hier ist es jederzeit möglich neue Aufgaben hinzuzufügen. Dies geht im zugehörigen Menü, wobei ein Name, eine Aufgabenbeschreibung und eine Punktzahl vergeben werden müssen. Der Name sollte kurz und eindeutig sein. Die Beschreibung sollte den genauen Umfang der Aufgabe beinhalten und möglichst wenig Interpretationsspielraum bieten, damit es nicht zu Streit kommen kann, ob die Aufgabe als erfüllt gilt oder nicht. Die Punktzahl muss in Relation zu den anderen Aufgaben stehen, ist aber an sich frei wählbar (Ganzzahl). Empfohlen ist dabei folgendes Vorgehen:</TextBlock>
+                <ListView>
+                    <ListViewItem>- Gemeinsames Erörtern der denkbar einfachsten Aufgabe, die öfters anfällt</ListViewItem>
+                    <ListViewItem>- Vergabe von 2 Punkt für diese "Basisaufgabe"</ListViewItem>
+                    <ListViewItem>- Hochrechnung der Schwierigkeit einer neu zu erstellenden Aufgabe im Vergleich zu dieser "Basisaufgabe"</ListViewItem>
+                    <ListViewItem>- Berücksichtigung von Zeitaufwand und Voraussetzungen</ListViewItem>
+                    <ListViewItem>- Fällt im Verlauf der Nutzung der App doch leichtere Aufgabe als "Basisaufgabe" an, hat Spielraum mit Wert 1</ListViewItem>
+                </ListView>
+                <TextBlock TextWrapping="Wrap" Margin="5"><Bold>Beipiel:</Bold> Angenommen man einigt sich auf "Tisch decken" als einfachste Aufgabe. Dann könnte man für die Aufgabe "Essen kochen" beispielsweise 10 Punkte geben, wenn man diese entsprechend als 5 mal so wertvoll ansieht. Hierbei sollte berücksichtigt werden, ob alle Mitglieder diese Aufgabe überhaupt erfüllen können, in diesem Fall, ob alle kochen können/dürfen. Kommt man später zu dem Entschluss, dass beispielsweise "Getränke aus dem Keller holen" noch deutlich einfacher ist als "Tisch decken", kann man für diese Aufgabe problemlos noch 1 Punkt vergeben, ohne alles überarbeiten zu müssen.</TextBlock>
+                <TextBlock TextWrapping="Wrap">Im Normalfall läuft die Bedienung aber so ab, dass man ins passende Menü zum Aufgaben eintragen geht und dort seine erledigten Aufgaben einträgt. Diese werden dann gespeichert und automatisch in die tabelle eingetragen.</TextBlock>
+                <TextBlock TextWrapping="Wrap">Dort kann man dann die Punktzahlen aller Mitglieder einsehen und den gewünschten Zeitraum der Darstellung wählen. Links im Menü sieht man die Rangliste mit grafischer Unterstützung durch ein Balkendiagramm.</TextBlock>
+                <TextBlock TextWrapping="Wrap">Noch detailliertere Einsichten bekommt man, wenn man in der Tabelle auf die jeweiligen Namen klickt. Dann sieht man in einem neuen Fenster genaue statistische Auswertungen über die bestimmte Person unterstützt von einem Kreisdiagramm. Hier kann man nicht nur die Punktzahlen sehen, sondern auch welche Aufgaben erledigt wurden.</TextBlock>
+                <TextBlock FontSize="20" FontWeight="Bold" Margin="0 10 0 5">Impressum</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5">Probleme mit dem Programm können Sie gerne auf GitHub, in der <Hyperlink NavigateUri="https://github.com/Florian2501/Haushalts-quivalenteWPFApp" RequestNavigate="Hyperlink_RequestNavigate">Dokumentation</Hyperlink> melden.</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5">Dieses Programm wurde von Florian Schierz (E-Mail: florischierz1@gmail.com) erstellt. Es ist jedem anderen verboten, dieses Programm zu seiner finanziellen Bereicherung zu nutzen.</TextBlock>
+            </StackPanel>
+
+        </ScrollViewer>
     </Grid>
 </Window>
