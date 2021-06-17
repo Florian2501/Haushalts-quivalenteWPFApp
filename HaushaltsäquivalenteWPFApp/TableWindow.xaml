@@ -30,7 +30,7 @@
 
 
                                 <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du dir eine Übersicht der Punkte aller Teilnehmer anzeigen lassen. Den Zeitraum kannst du in der Textbox einstellen. Das Balkendiagramm wird sich dann automatisch aktualisieren.</TextBlock>
-                            <TextBlock Margin="5" TextWrapping="Wrap">Um genauere Details speziell zu einer Person anzuzeigen, kannst du in der letzten Zeile auf deren Name klicken.</TextBlock>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Um genauere Details speziell zu einer Person anzuzeigen, kannst du in der ersten oder letzten Zeile auf deren Name klicken.</TextBlock>
 
                                 <!--Number of days entry-->
                             <Grid>

@@ -135,10 +135,15 @@ namespace HaushaltsäquivalenteWPFApp
             // Add the second (header) row for the names of the Persons
             table.RowGroups[0].Rows.Add(new TableRow());
             currentRow = table.RowGroups[0].Rows[1];
-
-            // Global formatting for the header row.
-            currentRow.FontSize = 18;
             currentRow.FontWeight = FontWeights.Bold;
+
+            //Add a new RowGroup to the table where the points will be displayed
+            table.RowGroups.Add(new TableRowGroup());
+            //Add the last row for the detail "buttons" of the Persons
+            table.RowGroups.Add(new TableRowGroup());
+            table.RowGroups[2].Rows.Add(new TableRow());
+            TableRow lastRow = table.RowGroups[2].Rows[0];
+            lastRow.FontWeight = FontWeights.Bold;
 
             //Add Table cell "Namen"
             Run run = new Run("Namen");
@@ -148,40 +153,20 @@ namespace HaushaltsäquivalenteWPFApp
             paragraph.BorderBrush = Brushes.Black;
             paragraph.Margin = new Thickness(2);
             paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+
+            Run run2 = new Run("Namen");
+            Paragraph copy = new Paragraph(run2);
+            copy.Padding = new Thickness(2);
+            copy.BorderThickness = new Thickness(1);
+            copy.BorderBrush = Brushes.Black;
+            copy.Margin = new Thickness(2);
+            copy.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+
             currentRow.Cells.Add(new TableCell(paragraph));
-            //currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Namen"))));
+            lastRow.Cells.Add(new TableCell(copy));
+
+            
             // Add cells with the names to the second row.
-            foreach(string name in Persons.Names)
-            {
-                run = new Run(name);
-                paragraph = new Paragraph(run);
-                paragraph.Padding = new Thickness(2);
-                paragraph.BorderThickness = new Thickness(1);
-                paragraph.BorderBrush = Brushes.Black;
-                paragraph.Margin = new Thickness(2);
-                paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
-                currentRow.Cells.Add(new TableCell(paragraph));
-                //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
-            }
-            ///////////////////////////////////////////////////////DETAIL LINKS
-
-            //Add a new RowGroup to the table where the points will be displayed
-            table.RowGroups.Add(new TableRowGroup());
-            //Add the last row for the detail buttons of the Persons
-            table.RowGroups.Add(new TableRowGroup());
-            table.RowGroups[2].Rows.Add(new TableRow());
-            currentRow = table.RowGroups[2].Rows[0];
-            //Add "Details" to the left column
-                run = new Run("Details");
-                paragraph = new Paragraph(run);
-                paragraph.Padding = new Thickness(2);
-                paragraph.BorderThickness = new Thickness(1);
-                paragraph.BorderBrush = Brushes.Black;
-                paragraph.Margin = new Thickness(2);
-                paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
-                currentRow.Cells.Add(new TableCell(paragraph));
-
-            //Add the names in each column
             foreach (string name in Persons.Names)
             {
                 run = new Run(name);
@@ -193,10 +178,21 @@ namespace HaushaltsäquivalenteWPFApp
                 paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
                 //Make the name clickable that it opens a new DetailPersonWindow
                 paragraph.MouseLeftButtonDown += OpenDetailWindow_MouseLeftButtonDown;
-                currentRow.Cells.Add(new TableCell(paragraph));
-                //currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
-            }
 
+                run2 = new Run(name);
+                copy = new Paragraph(run2);
+                copy.Padding = new Thickness(2);
+                copy.BorderThickness = new Thickness(1);
+                copy.BorderBrush = Brushes.Black;
+                copy.Margin = new Thickness(2);
+                copy.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
+                //Make the name clickable that it opens a new DetailPersonWindow
+                copy.MouseLeftButtonDown += OpenDetailWindow_MouseLeftButtonDown;
+
+                currentRow.Cells.Add(new TableCell(paragraph));
+                lastRow.Cells.Add(new TableCell(copy));
+            }
+     
             ///////////////////////////////////////////////////////DAYS AND POINTS
             
 
