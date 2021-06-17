@@ -153,7 +153,7 @@ namespace HaushaltsäquivalenteWPFApp
             paragraph.BorderBrush = Brushes.Black;
             paragraph.Margin = new Thickness(2);
             paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
-
+            //Create another paragraph with the same properties for the bottom
             Run run2 = new Run("Namen");
             Paragraph copy = new Paragraph(run2);
             copy.Padding = new Thickness(2);
@@ -161,7 +161,7 @@ namespace HaushaltsäquivalenteWPFApp
             copy.BorderBrush = Brushes.Black;
             copy.Margin = new Thickness(2);
             copy.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
-
+            //Add both to the table
             currentRow.Cells.Add(new TableCell(paragraph));
             lastRow.Cells.Add(new TableCell(copy));
 
@@ -169,6 +169,7 @@ namespace HaushaltsäquivalenteWPFApp
             // Add cells with the names to the second row.
             foreach (string name in Persons.Names)
             {
+                //create the name blocks below the header
                 run = new Run(name);
                 paragraph = new Paragraph(run);
                 paragraph.Padding = new Thickness(2);
@@ -178,7 +179,7 @@ namespace HaushaltsäquivalenteWPFApp
                 paragraph.Background = new SolidColorBrush(ColorTheme.design.TableColumn2);
                 //Make the name clickable that it opens a new DetailPersonWindow
                 paragraph.MouseLeftButtonDown += OpenDetailWindow_MouseLeftButtonDown;
-
+                //create the name blocks  at hte bottom of the tale
                 run2 = new Run(name);
                 copy = new Paragraph(run2);
                 copy.Padding = new Thickness(2);
@@ -194,7 +195,6 @@ namespace HaushaltsäquivalenteWPFApp
             }
      
             ///////////////////////////////////////////////////////DAYS AND POINTS
-            
 
             //Array to count and sum up the points per Person a day
             int[] sumOfPersons = new int[numberOfPersons];

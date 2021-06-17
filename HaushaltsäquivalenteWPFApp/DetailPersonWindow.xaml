@@ -48,15 +48,15 @@
 
             <TextBlock x:Name="LastDaysHeadline"></TextBlock>
 
-            <Grid x:Name="LastTimeGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="60"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
+                <Grid x:Name="LastTimeGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
 
-        </StackPanel>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </Window>
