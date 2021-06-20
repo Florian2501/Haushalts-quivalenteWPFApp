@@ -272,7 +272,7 @@ namespace HaushaltsäquivalenteWPFApp
             }
 
             //sort the array by points descending ;
-            for(int i=1; i< places.Length-1; i++)
+            for(int i=1; i<= places.Length-1; i++)
             {
                 for(int j=0; j<places.Length-i; j++)
                 {
@@ -300,7 +300,7 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 placeGrid.RowDefinitions.Add(new RowDefinition());
             }
-
+            
             //delete the last table of places
             TopMenu.Children.Clear();
             //Add the grid to the menu bar
@@ -329,7 +329,7 @@ namespace HaushaltsäquivalenteWPFApp
                 Rectangle bar = new Rectangle();
                 //check wether it is not a number when noone even has a point
                 double percent = (double)points / ((double)places[0].Item1);
-                if (Double.IsNaN(percent))
+                if (Double.IsNaN(percent)||Double.IsInfinity(percent))
                 {
                     bar.Width = 1;
                 }
