@@ -31,6 +31,7 @@
                 <TextBlock FontSize="20" FontWeight="Bold" Margin="0 10 0 5">Impressum</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5">Probleme mit dem Programm können Sie gerne auf GitHub, in der <Hyperlink NavigateUri="https://github.com/Florian2501/Haushalts-quivalenteWPFApp" RequestNavigate="Hyperlink_RequestNavigate">Dokumentation</Hyperlink> melden.</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5">Dieses Programm wurde von Florian Schierz (E-Mail: florischierz1@gmail.com) erstellt. Es ist jedem anderen verboten, dieses Programm zu seiner finanziellen Bereicherung zu nutzen.</TextBlock>
+                <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="0 15 0 0" Click="MainWindowButton_Click" Width="100"></Button>
             </StackPanel>
 
         </ScrollViewer>
