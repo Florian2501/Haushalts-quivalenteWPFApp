@@ -40,16 +40,22 @@
 
                 <!--Right side of the window-->
                 <Border Margin="10" Grid.Column="1">
-                    <StackPanel>
-                        <TextBlock Margin="5">Gib hier den Name der neuen Aufgabe ein:</TextBlock>
-                        <TextBox x:Name="TaskNameTextBox" Margin="5" Background="LightGray" Width="250" HorizontalAlignment="Left"></TextBox>
-                        <TextBlock Margin="5">Gib hier die Beschreibung der neuen Aufgabe ein:</TextBlock>
-                        <TextBox x:Name="TaskDescriptionTextBox" Margin="5" Background="LightGray" Width="250" Height="100" HorizontalAlignment="Left" TextWrapping="Wrap"></TextBox>
-                        <TextBlock Margin="5">Gib hier die Punktzahl der neuen Aufgabe ein:</TextBlock>
-                        <TextBox x:Name="TaskPointsTextBox" Margin="5" Background="LightGray" Width="50" HorizontalAlignment="Left"></TextBox>
-                        <TextBlock Margin="5, 50,5,5">Wenn alles korrekt eingegeben ist, klicke auf den Button!</TextBlock>
-                        <Button x:Name="ConfirmButton" Width="100" HorizontalAlignment="Left" Margin="5" Click="ConfirmButton_Click">Bestätigen</Button>
-                    </StackPanel>
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock Margin="5">Gib hier den Name der neuen Aufgabe ein:</TextBlock>
+                            <TextBox x:Name="TaskNameTextBox" Margin="5" Background="LightGray" Width="250" HorizontalAlignment="Left"></TextBox>
+                            <TextBlock Margin="5">Gib hier die Beschreibung der neuen Aufgabe ein:</TextBlock>
+                            <TextBox x:Name="TaskDescriptionTextBox" Margin="5" Background="LightGray" Width="250" Height="100" HorizontalAlignment="Left" TextWrapping="Wrap"></TextBox>
+                            <TextBlock Margin="5">Gib hier die Punktzahl der neuen Aufgabe ein:</TextBlock>
+                            <TextBox x:Name="TaskPointsTextBox" Margin="5" Background="LightGray" Width="50" HorizontalAlignment="Left"></TextBox>
+                            <TextBlock Margin="5, 30,5,5">Wenn alles korrekt eingegeben ist, klicke auf den Button!</TextBlock>
+                            <Button x:Name="ConfirmButton" Width="100" HorizontalAlignment="Left" Margin="5" Click="ConfirmButton_Click">Bestätigen</Button>
+                            <TextBlock Width="250" TextWrapping="Wrap" HorizontalAlignment="Right" Margin="0 0 5 0">Wähle hier eine bereits erstellte Aufgabe aus und klicke auf den Knopf, um sie zu bearbeiten.</TextBlock>
+                            <ListBox x:Name="UsedTasks" Margin="5" Width="250" HorizontalAlignment="Right" Background="LightGray" Padding="5" MaxHeight="100">
+                            </ListBox>
+                            <Button x:Name="EditTaskButton" Margin="5" Width="120" HorizontalAlignment="Right" Click="EditTaskButton_Click">Aufgabe bearbeiten</Button>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Border>
 
 

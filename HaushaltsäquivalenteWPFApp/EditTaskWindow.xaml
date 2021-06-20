@@ -1,0 +1,21 @@
+﻿<Window x:Class="HaushaltsäquivalenteWPFApp.EditTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
+        mc:Ignorable="d"
+        Title="EditTaskWindow" Height="450" Width="350" Loaded="Window_Loaded">
+    <Grid>
+        <StackPanel>
+            <TextBlock Margin="5">Hier kannst du den Name der Aufgabe bearbeiten:</TextBlock>
+            <TextBox x:Name="TaskNameTextBox" Margin="5" Background="LightGray" Width="250" HorizontalAlignment="Left"></TextBox>
+            <TextBlock Margin="5">Hier kannst du die Beschreibung bearbeiten:</TextBlock>
+            <TextBox x:Name="TaskDescriptionTextBox" Margin="5" Background="LightGray" Width="250" Height="100" HorizontalAlignment="Left" TextWrapping="Wrap"></TextBox>
+            <TextBlock Margin="5">Hier kannst du die Punktzahl bearbeiten:</TextBlock>
+            <TextBox x:Name="TaskPointsTextBox" Margin="5" Background="LightGray" Width="50" HorizontalAlignment="Left"></TextBox>
+            <TextBlock Margin="5, 30,5,5">Wenn alles korrekt eingegeben ist, klicke auf den Button!</TextBlock>
+            <Button x:Name="ConfirmButton" Width="100" HorizontalAlignment="Left" Margin="5" Click="ConfirmButton_Click">Bestätigen</Button>
+        </StackPanel>
+    </Grid>
+</Window>
