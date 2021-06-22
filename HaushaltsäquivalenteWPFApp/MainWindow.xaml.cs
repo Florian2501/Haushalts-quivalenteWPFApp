@@ -215,5 +215,17 @@ namespace HaushaltsäquivalenteWPFApp
             firstTaskWindow.Show();
             this.Close();
         }
+
+        /// <summary>
+        /// This function opens a new HelpWindow that explains the usage of the program.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            HelpWindow helpWindow = new HelpWindow();
+            helpWindow.Show();
+            this.Close();
+        }
     }
 }

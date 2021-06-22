@@ -264,15 +264,18 @@ namespace HaushaltsäquivalenteWPFApp
             }
 
             //////////////////////////////////////////////////////BAR CHARTS
+            /*
             //create array of names and points of the persons that it can be sorted
+            //this is the old approach
             (int, string)[] places = new (int, string)[numberOfPersons];
             for(int i=0; i<numberOfPersons; i++)
             {
                 places[i] = (sumOfPersons[i], Persons.Names[i]);
             }
 
+            
             //sort the array by points descending ;
-            for(int i=1; i< places.Length-1; i++)
+            for(int i=1; i<= places.Length-1; i++)
             {
                 for(int j=0; j<places.Length-i; j++)
                 {
@@ -283,7 +286,22 @@ namespace HaushaltsäquivalenteWPFApp
                         places[j + 1] = help;
                     }
                 }
+            }*/
+
+            //create array of names and points of the persons that it can be sorted
+            List<(int, string)> places = new List<(int, string)>();
+            for (int i = 0; i < numberOfPersons; i++)
+            {
+                places.Add((sumOfPersons[i], Persons.Names[i]));
             }
+
+            //Sort the List by the normal CompareTo Method of int related to the points
+            //of the person and descending (inverted -> *-1)
+            //using a delegate with anonymous method to do that
+            places.Sort(delegate ((int, string) a, (int, string) b)
+            {
+                return -1*a.Item1.CompareTo(b.Item1);
+            });
 
             //define a variable to count up for the places
             int place = 1;
@@ -300,7 +318,7 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 placeGrid.RowDefinitions.Add(new RowDefinition());
             }
-
+            
             //delete the last table of places
             TopMenu.Children.Clear();
             //Add the grid to the menu bar
@@ -329,7 +347,7 @@ namespace HaushaltsäquivalenteWPFApp
                 Rectangle bar = new Rectangle();
                 //check wether it is not a number when noone even has a point
                 double percent = (double)points / ((double)places[0].Item1);
-                if (Double.IsNaN(percent))
+                if (Double.IsNaN(percent)||Double.IsInfinity(percent))
                 {
                     bar.Width = 1;
                 }

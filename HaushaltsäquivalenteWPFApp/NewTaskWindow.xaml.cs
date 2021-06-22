@@ -35,6 +35,9 @@ namespace HaushaltsäquivalenteWPFApp
             this.Background = new SolidColorBrush(ColorTheme.design.Background);
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
             SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
+
+            //update the tasklist
+            updateTaskList();
         }
 
         /// <summary>
@@ -113,6 +116,8 @@ namespace HaushaltsäquivalenteWPFApp
             TaskNameTextBox.Text = "";
             TaskDescriptionTextBox.Text = "";
             TaskPointsTextBox.Text = "";
+            //update the list with the new task
+            updateTaskList();
         }
 
         /// <summary>
@@ -125,6 +130,32 @@ namespace HaushaltsäquivalenteWPFApp
             TaskWindow taskWindow = new TaskWindow();
             taskWindow.Show();
             this.Close();
+        }
+
+        /// <summary>
+        /// Opens a new Window to edit the selected task from the List.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EditTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditTaskWindow editTaskWindow = new EditTaskWindow(UsedTasks.SelectedIndex + 1, this);
+            editTaskWindow.Show();
+        }
+
+        /// <summary>
+        /// updates the List of tasks from the file.
+        /// </summary>
+        public void updateTaskList()
+        {
+            //Clear the list
+            UsedTasks.Items.Clear();
+
+            //and fill it with the new tasks
+            foreach(Task task in TaskList.Tasks)
+            {
+                UsedTasks.Items.Add(task.Name);
+            }
         }
     }
 }
