@@ -5,8 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
         mc:Ignorable="d"
-        Title="PlannerWindow" Height="450" Width="800">
+        Title="PlannerWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        
+        <Border Padding="10">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Left side of the Window, Menu list-->
+                <Border x:Name="SideMenu">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.Row="0">
+                            <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du eine noch nicht existierende Aufgabe eintragen.</TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="0" Grid.Row="1">
+                            <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="5"/>
+                            <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="5"/>
+                            <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 15,5,5" Click="MainWindowButton_Click"></Button>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+
+                <!--Right side of the window-->
+                <Border Margin="10" Grid.Column="1">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock FontSize="20" HorizontalAlignment="Center" FontWeight="Bold">Kalender</TextBlock>
+                            <Button x:Name="SendButton" Width="130" Click="SendButton_Click">Als .ics-Datei schicken</Button>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+
+            </Grid>
+        </Border>
     </Grid>
 </Window>
