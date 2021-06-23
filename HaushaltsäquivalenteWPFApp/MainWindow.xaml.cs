@@ -227,5 +227,17 @@ namespace HaushaltsäquivalenteWPFApp
             helpWindow.Show();
             this.Close();
         }
+
+        /// <summary>
+        /// This function opens a new PlannerWindow that can structure the calendar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlannerButton_Click(object sender, RoutedEventArgs e)
+        {
+            PlannerWindow plannerWindow = new PlannerWindow();
+            plannerWindow.Show();
+            this.Close();
+        }
     }
 }
