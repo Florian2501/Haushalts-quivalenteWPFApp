@@ -25,7 +25,10 @@
 
                         <StackPanel Grid.Column="0" Grid.Row="0">
                             <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
-                            <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du eine noch nicht existierende Aufgabe eintragen.</TextBlock>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du die Aufgaben für die nächsten Wochen eintragen und den Kalender verwalten.</TextBlock>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Klicke auf den Button, um dir den erstellten aktuellen Kalender als .ics Datei an die angegebene Email zu schicken. Diese kannst du dann mit deinem Kalender Programm importieren/öffnen und zu deinem Kalender hinzufügen.</TextBlock>
+                            <Button x:Name="SendButton" Width="130" Click="SendButton_Click">Als .ics-Datei schicken</Button>
+
                         </StackPanel>
 
                         <StackPanel Grid.Column="0" Grid.Row="1">
@@ -42,7 +45,18 @@
                     <ScrollViewer>
                         <StackPanel>
                             <TextBlock FontSize="20" HorizontalAlignment="Center" FontWeight="Bold">Kalender</TextBlock>
-                            <Button x:Name="SendButton" Width="130" Click="SendButton_Click">Als .ics-Datei schicken</Button>
+                            <Grid x:Name="CalendarGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </Border>

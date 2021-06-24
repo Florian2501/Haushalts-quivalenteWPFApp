@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Net.Mail;
+using Ical.Net;
+using Ical.Net.Serialization;
+using Ical.Net.DataTypes;
+using Ical.Net.CalendarComponents;
+using System.IO;
+
 
 namespace HaushaltsäquivalenteWPFApp
 {
@@ -26,6 +25,76 @@ namespace HaushaltsäquivalenteWPFApp
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
 
+            DateTime now = DateTime.Now;
+
+            Calendar calendar = new Calendar();
+            calendar.Events.Add(new CalendarEvent
+            {
+                Class = "PUBLIC",
+                Summary = "Perfect Sum",
+                Created = new CalDateTime(DateTime.Now),
+                Description = "PerfectDetails",
+                Start = new CalDateTime(now.AddDays(2)),
+                End = new CalDateTime(now.AddDays(3)),
+                Sequence = 0,
+                Uid = Guid.NewGuid().ToString(),
+                Location = "PerfectLocation"
+            });
+
+            calendar.Events.Add(new CalendarEvent
+            {
+                Class = "PUBLIC",
+                Summary = "Perfect Sum2",
+                Created = new CalDateTime(DateTime.Now),
+                Description = "PerfectDetails2",
+                Start = new CalDateTime(now.AddDays(3)),
+                End = new CalDateTime(now.AddDays(4)),
+                Sequence = 0,
+                Uid = Guid.NewGuid().ToString(),
+                Location = "PerfectLocation2"
+            });
+
+            string path = @"./test.ics";
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.AutoFlush = true;
+                var serializer = new CalendarSerializer(new SerializationContext());
+                var serializedCalendar = serializer.SerializeToString(calendar);
+                sw.WriteLine(serializedCalendar);
+            }
+
+
+            MailMessage email = new MailMessage();
+            email.From = new MailAddress("haushaltsappmail@gmail.com", "Haushaltsapp Mailsender");
+            email.To.Add("florischierz1@gmail.com");
+            email.Subject = "Testmail";
+            email.Body = "Das hier ist der Text der Mail. Im Anhang ist die Kaledner datei.";
+
+            System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(path);
+            email.Attachments.Add(attachment);
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+
+            try
+            {
+
+                client.EnableSsl = true;
+
+                client.UseDefaultCredentials = false;
+
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                client.Credentials = new System.Net.NetworkCredential("haushaltsappmail@gmail.com", "uuwczzfriicsovcf");
+
+
+                client.Send(email);
+                MessageBox.Show("Gesendet!", "Infofenster", MessageBoxButton.OKCancel, MessageBoxImage.Hand);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Nicht geklappt " + ex.Message + ex.ToString());
+            }
         }
 
         /// <summary>
