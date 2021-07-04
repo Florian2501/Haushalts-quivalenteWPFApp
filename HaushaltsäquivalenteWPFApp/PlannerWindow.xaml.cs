@@ -7,7 +7,8 @@ using Ical.Net.Serialization;
 using Ical.Net.DataTypes;
 using Ical.Net.CalendarComponents;
 using System.IO;
-
+using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace HaushaltsäquivalenteWPFApp
 {
@@ -22,12 +23,17 @@ namespace HaushaltsäquivalenteWPFApp
         }
 
 
+        /// <summary>
+        /// Sends the calendar data as ics File to the given Mail
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
 
             DateTime now = DateTime.Now;
 
-            Calendar calendar = new Calendar();
+            Ical.Net.Calendar calendar = new Ical.Net.Calendar();
             calendar.Events.Add(new CalendarEvent
             {
                 Class = "PUBLIC",
@@ -146,6 +152,90 @@ namespace HaushaltsäquivalenteWPFApp
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
             SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
 
+            //Show the lines in the grid
+            //CalendarGrid.ShowGridLines = true;
+            
+
+            //Create a new Row
+            RowDefinition DateRow = new RowDefinition();
+            //add the new row to the grid
+            CalendarGrid.RowDefinitions.Add(DateRow);
+            //Create a new Textblock for the name column
+            TextBlock Names = new TextBlock();
+            Names.Text = "Namen";
+
+            //Get the last monday to print
+            DateTime date = DateTime.Now;
+            while(date.DayOfWeek != DayOfWeek.Monday)
+            {
+                date = date.AddDays(-1);
+            }
+            //call the print function for the current week through giving it the last monday
+            printCurrentWeek(date);
+
+            int line = 1;
+            foreach(string name in Persons.Names)
+            {
+                //Create a new Row
+                RowDefinition row = new RowDefinition();
+                //add the new row to the grid
+                CalendarGrid.RowDefinitions.Add(row);
+
+                //create a border
+                Border border = new Border();
+                //Fill it in the same color as the font
+                border.BorderBrush = new SolidColorBrush(ColorTheme.design.Foreground);
+                border.BorderThickness = new Thickness(1);
+                //Add it to the correct row
+                Grid.SetRow(border, line);
+
+                //Create a new Textblock for the name
+                TextBlock NameBlock = new TextBlock();
+                NameBlock.Text = name;
+                NameBlock.Margin = new Thickness(5, 5, 5, 95);
+                //Add the Textblock to the border
+                border.Child = NameBlock;
+                //Add the border to the Grid
+                CalendarGrid.Children.Add(border);
+
+                //increase the line counter
+                line++;
+            }
+        }
+
+        /// <summary>
+        /// Prints the Dates of the current week
+        /// </summary>
+        /// <param name="monday"></param>
+        private void printCurrentWeek(DateTime monday)
+        {
+            DateTime currentDay = monday;
+            for (int i = 0; i < 7; i++)
+            {
+                //increase the day
+                currentDay = monday.AddDays(i);
+
+                //Create a new Textblock for the date
+                TextBlock DateBlock = new TextBlock();
+                //Convert the date to string
+                DateBlock.Text = currentDay.ToString("ddd. dd.MM.yy");
+                //Style the Text
+                //DateBlock.FontWeight = FontWeights.Bold;
+                DateBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                
+
+                if(currentDay.DayOfWeek == DateTime.Today.DayOfWeek)
+                {
+                    
+                    DateBlock.FontWeight = FontWeights.Bold;
+                    DateBlock.Foreground = Brushes.Red;
+                }
+
+                //Set it to the correct column
+                Grid.SetColumn(DateBlock, i + 1);
+                //add it to the grid
+                CalendarGrid.Children.Add(DateBlock);
+            }
         }
     }
 }
