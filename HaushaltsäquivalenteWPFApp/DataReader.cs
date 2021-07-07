@@ -73,7 +73,7 @@ namespace HaushaltsäquivalenteWPFApp
             catch (IOException)
             {
                 //MessageBox.Show("The Date file could not be read. It will be created now."); //if the date file could not be found or the person is not in the date file the default value is 0
-
+                Directory.CreateDirectory(@"Data/Days");
                 StreamWriter sw = new StreamWriter(path);
                 sw.Close();
             }
@@ -154,7 +154,7 @@ namespace HaushaltsäquivalenteWPFApp
                 catch (IOException)
                 {
                     //MessageBox.Show("The Date file could not be read. It will be created now."); //if the date file could not be found or the person is not in the date file the default value is 0
-
+                    Directory.CreateDirectory(@"Data/Days");
                     StreamWriter sw = new StreamWriter(path);
                     sw.Close();
                 }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Days\" />
+    <Folder Include="Data\Calendar\" />
   </ItemGroup>
 
   <ItemGroup>
