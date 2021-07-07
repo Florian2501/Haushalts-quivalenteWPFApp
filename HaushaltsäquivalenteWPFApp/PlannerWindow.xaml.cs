@@ -9,6 +9,7 @@ using Ical.Net.CalendarComponents;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace HaushaltsäquivalenteWPFApp
 {
@@ -30,6 +31,7 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: readCalendar() returns Calendar
 
             DateTime now = DateTime.Now;
 
@@ -69,10 +71,23 @@ namespace HaushaltsäquivalenteWPFApp
                 sw.WriteLine(serializedCalendar);
             }
 
+            //Thread sendMailThread = new Thread(sendCalendar);
+            //sendMailThread.Start(("exampleadres", path));
+            ThreadPool.QueueUserWorkItem(sendCalendar, path);
+        }
 
+        /// <summary>
+        /// This function sends the file of the given path to the given receiver mail adress
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="path"></param>
+        private void sendCalendar(object pathObject)//string receiver, string path)
+        {
+
+            string path = (string)pathObject;
             MailMessage email = new MailMessage();
             email.From = new MailAddress("haushaltsappmail@gmail.com", "Haushaltsapp Mailsender");
-            email.To.Add("florischierz1@gmail.com");
+            email.To.Add("florischierz1@gmail.com");//email.To.Add(ReceiverTextBox.Text);
             email.Subject = "Testmail";
             email.Body = "Das hier ist der Text der Mail. Im Anhang ist die Kaledner datei.";
 
