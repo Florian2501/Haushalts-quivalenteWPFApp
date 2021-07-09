@@ -26,9 +26,15 @@
                         <StackPanel Grid.Column="0" Grid.Row="0">
                             <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
                             <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du die Aufgaben für die nächsten Wochen eintragen und den Kalender verwalten.</TextBlock>
-                            <TextBlock Margin="5" TextWrapping="Wrap">Klicke auf den Button, um dir den erstellten aktuellen Kalender als .ics Datei an die angegebene Email zu schicken. Diese kannst du dann mit deinem Kalender Programm importieren/öffnen und zu deinem Kalender hinzufügen.</TextBlock>
-                            <Button x:Name="SendButton" Width="130" Click="SendButton_Click">Als .ics-Datei schicken</Button>
-
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="LastWeekButton" Margin="5" Width="90" Click="LastWeekButton_Click">Letzte Woche</Button>
+                                <Button x:Name="NextWeekButton" Margin="5" Width="90" Click="NextWeekButton_Click">Nächste Woche</Button>
+                            </StackPanel>
+                            <Button Margin="5" x:Name="CurrentWeekButton" Click="CurrentWeekButton_Click">Aktuelle Woche</Button>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Um Termine einzutragen, klicke auf den jeweiligen Tag.</TextBlock>
+                            
+                            <TextBlock TextWrapping="Wrap" Margin="5,50,5,5">Klicke auf den Button, um dir den erstellten aktuellen Kalender als .ics Datei an die angegebene Email zu schicken. Diese kannst du dann mit deinem Kalender Programm importieren/öffnen und zu deinem Kalender hinzufügen.</TextBlock>
+                            <Button x:Name="SendButton" Width="130" Click="SendButton_Click" >Als .ics-Datei schicken</Button>
                         </StackPanel>
 
                         <StackPanel Grid.Column="0" Grid.Row="1">

@@ -16,6 +16,21 @@ using System.Globalization;
 namespace HaushaltsäquivalenteWPFApp
 {
     /// <summary>
+    /// A special class to make it possible to give the information of the date to the function that calls the new EnterTaskToCalendarWindow
+    /// </summary>
+    class DateBorder : Border
+    {
+        //Constructor
+        public DateBorder(DateTime date) : base()
+        {
+            this.Date = date;
+        }
+
+        //Property
+        public DateTime Date { get; set; }
+    }
+
+    /// <summary>
     /// Interaktionslogik für PlannerWindow.xaml
     /// </summary>
     public partial class PlannerWindow : Window
@@ -173,23 +188,27 @@ namespace HaushaltsäquivalenteWPFApp
             this.Foreground = new SolidColorBrush(ColorTheme.design.Foreground);
             SideMenu.Background = new SolidColorBrush(ColorTheme.design.SideMenu);
 
-            //Show the lines in the grid
-            //CalendarGrid.ShowGridLines = true;
-            
-
             //Create a new Row
             RowDefinition DateRow = new RowDefinition();
             //add the new row to the grid
             CalendarGrid.RowDefinitions.Add(DateRow);
-            //Create a new Textblock for the name column
-            TextBlock Names = new TextBlock();
-            Names.Text = "Namen";
             
             //call the print function for the current week through giving it the last monday
             printCurrentWeek();
+        }
+
+        /// <summary>
+        /// This function prints the names to the calendar grid
+        /// </summary>
+        private void printNames()
+        {
+            //Create a new Textblock for the name column
+            TextBlock Names = new TextBlock();
+            Names.Text = "Namen";
+            CalendarGrid.Children.Add(Names);
 
             int line = 1;
-            foreach(string name in Persons.Names)
+            foreach (string name in Persons.Names)
             {
                 //Create a new Row
                 RowDefinition row = new RowDefinition();
@@ -208,6 +227,8 @@ namespace HaushaltsäquivalenteWPFApp
                 TextBlock NameBlock = new TextBlock();
                 NameBlock.Text = name;
                 NameBlock.Margin = new Thickness(5, 5, 5, 95);
+                //Make the text bold
+                NameBlock.FontWeight = FontWeights.Bold;
                 //Add the Textblock to the border
                 border.Child = NameBlock;
                 //Add the border to the Grid
@@ -239,6 +260,12 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="monday"></param>
         private void printCurrentWeek()
         {
+            //Clear the grid to fill it correctly
+            CalendarGrid.Children.Clear();
+
+            //print the names in the grid
+            printNames();
+
             DateTime currentDay = currentMonday;
             for (int i = 0; i < 7; i++)
             {
@@ -250,11 +277,11 @@ namespace HaushaltsäquivalenteWPFApp
                 //Convert the date to string
                 DateBlock.Text = currentDay.ToString("ddd. dd.MM.yy");
                 //Style the Text
-                //DateBlock.FontWeight = FontWeights.Bold;
+                DateBlock.FontWeight = FontWeights.Bold;
                 DateBlock.HorizontalAlignment = HorizontalAlignment.Center;
                 
 
-                if(currentDay.DayOfWeek == DateTime.Today.DayOfWeek)
+                if(currentDay.Date == DateTime.Today.Date)
                 {
                     
                     DateBlock.FontWeight = FontWeights.Bold;
@@ -281,17 +308,29 @@ namespace HaushaltsäquivalenteWPFApp
             foreach(string name in Persons.Names)
             {
                 //create a border
-                Border border = new Border();
+                DateBorder border = new DateBorder(day);
+
+                //Add the event that opens the window to enter a task
+                border.MouseLeftButtonDown += OpenEnterTaskToCalendarWindow;
+
                 //Fill it in the same color as the font
                 border.BorderBrush = new SolidColorBrush(ColorTheme.design.Foreground);
                 border.BorderThickness = new Thickness(1);
                 //Add it to the correct row
                 Grid.SetRow(border, rowOfName);
                 Grid.SetColumn(border, column);
+
+                //increase the row number for next loop
+                rowOfName++;
+
                 //Create a Textblock where the Tasks will appeare
                 TextBlock TaskBlock = new TextBlock();
-                TaskBlock.Margin = new Thickness(5, 5, 5, 95);
+                TaskBlock.Margin = new Thickness(5, 5, 5, 5);
                 border.Child = TaskBlock;
+
+                //Activate the wrapping for long tasks
+                TaskBlock.TextWrapping = TextWrapping.Wrap;
+
                 //Add the border with the Textblock to the grid
                 CalendarGrid.Children.Add(border);
 
@@ -300,15 +339,18 @@ namespace HaushaltsäquivalenteWPFApp
                 //check if it is empty and then there are no tasks to print, so continue in loop
                 if (TasksOfDay == null) 
                 {
-                    MessageBox.Show($"Für {name} gab es am {day.ToString("dd.MM.yy")} keine Aufgaben.", "Achtung!");
+                    //MessageBox.Show($"Für {name} gab es am {day.ToString("dd.MM.yy")} keine Aufgaben.", "Achtung!");
                     continue; 
                 }
                 //Check correct length name + x*3
                 if((TasksOfDay.Length % 3) != 1)
                 {
-                    MessageBox.Show($"Bei {name} gab es am {day.ToString("dd.MM.yy")} Probleme beim einlesen der Aufgaben durch einen Längenfehler.", "Achtung!");
+                    //MessageBox.Show($"Bei {name} gab es am {day.ToString("dd.MM.yy")} Probleme beim einlesen der Aufgaben durch einen Längenfehler.", "Achtung!");
                     continue;
                 }
+
+                //Sort the array of tasks by time
+                sortTasks(ref TasksOfDay);
 
                 //Go through the array if it exists and is in correct length and read the data
                 for (int i = 1; i< TasksOfDay.Length; i++)
@@ -321,9 +363,9 @@ namespace HaushaltsäquivalenteWPFApp
                     {
                         TaskID = Convert.ToInt32(TasksOfDay[i]);
                         i++;
-                        start = Convert.ToDateTime(TasksOfDay[i]);
+                        start = Convert.ToDateTime(TasksOfDay[i], new CultureInfo("de-DE"));
                         i++;
-                        end = Convert.ToDateTime(TasksOfDay[i]);
+                        end = Convert.ToDateTime(TasksOfDay[i], new CultureInfo("de-DE"));
                     }
                     catch
                     {
@@ -334,7 +376,7 @@ namespace HaushaltsäquivalenteWPFApp
                     try
                     {
                         //try to add it to the Textblock
-                        TaskBlock.Text += start.ToString("hh:mm", new CultureInfo("de-DE")) + "-" + end.ToString("hh:mm", new CultureInfo("de-DE")) + " " + TaskList.Tasks[TaskID - 1].Name + "\n";
+                        TaskBlock.Text += start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + end.ToString("HH:mm", new CultureInfo("de-DE")) + " " + TaskList.Tasks[TaskID - 1].Name + "\n";
                     }
                     catch
                     {
@@ -342,8 +384,47 @@ namespace HaushaltsäquivalenteWPFApp
                         continue;
                     }
                 }
-                //increase the row number for next loop
-                rowOfName++;
+                
+            }
+        }
+
+        /// <summary>
+        /// This function sorts the tasks by time in a given array
+        /// </summary>
+        /// <param name="tasksArray"></param>
+        private void sortTasks(ref string[] tasksArray)
+        {
+            for(int i=1; i<tasksArray.Length/3; i++)
+            {
+                for(int j=0; j < tasksArray.Length/3 - i; j++)
+                {
+                    DateTime date1=DateTime.Today, date2=DateTime.Today;
+                    try
+                    {
+                        date1 = Convert.ToDateTime(tasksArray[3*j + 2]);
+                        date2 = Convert.ToDateTime(tasksArray[3*j + 2 + 3]);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Es gab einen Fehler beim Sortieren der Daten. Sie bleiben unsortiert.");
+                        return;
+                    }
+
+                    if (date1 > date2)
+                    {
+                        string help = tasksArray[3*j + 1];
+                        tasksArray[3*j + 1] = tasksArray[3*j + 1 + 3];
+                        tasksArray[3*j + 1 + 3] = help;
+                        
+                        help = tasksArray[3*j + 2];
+                        tasksArray[3*j + 2] = tasksArray[3*j + 2 + 3];
+                        tasksArray[3*j + 2 + 3] = help;
+
+                        help = tasksArray[3*j + 3];
+                        tasksArray[3*j + 3] = tasksArray[3*j + 3 + 3];
+                        tasksArray[3*j + 3 + 3] = help;
+                    }
+                }
             }
         }
 
@@ -363,7 +444,7 @@ namespace HaushaltsäquivalenteWPFApp
                     string line = "";
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (line.Contains(name))
+                        if (line.Split(';')[0] == name)
                         {
                             return line.Split(';');
                         }
@@ -383,6 +464,56 @@ namespace HaushaltsäquivalenteWPFApp
                 MessageBox.Show("Something with the Date file went wrong.");
             }
             return null;
+        }
+
+        /// <summary>
+        /// Thid function sets the calendar to the last week
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LastWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            //set the current monday to the monday from last week
+            this.currentMonday = this.currentMonday.AddDays(-7);
+            //call the function that prints the calendar to update it
+            printCurrentWeek();
+        }
+
+        /// <summary>
+        /// This function sets the calendar to the next week
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NextWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            //set the current monday to the monday from next week
+            this.currentMonday = this.currentMonday.AddDays(7);
+            //call the function that prints the calendar to update it
+            printCurrentWeek();
+        }
+
+        /// <summary>
+        /// This function sets the calendar to the current week
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CurrentWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            //set the current monday to the monday from last week
+            this.currentMonday = this.lastMonday;
+            //call the function that prints the calendar to update it
+            printCurrentWeek();
+        }
+
+        /// <summary>
+        /// Opens a new EnterTaskToCalendarWindow to enter a task.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="arg"></param>
+        private void OpenEnterTaskToCalendarWindow(object sender, EventArgs arg)
+        {
+            //TODO add name of person to border
+            //sender as DateBorder -> Date
         }
     }
 }
