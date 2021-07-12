@@ -8,6 +8,14 @@ namespace HaushaltsäquivalenteWPFApp
     {
         //Constructor
 
+        public Task(int id)
+        {
+            this.id = id;
+            this.name = TaskList.Tasks[id - 1].name;
+            this.value = TaskList.Tasks[id - 1].value;
+            this.description = TaskList.Tasks[id - 1].description;
+        }
+
         public Task(string name,string description, int value, int id)
         {
             this.name = name;

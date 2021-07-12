@@ -21,13 +21,15 @@ namespace HaushaltsäquivalenteWPFApp
     class DateBorder : Border
     {
         //Constructor
-        public DateBorder(DateTime date) : base()
+        public DateBorder(DateTime date, string name) : base()
         {
             this.Date = date;
+            this.NameOfPerson = name;
         }
 
         //Property
         public DateTime Date { get; set; }
+        public string NameOfPerson { get; set; }
     }
 
     /// <summary>
@@ -308,7 +310,7 @@ namespace HaushaltsäquivalenteWPFApp
             foreach(string name in Persons.Names)
             {
                 //create a border
-                DateBorder border = new DateBorder(day);
+                DateBorder border = new DateBorder(day, name);
 
                 //Add the event that opens the window to enter a task
                 border.MouseLeftButtonDown += OpenEnterTaskToCalendarWindow;
@@ -335,48 +337,21 @@ namespace HaushaltsäquivalenteWPFApp
                 CalendarGrid.Children.Add(border);
 
                 //read the datefile and search for person
-                string[] TasksOfDay = getTasksOfPersonOnDate(name, day);
+                List<CalendarTask> TasksOfDay = DataReader.getTasksOfPersonOnDate(name, day);
                 //check if it is empty and then there are no tasks to print, so continue in loop
                 if (TasksOfDay == null) 
                 {
                     //MessageBox.Show($"Für {name} gab es am {day.ToString("dd.MM.yy")} keine Aufgaben.", "Achtung!");
                     continue; 
                 }
-                //Check correct length name + x*3
-                if((TasksOfDay.Length % 3) != 1)
-                {
-                    //MessageBox.Show($"Bei {name} gab es am {day.ToString("dd.MM.yy")} Probleme beim einlesen der Aufgaben durch einen Längenfehler.", "Achtung!");
-                    continue;
-                }
 
-                //Sort the array of tasks by time
-                sortTasks(ref TasksOfDay);
-
-                //Go through the array if it exists and is in correct length and read the data
-                for (int i = 1; i< TasksOfDay.Length; i++)
+                foreach(CalendarTask calendarTask in TasksOfDay)
                 {
-                    int TaskID = 0;
-                    DateTime start = DateTime.Today;
-                    DateTime end = DateTime.Today;
-                    //try to convert the task and the time stemps of it
-                    try
-                    {
-                        TaskID = Convert.ToInt32(TasksOfDay[i]);
-                        i++;
-                        start = Convert.ToDateTime(TasksOfDay[i], new CultureInfo("de-DE"));
-                        i++;
-                        end = Convert.ToDateTime(TasksOfDay[i], new CultureInfo("de-DE"));
-                    }
-                    catch
-                    {
-                        MessageBox.Show($"Bei {name} gab es am {day.ToString("dd.MM.yy")} Probleme beim einlesen der Aufgaben durch inkorrektes Format.", "Achtung!");
-                        continue;
-                    }
                     //if it is here, the task id and the starting and ending time are correct read in
                     try
                     {
                         //try to add it to the Textblock
-                        TaskBlock.Text += start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + end.ToString("HH:mm", new CultureInfo("de-DE")) + " " + TaskList.Tasks[TaskID - 1].Name + "\n";
+                        TaskBlock.Text += calendarTask.Start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + calendarTask.End.ToString("HH:mm", new CultureInfo("de-DE")) + " " + calendarTask.Name + "\n";
                     }
                     catch
                     {
@@ -384,86 +359,8 @@ namespace HaushaltsäquivalenteWPFApp
                         continue;
                     }
                 }
-                
+                    
             }
-        }
-
-        /// <summary>
-        /// This function sorts the tasks by time in a given array
-        /// </summary>
-        /// <param name="tasksArray"></param>
-        private void sortTasks(ref string[] tasksArray)
-        {
-            for(int i=1; i<tasksArray.Length/3; i++)
-            {
-                for(int j=0; j < tasksArray.Length/3 - i; j++)
-                {
-                    DateTime date1=DateTime.Today, date2=DateTime.Today;
-                    try
-                    {
-                        date1 = Convert.ToDateTime(tasksArray[3*j + 2]);
-                        date2 = Convert.ToDateTime(tasksArray[3*j + 2 + 3]);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Es gab einen Fehler beim Sortieren der Daten. Sie bleiben unsortiert.");
-                        return;
-                    }
-
-                    if (date1 > date2)
-                    {
-                        string help = tasksArray[3*j + 1];
-                        tasksArray[3*j + 1] = tasksArray[3*j + 1 + 3];
-                        tasksArray[3*j + 1 + 3] = help;
-                        
-                        help = tasksArray[3*j + 2];
-                        tasksArray[3*j + 2] = tasksArray[3*j + 2 + 3];
-                        tasksArray[3*j + 2 + 3] = help;
-
-                        help = tasksArray[3*j + 3];
-                        tasksArray[3*j + 3] = tasksArray[3*j + 3 + 3];
-                        tasksArray[3*j + 3 + 3] = help;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns an array of the tasks of the person and the timeslots for the tasks
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="day"></param>
-        /// <returns></returns>
-        private string[] getTasksOfPersonOnDate(string name, DateTime day)
-        {
-            string path = @"Data/Calendar/" + day.ToString("dd.MM.yy") + ".txt";
-            try
-            {
-                using(StreamReader sr = new StreamReader(path))
-                {
-                    string line = "";
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        if (line.Split(';')[0] == name)
-                        {
-                            return line.Split(';');
-                        }
-                    }
-                }
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("The Date file could not be read. It will be created now."); //if the date file could not be found or the person is not in the date file the default value is 0
-
-                Directory.CreateDirectory(@"Data/Calendar");
-                StreamWriter sw = new StreamWriter(path);
-                sw.Close();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Something with the Date file went wrong.");
-            }
-            return null;
         }
 
         /// <summary>
@@ -512,8 +409,9 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="arg"></param>
         private void OpenEnterTaskToCalendarWindow(object sender, EventArgs arg)
         {
-            //TODO add name of person to border
             //sender as DateBorder -> Date
+            EnterTaskToCalendarWindow enterTaskToCalendarWindow = new EnterTaskToCalendarWindow((sender as DateBorder).NameOfPerson, (sender as DateBorder).Date);
+            enterTaskToCalendarWindow.Show();
         }
     }
 }
