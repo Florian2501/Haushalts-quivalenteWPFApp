@@ -154,12 +154,224 @@ namespace HaushaltsäquivalenteWPFApp
             }
             //Remove the selected task
             calendarTasks.Remove(calendarTasks[index]);
+
+            //Write the data to the file
+            WriteBackCalendarData(calendarTasks);
+
+            //update the list now without the task
+            updateCalendarTaskList();
+
+            //Set the starting time of the selected event
+            StartHourOfCurrentTask.Text = "";
+            StartMinuteOfCurrentTask.Text = "";
+            //Set the ending time of the selected event
+            EndHourOfCurrentTask.Text = "";
+            EndMinuteOfCurrentTask.Text = "";
+        }
+
+        /// <summary>
+        /// This changes the data of the selected existing task to the entered values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveChangesButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = ListOfTasks.SelectedIndex;
+
+
+            //Get the sorted List of Tasks
+            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date);
+            if (index < 0 || index >= calendarTasks.Count)
+            {
+                MessageBox.Show("Die Auswahl der Aufgabe ist ungültig!");
+                return;
+            }
+            //Ask in a MessageBox if the task really should be deleted
+            var dialogResult = MessageBox.Show("Die Aufgabe " + calendarTasks[index].Name + " (" + calendarTasks[index].Start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + calendarTasks[index].End.ToString("HH:mm", new CultureInfo("de-DE")) + ") soll zu den eingegebenen Daten geändert werden?", "Achtung!", MessageBoxButton.YesNo);
+            //Cancel the event if the user clicks no
+            if (dialogResult == System.Windows.MessageBoxResult.No)
+            {
+                return;
+            }
+
+            //initialize minute and hour values
+            int startHour = 0;
+            int startMinute = 0;
+            int endHour = 0;
+            int endMinute = 0;
+
+            try
+            {
+                //Convert the TextBlocks
+                startHour = Convert.ToInt32(StartHourOfCurrentTask.Text);
+                startMinute = Convert.ToInt32(StartMinuteOfCurrentTask.Text);
+                endHour = Convert.ToInt32(EndHourOfCurrentTask.Text);
+                endMinute = Convert.ToInt32(EndMinuteOfCurrentTask.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Die Uhrzeiten können nicht in Zahlen umgewandelt werden");
+                return;
+            }
+            //Check if the values are in correct format
+            if (startHour < 0 || startHour > 24 || endHour < 0 || endHour > 24)
+            {
+                MessageBox.Show("Die Stundenzahl muss zwischen 0 und 24 sein.");
+                return;
+            }
+
+            if (startMinute < 0 || startMinute > 60 || endMinute < 0 || endMinute > 60)
+            {
+                MessageBox.Show("Die Minutenzahl muss zwischen 0 und 60 sein.");
+                return;
+            }
+            //initialize the Date values
+            DateTime Start, End;
+            try
+            {
+                Start = Convert.ToDateTime(startHour.ToString("D2") + ":" + startMinute.ToString("D2"), new CultureInfo("de-DE"));
+                End = Convert.ToDateTime(endHour.ToString("D2") + ":" + endMinute.ToString("D2"), new CultureInfo("de-DE"));
+            }
+            catch
+            {
+                MessageBox.Show("Es gab einen Fehler beim umwandeln der Zeiten.");
+                return;
+            }
+            //Check if the starting time if before ending time
+            if (End < Start)
+            {
+                MessageBox.Show("Die Startzeit kann nicht nach der Endzeit liegen.");
+                return;
+            }
+            //Get the index of the selected task
+            int selectedTaskIndex = NameOfCurrentTask.SelectedIndex;
+            //check if a task is selected
+            if (selectedTaskIndex < 0 || selectedTaskIndex >= TaskList.Tasks.Count)
+            {
+                MessageBox.Show("Es muss eine Aufgabe ausgewählt werden.");
+                return;
+            }
+
+
+            //if a task was selected, get this task
+            Task task = TaskList.Tasks[selectedTaskIndex];
+            //make the task to a calendarTask with the date times
+            CalendarTask calendarTask = new CalendarTask(task.ID, Start, End);
+
+            //replace the old task with the new infos
+            calendarTasks[index] = calendarTask;
+
+            //Write the data to the file
+            WriteBackCalendarData(calendarTasks);
+
+            //update the list now without the task
+            updateCalendarTaskList();
+
+            //Set the starting time of the selected event
+            StartHourOfCurrentTask.Text = "";
+            StartMinuteOfCurrentTask.Text = "";
+            //Set the ending time of the selected event
+            EndHourOfCurrentTask.Text = "";
+            EndMinuteOfCurrentTask.Text = "";
+        }
+
+        private void NewTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            //initialize minute and hour values
+            int startHour = 0;
+            int startMinute = 0;
+            int endHour = 0;
+            int endMinute = 0;
+
+            try 
+            {
+                //Convert the TextBlocks
+                startHour = Convert.ToInt32(StartHourOfCurrentTask.Text);
+                startMinute = Convert.ToInt32(StartMinuteOfCurrentTask.Text);
+                endHour = Convert.ToInt32(EndHourOfCurrentTask.Text);
+                endMinute = Convert.ToInt32(EndMinuteOfCurrentTask.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Die Uhrzeiten können nicht in Zahlen umgewandelt werden");
+                return;
+            }
+            //Check if the values are in correct format
+            if(startHour<0 || startHour>24 || endHour<0 || endHour > 24)
+            {
+                MessageBox.Show("Die Stundenzahl muss zwischen 0 und 24 sein.");
+                return;
+            }
+
+            if (startMinute < 0 || startMinute > 60 || endMinute < 0 || endMinute > 60)
+            {
+                MessageBox.Show("Die Minutenzahl muss zwischen 0 und 60 sein.");
+                return;
+            }
+            //initialize the Date values
+            DateTime Start, End;
+            try
+            {
+                Start = Convert.ToDateTime(startHour.ToString("D2") + ":" + startMinute.ToString("D2"), new CultureInfo("de-DE"));
+                End = Convert.ToDateTime(endHour.ToString("D2") + ":" + endMinute.ToString("D2"), new CultureInfo("de-DE"));
+            }
+            catch
+            {
+                MessageBox.Show("Es gab einen Fehler beim umwandeln der Zeiten.");
+                return;
+            }
+            //Check if the starting time if before ending time
+            if (End < Start)
+            {
+                MessageBox.Show("Die Startzeit kann nicht nach der Endzeit liegen.");
+                return;
+            }
+            //Get the index of the selected task
+            int index = NameOfCurrentTask.SelectedIndex;
+            //check if a task is selected
+            if(index<0 || index >= TaskList.Tasks.Count)
+            {
+                MessageBox.Show("Es muss eine Aufgabe ausgewählt werden.");
+                return;
+            }
+            //if a task was selected, get this task
+            Task task = TaskList.Tasks[index];
+            //make the task to a calendarTask with the date times
+            CalendarTask calendarTask = new CalendarTask(task.ID, Start, End);
+            //get all the other tasks that already exist
+            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, Date);
+            //if there are no tasks initialize the list
+            if(calendarTasks == null)
+            {
+                calendarTasks = new List<CalendarTask>();
+            }
+            //add the new CalendarTask to the list
+            calendarTasks.Add(calendarTask);
+            //write the list to the files
+            WriteBackCalendarData(calendarTasks);
+            //update the list with the new task
+            updateCalendarTaskList();
+
+            //Set the starting time of the selected event
+            StartHourOfCurrentTask.Text = "";
+            StartMinuteOfCurrentTask.Text = "";
+            //Set the ending time of the selected event
+            EndHourOfCurrentTask.Text = "";
+            EndMinuteOfCurrentTask.Text = "";
+        }
+
+        /// <summary>
+        /// Writes the data back to the file. It only changes the line of the current person of this Window
+        /// </summary>
+        /// <param name="calendarTasks"></param>
+        private void WriteBackCalendarData(List<CalendarTask> calendarTasks)
+        {
             //Get the file of the date without the line of the person
             string writeback = GetLinesWithoutCurrentPerson();
             //Add the name to the writeback data
             writeback += this.NameOfPerson;
             //Add the tasks with times to the writeback data
-            foreach(CalendarTask task in calendarTasks)
+            foreach (CalendarTask task in calendarTasks)
             {
                 writeback += ";" + task.ToString();
             }
@@ -172,29 +384,6 @@ namespace HaushaltsäquivalenteWPFApp
                 sw.AutoFlush = true;
                 sw.WriteLine(writeback);
             }
-
-            //update the list now without the task
-            updateCalendarTaskList();
-
-            //Set the starting time of the selected event
-            StartHourOfCurrentTask.Text = "";
-            StartMinuteOfCurrentTask.Text = "";
-            //Set the ending time of the selected event
-            EndHourOfCurrentTask.Text = "";
-            EndMinuteOfCurrentTask.Text = "";
-            //Set the description and the value of the selected task
-            DescriptionOfCurrentTask.Text = "";
-            PointsOfCurrentTask.Text = "";
-        }
-
-        private void SaveChangesButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void NewTaskButton_Click(object sender, RoutedEventArgs e)
-        {
-            
         }
 
         /// <summary>
@@ -250,8 +439,8 @@ namespace HaushaltsäquivalenteWPFApp
                 //Set the time
                 StartHourOfCurrentTask.Text = "00";
                 StartMinuteOfCurrentTask.Text = "00";
-                EndHourOfCurrentTask.Text = "24";
-                EndMinuteOfCurrentTask.Text = "00";
+                EndHourOfCurrentTask.Text = "23";
+                EndMinuteOfCurrentTask.Text = "59";
                 //Make it not changable
                 StartHourOfCurrentTask.IsEnabled = false;
                 StartMinuteOfCurrentTask.IsEnabled = false;
