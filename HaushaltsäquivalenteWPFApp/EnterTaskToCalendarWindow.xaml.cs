@@ -17,16 +17,18 @@ namespace HaushaltsäquivalenteWPFApp
     /// </summary>
     public partial class EnterTaskToCalendarWindow : Window
     {
-        public EnterTaskToCalendarWindow(string name, DateTime date)
+        public EnterTaskToCalendarWindow(string name, DateTime date, PlannerWindow plannerWindow)
         {
             InitializeComponent();
             this.NameOfPerson = name;
             this.Date = date;
+            this.plannerWindow = plannerWindow;
         }
 
         //Porperties
         public string NameOfPerson { get; set; }
         public DateTime Date { get; set; }
+        public PlannerWindow plannerWindow { get; set; }
 
         /// <summary>
         /// Sets the correct Design of the Window
@@ -167,6 +169,9 @@ namespace HaushaltsäquivalenteWPFApp
             //Set the ending time of the selected event
             EndHourOfCurrentTask.Text = "";
             EndMinuteOfCurrentTask.Text = "";
+
+            //update the calendar
+            this.plannerWindow.printCurrentWeek();
         }
 
         /// <summary>
@@ -273,8 +278,16 @@ namespace HaushaltsäquivalenteWPFApp
             //Set the ending time of the selected event
             EndHourOfCurrentTask.Text = "";
             EndMinuteOfCurrentTask.Text = "";
+
+            //update the calendar
+            this.plannerWindow.printCurrentWeek();
         }
 
+        /// <summary>
+        /// Saves the input values as new task in the files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
             //initialize minute and hour values
@@ -358,6 +371,9 @@ namespace HaushaltsäquivalenteWPFApp
             //Set the ending time of the selected event
             EndHourOfCurrentTask.Text = "";
             EndMinuteOfCurrentTask.Text = "";
+
+            //update the calendar
+            this.plannerWindow.printCurrentWeek();
         }
 
         /// <summary>
@@ -461,5 +477,8 @@ namespace HaushaltsäquivalenteWPFApp
             EndHourOfCurrentTask.IsEnabled = true;
             EndMinuteOfCurrentTask.IsEnabled = true;
         }
+
+       // ////////////////////////TODO implementiere Logik und speichersystem in updateCalendarTasklist zum Füllen und in jedem einzelnen Button wo am Anfang checked ob weekly oder nicht
+      
     }
 }

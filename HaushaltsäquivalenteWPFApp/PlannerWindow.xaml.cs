@@ -196,20 +196,7 @@ namespace HaushaltsäquivalenteWPFApp
             CalendarGrid.RowDefinitions.Add(DateRow);
             
             //call the print function for the current week through giving it the last monday
-            printCurrentWeek(this, new EventArgs());
-            //Start the timer
-            StartTimer();
-        }
-
-        /// <summary>
-        /// Start the timer to update the Calendar every 2 seconds
-        /// </summary>
-        private void StartTimer()//Fix the thread problem with the timer
-        {
-            System.Timers.Timer timer = new System.Timers.Timer(2000);
-            timer.Elapsed += printCurrentWeek;
-            timer.AutoReset = true;
-            timer.Enabled = true;
+            printCurrentWeek();
         }
 
         /// <summary>
@@ -273,7 +260,7 @@ namespace HaushaltsäquivalenteWPFApp
         /// Prints the Dates of the current week
         /// </summary>
         /// <param name="monday"></param>
-        private void printCurrentWeek(object sender, EventArgs e)
+        public void printCurrentWeek()
         {
             //Clear the grid to fill it correctly
             CalendarGrid.Children.Clear();
@@ -386,7 +373,7 @@ namespace HaushaltsäquivalenteWPFApp
             //set the current monday to the monday from last week
             this.currentMonday = this.currentMonday.AddDays(-7);
             //call the function that prints the calendar to update it
-            printCurrentWeek(this, new EventArgs());
+            printCurrentWeek();
         }
 
         /// <summary>
@@ -399,7 +386,7 @@ namespace HaushaltsäquivalenteWPFApp
             //set the current monday to the monday from next week
             this.currentMonday = this.currentMonday.AddDays(7);
             //call the function that prints the calendar to update it
-            printCurrentWeek(this, new EventArgs());
+            printCurrentWeek();
         }
 
         /// <summary>
@@ -412,7 +399,7 @@ namespace HaushaltsäquivalenteWPFApp
             //set the current monday to the monday from last week
             this.currentMonday = this.lastMonday;
             //call the function that prints the calendar to update it
-            printCurrentWeek(this, new EventArgs());
+            printCurrentWeek();
         }
 
         /// <summary>
@@ -423,7 +410,7 @@ namespace HaushaltsäquivalenteWPFApp
         private void OpenEnterTaskToCalendarWindow(object sender, EventArgs arg)
         {
             //sender as DateBorder -> Date
-            EnterTaskToCalendarWindow enterTaskToCalendarWindow = new EnterTaskToCalendarWindow((sender as DateBorder).NameOfPerson, (sender as DateBorder).Date);
+            EnterTaskToCalendarWindow enterTaskToCalendarWindow = new EnterTaskToCalendarWindow((sender as DateBorder).NameOfPerson, (sender as DateBorder).Date, this);
             enterTaskToCalendarWindow.Show();
         }
     }
