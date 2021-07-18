@@ -8,15 +8,18 @@ namespace HaushaltsäquivalenteWPFApp
     public class CalendarTask : Task
     {
         //Constructor
-        public CalendarTask(int id, DateTime start, DateTime end) : base(id)
+        public CalendarTask(int id, DateTime start, DateTime end, bool weekly) : base(id)
         {
             this.Start = start;
             this.End = end;
+            this.IsWeekly = weekly;
         }
 
         //Properties
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+
+        public bool IsWeekly { get; set; }
 
         //Methods
 

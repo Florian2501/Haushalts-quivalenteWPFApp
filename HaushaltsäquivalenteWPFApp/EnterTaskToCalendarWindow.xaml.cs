@@ -11,7 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 namespace HaushaltsäquivalenteWPFApp
-{
+{//irgendwie ist die Reihenfolge vertauscht der Aufgaben wenn es wöchentliche gibt
+    //save button testen
     /// <summary>
     /// Interaktionslogik für EnterTaskToCalendarWindow.xaml
     /// </summary>
@@ -50,6 +51,7 @@ namespace HaushaltsäquivalenteWPFApp
             HeadlineTextBlock.Text = this.NameOfPerson + " - " + this.Date.ToString("dd.MM.yy");
             //fill the list of the tasks of today
             updateCalendarTaskList();
+
             //fill the scrolldown menu
             fillScrollListOfTasks();
         }
@@ -62,14 +64,42 @@ namespace HaushaltsäquivalenteWPFApp
             //Clear the list
             ListOfTasks.Items.Clear();
             //Get the sorted List of Tasks
-            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date);
+            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, false);
+
+            List<CalendarTask> repeatingTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, true);
+
+            if(repeatingTasks != null)calendarTasks.AddRange(repeatingTasks);
+
             //cancel if the list is empty
             if (calendarTasks == null) return;
+
+            //Sort the list beacuase it could be unsorted if there are weekly and daily tasks
+            calendarTasks.Sort(CompareTasksByTime);
+
             //Go through the list and add the tasks to the Scrollviewer
-            foreach(CalendarTask task in calendarTasks)
+            foreach (CalendarTask task in calendarTasks)
             {
                 ListOfTasks.Items.Add(task.Start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + task.End.ToString("HH:mm", new CultureInfo("de-DE")) + " " + task.Name);
             }
+        }
+
+        /// <summary>
+        /// The sorting function for the tasklist
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private int CompareTasksByTime(CalendarTask x, CalendarTask y)
+        {
+            if (x.Start < y.Start)
+            {
+                return -1;
+            }
+            else if (x.Start == y.Start)
+            {
+                return 0;
+            }
+            else return 1;
         }
 
         /// <summary>
@@ -94,8 +124,14 @@ namespace HaushaltsäquivalenteWPFApp
         private void ListOfTasks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = ListOfTasks.SelectedIndex;
+
             //Get the sorted List of Tasks
-            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date);
+            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, false);
+
+            List<CalendarTask> repeatingTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, true);
+
+            if (repeatingTasks != null) calendarTasks.AddRange(repeatingTasks);
+
             if (index < 0 || index >= calendarTasks.Count)
             {
                 //MessageBox.Show("Die Auswahl der Aufgabe ist ungültig!");
@@ -114,6 +150,16 @@ namespace HaushaltsäquivalenteWPFApp
             //Set the description and the value of the selected task
             DescriptionOfCurrentTask.Text = selectedTask.Description;
             PointsOfCurrentTask.Text = selectedTask.Value.ToString();
+
+            //set the weekly checkbox
+            if (selectedTask.IsWeekly)
+            {
+                WeeklyCheckBox.IsChecked = true;
+            }
+            else
+            {
+                WeeklyCheckBox.IsChecked = false;
+            }
         }
 
         /// <summary>
@@ -139,9 +185,19 @@ namespace HaushaltsäquivalenteWPFApp
         {
             int index = ListOfTasks.SelectedIndex;
 
-            
             //Get the sorted List of Tasks
-            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date);
+            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, false);
+
+            List<CalendarTask> repeatingTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, true);
+
+            if (repeatingTasks != null) calendarTasks.AddRange(repeatingTasks);
+
+            //cancel if the list is empty
+            if (calendarTasks == null) return;
+
+            //Sort the list beacuase it could be unsorted if there are weekly and daily tasks
+            calendarTasks.Sort(CompareTasksByTime);
+
             if (index < 0 || index >= calendarTasks.Count)
             {
                 MessageBox.Show("Die Auswahl der Aufgabe ist ungültig!");
@@ -185,7 +241,18 @@ namespace HaushaltsäquivalenteWPFApp
 
 
             //Get the sorted List of Tasks
-            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date);
+            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, false);
+
+            List<CalendarTask> repeatingTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, this.Date, true);
+
+            if (repeatingTasks != null) calendarTasks.AddRange(repeatingTasks);
+
+            //cancel if the list is empty
+            if (calendarTasks == null) return;
+
+            //Sort the list beacuase it could be unsorted if there are weekly and daily tasks
+            calendarTasks.Sort(CompareTasksByTime);
+
             if (index < 0 || index >= calendarTasks.Count)
             {
                 MessageBox.Show("Die Auswahl der Aufgabe ist ungültig!");
@@ -260,8 +327,33 @@ namespace HaushaltsäquivalenteWPFApp
 
             //if a task was selected, get this task
             Task task = TaskList.Tasks[selectedTaskIndex];
+
+            //get whether it is weekly
+            bool weekly = (bool) WeeklyCheckBox.IsChecked;
+
             //make the task to a calendarTask with the date times
-            CalendarTask calendarTask = new CalendarTask(task.ID, Start, End);
+            CalendarTask calendarTask = new CalendarTask(task.ID, Start, End, weekly);
+
+            if(calendarTask.IsWeekly && !calendarTasks[index].IsWeekly)
+            {
+                //Ask in a MessageBox if it should be changed from not weekly to weekly
+                var result = MessageBox.Show("Die Aufgabe " + calendarTasks[index].Name + " (" + calendarTasks[index].Start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + calendarTasks[index].End.ToString("HH:mm", new CultureInfo("de-DE")) + ") soll zu wöchentlich geändert werden? Sie wird dann jede Woche " + this.Date.ToString() + " auftauchen.", "Achtung!", MessageBoxButton.YesNo);
+                //Cancel the event if the user clicks no
+                if (result == System.Windows.MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+            else if (!calendarTask.IsWeekly && calendarTasks[index].IsWeekly)
+            {
+                //Ask in a MessageBox if it should be changed from not weekly to weekly
+                var result = MessageBox.Show("Die Aufgabe " + calendarTasks[index].Name + " (" + calendarTasks[index].Start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + calendarTasks[index].End.ToString("HH:mm", new CultureInfo("de-DE")) + ") soll nicht mehr wöchentlich sein? Sie wird dann nicht mehr jede Woche " + this.Date.ToString() + " auftauchen.", "Achtung!", MessageBoxButton.YesNo);
+                //Cancel the event if the user clicks no
+                if (result == System.Windows.MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
 
             //replace the old task with the new infos
             calendarTasks[index] = calendarTask;
@@ -350,9 +442,9 @@ namespace HaushaltsäquivalenteWPFApp
             //if a task was selected, get this task
             Task task = TaskList.Tasks[index];
             //make the task to a calendarTask with the date times
-            CalendarTask calendarTask = new CalendarTask(task.ID, Start, End);
+            CalendarTask calendarTask = new CalendarTask(task.ID, Start, End, false);
             //get all the other tasks that already exist
-            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, Date);
+            List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(this.NameOfPerson, Date, false);
             //if there are no tasks initialize the list
             if(calendarTasks == null)
             {
@@ -382,14 +474,15 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="calendarTasks"></param>
         private void WriteBackCalendarData(List<CalendarTask> calendarTasks)
         {
-            //Get the file of the date without the line of the person
-            string writeback = GetLinesWithoutCurrentPerson();
+            /////////////////////////////////////////////////////////One day tasks
+            //Get the file of the date without the line of the person from the tasks that are only on one day
+            string writeback = GetLinesWithoutCurrentPerson(false);
             //Add the name to the writeback data
             writeback += this.NameOfPerson;
             //Add the tasks with times to the writeback data
             foreach (CalendarTask task in calendarTasks)
             {
-                writeback += ";" + task.ToString();
+                if(!task.IsWeekly)writeback += ";" + task.ToString();
             }
             //create the task
             string path = @"Data/Calendar/" + this.Date.ToString("dd.MM.yy") + ".txt";
@@ -400,17 +493,38 @@ namespace HaushaltsäquivalenteWPFApp
                 sw.AutoFlush = true;
                 sw.WriteLine(writeback);
             }
+
+            //////////////////////////////////////////////////////////Weekly tasks
+            //Get the file of the date without the line of the person from the tasks that are weekly
+             writeback = GetLinesWithoutCurrentPerson(true);
+            //Add the name to the writeback data
+            writeback += this.NameOfPerson;
+            //Add the tasks with times to the writeback data
+            foreach (CalendarTask task in calendarTasks)
+            {
+                if (task.IsWeekly) writeback += ";" + task.ToString();
+            }
+            //create the task
+            path = @"Data/WeeklyTasks/" + this.Date.DayOfWeek.ToString();
+
+            //Write it back to the file
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.AutoFlush = true;
+                sw.WriteLine(writeback);
+            }
+
         }
 
         /// <summary>
         /// This functions reads the date file and collects all lines, that are not from the current Person of the Window
         /// </summary>
         /// <returns></returns>
-        private string GetLinesWithoutCurrentPerson()
+        private string GetLinesWithoutCurrentPerson(bool weekly)
         {
             //create the writeback line and the path
             string writeback = "";
-            string path = @"Data/Calendar/" + this.Date.ToString("dd.MM.yy") + ".txt";
+            string path = @"Data/" + ((weekly) ? (@"WeeklyTasks/" + this.Date.DayOfWeek.ToString()) : (@"Calendar/" + this.Date.ToString("dd.MM.yy") + ".txt"));
 
             try
             {
@@ -433,7 +547,7 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 MessageBox.Show("The Date file could not be read. It will be created now."); //if the date file could not be found or the person is not in the date file the default value is 0
 
-                Directory.CreateDirectory(@"Data/Calendar");
+                Directory.CreateDirectory(@"Data/" + ((weekly) ? "WeeklyTasks" : "Calendar"));
                 StreamWriter sw = new StreamWriter(path);
                 sw.Close();
             }
@@ -478,7 +592,9 @@ namespace HaushaltsäquivalenteWPFApp
             EndMinuteOfCurrentTask.IsEnabled = true;
         }
 
-       // ////////////////////////TODO implementiere Logik und speichersystem in updateCalendarTasklist zum Füllen und in jedem einzelnen Button wo am Anfang checked ob weekly oder nicht
-      
+
+
+        // ////////////////////////TODO implementiere Logik und speichersystem in updateCalendarTasklist zum Füllen und in jedem einzelnen Button wo am Anfang checked ob weekly oder nicht
+
     }
 }

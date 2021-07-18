@@ -29,12 +29,8 @@
                     <ScrollViewer>
                         <StackPanel>
                             <TextBlock x:Name="HeadlineTextBlock" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,10"></TextBlock>
-                            <TextBlock Margin="5">Einmalige Aufgaben:</TextBlock>
+                            <TextBlock Margin="5">Aufgaben des Tages:</TextBlock>
                             <ListBox x:Name="ListOfTasks" Margin="5" Width="500" HorizontalAlignment="Left" Background="LightGray" Padding="5" MaxHeight="200" SelectionChanged="ListOfTasks_SelectionChanged">
-                            </ListBox>
-
-                            <TextBlock Margin="5">Wiederholende Aufgaben:</TextBlock>
-                            <ListBox x:Name="ListOfRepeatingTasks" Margin="5" Width="500" HorizontalAlignment="Left" Background="LightGray" Padding="5" MaxHeight="200" SelectionChanged="ListOfTasks_SelectionChanged">
                             </ListBox>
 
                             <TextBlock>Details der ausgewählten Aufgabe:</TextBlock>

@@ -227,10 +227,10 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="name"></param>
         /// <param name="day"></param>
         /// <returns></returns>
-        public static List<CalendarTask> getTasksOfPersonOnDate(string name, DateTime day)
+        public static List<CalendarTask> getTasksOfPersonOnDate(string name, DateTime day, bool weekly)
         {
             List<CalendarTask> TaskList = new List<CalendarTask>();
-            string path = @"Data/Calendar/" + day.ToString("dd.MM.yy") + ".txt";
+            string path = @"Data/" + ((weekly) ? (@"WeeklyTasks/" + day.DayOfWeek.ToString()) : (@"Calendar/" + day.ToString("dd.MM.yy") + ".txt"));
             try
             {
                 using (StreamReader sr = new StreamReader(path))
@@ -275,7 +275,7 @@ namespace HaushaltsäquivalenteWPFApp
                                 }
 
                                 //Add the read in task to the list
-                                TaskList.Add(new CalendarTask(TaskID, start, end));
+                                TaskList.Add(new CalendarTask(TaskID, start, end, weekly));
 
                             }
 
@@ -288,7 +288,7 @@ namespace HaushaltsäquivalenteWPFApp
             {
                 MessageBox.Show("The Date file could not be read. It will be created now."); //if the date file could not be found or the person is not in the date file the default value is 0
 
-                Directory.CreateDirectory(@"Data/Calendar");
+                Directory.CreateDirectory(@"Data/" + ((weekly) ? "WeeklyTasks" : "Calendar"));
                 StreamWriter sw = new StreamWriter(path);
                 sw.Close();
             }

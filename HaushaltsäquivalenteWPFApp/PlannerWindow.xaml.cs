@@ -336,16 +336,24 @@ namespace HaushaltsäquivalenteWPFApp
                 //Add the border with the Textblock to the grid
                 CalendarGrid.Children.Add(border);
 
-                //read the datefile and search for person
-                List<CalendarTask> TasksOfDay = DataReader.getTasksOfPersonOnDate(name, day);
+                //Get the sorted List of Tasks
+                List<CalendarTask> calendarTasks = DataReader.getTasksOfPersonOnDate(name, day, false);
+
+                List<CalendarTask> repeatingTasks = DataReader.getTasksOfPersonOnDate(name, day, true);
+
+                if (repeatingTasks != null) calendarTasks.AddRange(repeatingTasks);
+
                 //check if it is empty and then there are no tasks to print, so continue in loop
-                if (TasksOfDay == null) 
+                if (calendarTasks == null) 
                 {
                     //MessageBox.Show($"Für {name} gab es am {day.ToString("dd.MM.yy")} keine Aufgaben.", "Achtung!");
                     continue; 
                 }
 
-                foreach(CalendarTask calendarTask in TasksOfDay)
+                //Sort the list beacuase it could be unsorted if there are weekly and daily tasks
+                calendarTasks.Sort(CompareTasksByTime);
+
+                foreach (CalendarTask calendarTask in calendarTasks)
                 {
                     //if it is here, the task id and the starting and ending time are correct read in
                     try
@@ -361,6 +369,25 @@ namespace HaushaltsäquivalenteWPFApp
                 }
                     
             }
+        }
+
+        /// <summary>
+        /// The sorting function for the tasklist
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private int CompareTasksByTime(CalendarTask x, CalendarTask y)
+        {
+            if (x.Start < y.Start)
+            {
+                return -1;
+            }
+            else if (x.Start == y.Start)
+            {
+                return 0;
+            }
+            else return 1;
         }
 
         /// <summary>
