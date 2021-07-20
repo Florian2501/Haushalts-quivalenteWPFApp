@@ -8,7 +8,6 @@ using Ical.Net.DataTypes;
 using Ical.Net.CalendarComponents;
 using System.IO;
 using System.Windows.Controls;
-using System.Timers;
 using System.Threading;
 using System.Collections.Generic;
 using System.Globalization;
@@ -47,6 +46,7 @@ namespace HaushaltsäquivalenteWPFApp
 
         private DateTime lastMonday;
         private DateTime currentMonday;
+        private const string PathOfCalendarFile = @"Data/Calendar/calendar.ics";
 
         /// <summary>
         /// Sends the calendar data as ics File to the given Mail
@@ -60,7 +60,20 @@ namespace HaushaltsäquivalenteWPFApp
             DateTime now = DateTime.Now;
 
             Ical.Net.Calendar calendar = new Ical.Net.Calendar();
-            calendar.Events.Add(new CalendarEvent
+
+            int index = ListOfNames.SelectedIndex;
+
+            if(index == 1)
+            {
+                //implement the logic for sending to all
+            }
+            else
+            {
+                string name = Persons.Names[index - 1];
+                //implement the logic for creating the calender for this name
+            }
+
+            /*calendar.Events.Add(new CalendarEvent
             {
                 Class = "PUBLIC",
                 Summary = "Perfect Sum",
@@ -84,10 +97,14 @@ namespace HaushaltsäquivalenteWPFApp
                 Sequence = 0,
                 Uid = Guid.NewGuid().ToString(),
                 Location = "PerfectLocation2"
-            });
+            });*/
 
-            string path = @"./test.ics";
-            using (StreamWriter sw = new StreamWriter(path))
+
+            //string path = @"./test.ics";
+
+            string mailAdress = MailAdressTextBox.Text;
+
+            using (StreamWriter sw = new StreamWriter(PathOfCalendarFile))
             {
                 sw.AutoFlush = true;
                 var serializer = new CalendarSerializer(new SerializationContext());
@@ -96,7 +113,7 @@ namespace HaushaltsäquivalenteWPFApp
             }
 
             //Starts a new Thread where it sends the Mail, so you can click around while waiting for the mail
-            ThreadPool.QueueUserWorkItem(sendCalendar, path);
+            ThreadPool.QueueUserWorkItem(sendCalendar, mailAdress);
         }
 
         /// <summary>
@@ -104,17 +121,17 @@ namespace HaushaltsäquivalenteWPFApp
         /// </summary>
         /// <param name="receiver"></param>
         /// <param name="path"></param>
-        private void sendCalendar(object pathObject)
+        private void sendCalendar(object adressObject)
         {
 
-            string path = (string)pathObject;
+            string adress = (string) adressObject;
             MailMessage email = new MailMessage();
             email.From = new MailAddress("haushaltsappmail@gmail.com", "Haushaltsapp Mailsender");
-            email.To.Add("florischierz1@gmail.com");//email.To.Add(ReceiverTextBox.Text);
-            email.Subject = "Testmail";
-            email.Body = "Das hier ist der Text der Mail. Im Anhang ist die Kaledner datei.";
+            email.To.Add(adress);//email.To.Add(ReceiverTextBox.Text);
+            email.Subject = "Haushaltsaufgaben Kalender";
+            email.Body = "Im Anhang befindet sich die Kalender Datei, welche Sie einfach in Ihr Kalenderprogramm einbinden können.";
 
-            System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(path);
+            System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(PathOfCalendarFile);
             email.Attachments.Add(attachment);
 
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
@@ -197,6 +214,22 @@ namespace HaushaltsäquivalenteWPFApp
             
             //call the print function for the current week through giving it the last monday
             printCurrentWeek();
+
+            //Fill the combo box with the names of all persons that could receive a message
+            fillListOfNamesForMailing();
+        }
+
+        /// <summary>
+        /// This fills the ComboBox with all the names that can receive a Mail with the calendar
+        /// </summary>
+        public void fillListOfNamesForMailing()
+        {
+            foreach(string name in Persons.Names)
+            {
+                ComboBoxItem comboBoxItem = new ComboBoxItem();
+                comboBoxItem.Content = name;
+                ListOfNames.Items.Add(comboBoxItem);
+            }
         }
 
         /// <summary>
@@ -341,14 +374,18 @@ namespace HaushaltsäquivalenteWPFApp
 
                 List<CalendarTask> repeatingTasks = DataReader.getTasksOfPersonOnDate(name, day, true);
 
-                if (repeatingTasks != null) calendarTasks.AddRange(repeatingTasks);
-
-                //check if it is empty and then there are no tasks to print, so continue in loop
-                if (calendarTasks == null) 
+                //cancel if the list is empty
+                if (calendarTasks == null)
                 {
-                    //MessageBox.Show($"Für {name} gab es am {day.ToString("dd.MM.yy")} keine Aufgaben.", "Achtung!");
-                    continue; 
+                    calendarTasks = repeatingTasks;
                 }
+                else
+                {
+                    if (repeatingTasks != null) calendarTasks.AddRange(repeatingTasks);
+                }
+
+                if (calendarTasks == null) continue;
+
 
                 //Sort the list beacuase it could be unsorted if there are weekly and daily tasks
                 calendarTasks.Sort(CompareTasksByTime);

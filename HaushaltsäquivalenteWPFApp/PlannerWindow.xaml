@@ -33,7 +33,11 @@
                             <Button Margin="5" x:Name="CurrentWeekButton" Click="CurrentWeekButton_Click">Aktuelle Woche</Button>
                             <TextBlock Margin="5" TextWrapping="Wrap">Um Termine einzutragen, klicke auf den jeweiligen Tag.</TextBlock>
                             
-                            <TextBlock TextWrapping="Wrap" Margin="5,50,5,5">Klicke auf den Button, um dir den erstellten aktuellen Kalender als .ics Datei an die angegebene Email zu schicken. Diese kannst du dann mit deinem Kalender Programm importieren/öffnen und zu deinem Kalender hinzufügen.</TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="5,50,5,5">Klicke auf den Button, um dir den erstellten aktuellen Kalender der ausgewählten Person als .ics Datei an die angegebene Email zu schicken. Dabei werden nur zukünftige Ereignisse berücksichtigt. Diese kannst du dann mit deinem Kalender Programm importieren/öffnen und zu deinem Kalender hinzufügen.</TextBlock>
+                            <ComboBox x:Name="ListOfNames" Margin="5">
+                                <ComboBoxItem IsSelected="True">Alle</ComboBoxItem>
+                            </ComboBox>
+                            <TextBox Margin="5" x:Name="MailAdressTextBox"></TextBox>
                             <Button x:Name="SendButton" Width="130" Click="SendButton_Click" >Als .ics-Datei schicken</Button>
                         </StackPanel>
 
