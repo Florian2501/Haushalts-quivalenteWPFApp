@@ -46,7 +46,7 @@ namespace HaushaltsäquivalenteWPFApp
 
         private DateTime lastMonday;
         private DateTime currentMonday;
-        private const string PathOfCalendarFile = @"Data/Calendar/calendar.ics";
+        private const string PathOfCalendarFile = @"Data/calendar.ics";
 
         /// <summary>
         /// Sends the calendar data as ics File to the given Mail
@@ -55,17 +55,117 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: readCalendar() returns Calendar
-
             DateTime now = DateTime.Now;
 
             Ical.Net.Calendar calendar = new Ical.Net.Calendar();
 
+            calendar.Name = "Kalendar - Haushaltsapp";
+
             int index = ListOfNames.SelectedIndex;
 
-            if(index == 1)
+            if(index == 0)//index 0 means "all"
             {
-                //implement the logic for sending to all
+                foreach(string name in Persons.Names)
+                {
+                    //Check wether a file is not in the correct format or older than one year and delete it if yes
+                    string path = @"Data\Calendar";
+                    //Get the file sfrom the data directory
+                    DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                    FileInfo[] fileInfos = directoryInfo.GetFiles();
+
+                    foreach (FileInfo file in fileInfos)
+                    {
+                        //Extract the date out of the file name and try to convert it
+                        DateTime date = new DateTime();
+                        string[] day = file.Name.Split(".");
+                        try
+                        {
+                            date = Convert.ToDateTime(day[0] + "." + day[1] + "." + day[2]);
+                        }
+                        //Deltete if its not in the correct format
+                        catch (Exception)
+                        {
+                            MessageBox.Show(file.Name + " konnte nicht gelesen werden und wird deshalb gelöscht.");
+                            File.Delete(file.FullName);
+                            continue;
+                        }
+
+                        //if the date is upcoming
+                        if (date >= now)
+                        {
+                            List<CalendarTask> tasksOfDay = DataReader.getTasksOfPersonOnDate(name, date, false);
+                            if(tasksOfDay != null)
+                            {
+                                foreach(CalendarTask task in tasksOfDay)
+                                {
+                                    DateTime start = new DateTime(date.Year, date.Month, date.Day, task.Start.Hour, task.Start.Minute, 0);
+                                    DateTime end = new DateTime(date.Year, date.Month, date.Day, task.End.Hour, task.End.Minute, 0);
+
+                                    calendar.Events.Add(new CalendarEvent
+                                    {
+                                        Class = "PUBLIC",
+                                        Summary = name + ": " + task.Name,
+                                        Created = new CalDateTime(now),
+                                        Description = task.Description,
+                                        Start = new CalDateTime(start),
+                                        End = new CalDateTime(end),
+                                        Sequence = 0,
+                                        Uid = Guid.NewGuid().ToString(),
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+                    for(int i = 0; i<7; i++)
+                    {
+                        DateTime date = DateTime.Now.AddDays(i);
+
+                        List<CalendarTask> calendarTasks = new List<CalendarTask>();
+
+                        List<CalendarTask> weeklyTasks = DataReader.getTasksOfPersonOnDate(name, date, true);
+
+                        if(weeklyTasks != null)
+                        {
+                            calendarTasks.AddRange(weeklyTasks);
+                        }
+
+                        foreach(CalendarTask task in calendarTasks)
+                        {
+                            DateTime start = new DateTime(date.Year, date.Month, date.Day, task.Start.Hour, task.Start.Minute, 0);
+                            DateTime end = new DateTime(date.Year, date.Month, date.Day, task.End.Hour, task.End.Minute, 0);
+
+                            RecurrencePattern recurrence = new RecurrencePattern
+                            {
+                                Frequency = FrequencyType.Weekly,
+                                Interval = 1,
+                                ByDay = new List<WeekDay>
+                                {
+                                    new WeekDay
+                                    {
+                                        DayOfWeek = date.DayOfWeek
+                                    }
+                                },
+                                Until = DateTime.Now.AddYears(1)
+                            };
+
+                            calendar.Events.Add(new CalendarEvent
+                            {
+                                Class = "PUBLIC",
+                                Summary = name + ": " + task.Name,
+                                Created = new CalDateTime(now),
+                                Description = task.Description,
+                                Start = new CalDateTime(start),
+                                End = new CalDateTime(end),
+                                Sequence = 0,
+                                Uid = Guid.NewGuid().ToString(),
+                                RecurrenceRules = new List<RecurrencePattern>() { recurrence }
+                            });
+                        }
+                    }
+                        
+                    
+                }
             }
             else
             {
@@ -217,6 +317,38 @@ namespace HaushaltsäquivalenteWPFApp
 
             //Fill the combo box with the names of all persons that could receive a message
             fillListOfNamesForMailing();
+            
+            //Check wether a file is not in the correct format or older than one year and delete it if yes
+            string path = @"Data\Calendar";
+            //Get the file sfrom the data directory
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            FileInfo[] fileInfos = directoryInfo.GetFiles();
+
+            foreach (FileInfo file in fileInfos)
+            {
+                //Extract the date out of the file name and try to convert it
+                DateTime date = new DateTime();
+                string[] day = file.Name.Split(".");
+                try
+                {
+                    date = Convert.ToDateTime(day[0] + "." + day[1] + "." + day[2]);
+                }
+                //Deltete if its not in the correct format
+                catch (Exception)
+                {
+                    MessageBox.Show(file.Name + " konnte nicht gelesen werden und wird deshalb gelöscht.");
+                    File.Delete(file.FullName);
+                    continue;
+                }
+                //delete if its too old
+                if (date < DateTime.Today.AddYears(-1))
+                {
+                    MessageBox.Show(file.Name + " ist älter als ein Jahr und wird deshalb gelöscht.");
+                    File.Delete(file.FullName);
+                    continue;
+                }
+                //MessageBox.Show(file.Name + " wurde korrekt gelesen und ist nicht älter als ein jahr.");
+            }
         }
 
         /// <summary>
