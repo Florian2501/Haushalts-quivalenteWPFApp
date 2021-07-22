@@ -593,5 +593,34 @@ namespace HaushaltsäquivalenteWPFApp
             EndMinuteOfCurrentTask.IsEnabled = true;
         }
 
+        /// <summary>
+        /// This saves the selected task for this person
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EnterTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = ListOfTasks.SelectedIndex;
+
+            //Get the sorted List of Tasks
+            List<CalendarTask> calendarTasks = GetWeeklyAndDailyTasksSorted();
+
+            if (index < 0 || index >= calendarTasks.Count)
+            {
+                MessageBox.Show("Die Auswahl der Aufgabe ist ungültig!");
+                return;
+            }
+            //Ask in a MessageBox if the task really should be deleted
+            var dialogResult = MessageBox.Show("Die Aufgabe " + calendarTasks[index].Name + " (" + calendarTasks[index].Start.ToString("HH:mm", new CultureInfo("de-DE")) + "-" + calendarTasks[index].End.ToString("HH:mm", new CultureInfo("de-DE")) + ") soll für " + this.NameOfPerson + " eingetragen werden?", "Achtung!", MessageBoxButton.YesNo);
+            //Cancel the event if the user clicks no
+            if (dialogResult == System.Windows.MessageBoxResult.No)
+            {
+                return;
+            }
+            //Get the selected task
+            CalendarTask selectedTask = calendarTasks[index];
+            //write back the selected task
+            DataWriter.EnterDoneTask(new Task(selectedTask.ID), this.NameOfPerson, this.Date);
+        }
     }
 }

@@ -34,7 +34,10 @@
                             </ListBox>
 
                             <TextBlock>Details der ausgewählten Aufgabe:</TextBlock>
-                            <ComboBox Padding="2" Margin="5" x:Name="NameOfCurrentTask" Width="200" HorizontalAlignment="Left" SelectionChanged="NameOfCurrentTask_SelectionChanged"></ComboBox>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Padding="2" Margin="5" x:Name="NameOfCurrentTask" Width="200" HorizontalAlignment="Left" SelectionChanged="NameOfCurrentTask_SelectionChanged"></ComboBox>
+                                <Button x:Name="EnterTaskButton" Margin="135 5 5 5" Width="160" Click="EnterTaskButton_Click">Aufgabe eintragen</Button>
+                            </StackPanel>
 
                             <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,5,135,5">Start:</TextBlock>
