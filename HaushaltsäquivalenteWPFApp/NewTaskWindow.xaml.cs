@@ -139,6 +139,11 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void EditTaskButton_Click(object sender, RoutedEventArgs e)
         {
+            if(UsedTasks.SelectedIndex < 0)
+            {
+                MessageBox.Show("Es ist keine Aufgabe ausgewählt.", "Achtung!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             EditTaskWindow editTaskWindow = new EditTaskWindow(UsedTasks.SelectedIndex + 1, this);
             editTaskWindow.Show();
         }

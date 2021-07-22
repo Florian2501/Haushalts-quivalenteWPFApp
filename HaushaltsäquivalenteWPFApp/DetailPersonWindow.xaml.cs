@@ -113,10 +113,17 @@ namespace HaushaltsäquivalenteWPFApp
         /// Fills the grid int the DetailPersonWindow with the infos of the done tasks.
         /// </summary>
         /// <param name="days">Number of days, the details will be created in the grid.</param>
-        private void createDetails(int days)
+        private async void createDetails(int days)
         {
             //get the list with the values of the last several times
-            List<int> listOfLastTime = DataReader.GetListOfDoneTasks(days, this.name);
+             System.Threading.Tasks.Task <List<int>> DoneTasksTask = System.Threading.Tasks.Task.Run(() => 
+                                                                                {
+                                                                                    return DataReader.GetListOfDoneTasks(days, this.name);
+                                                                                 });
+
+
+            List<int> listOfLastTime = await DoneTasksTask;
+
 
             //Clear the Grid before refilling it
             LastTimeGrid.Children.Clear();

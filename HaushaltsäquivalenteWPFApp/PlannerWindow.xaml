@@ -1,0 +1,79 @@
+﻿<Window x:Class="HaushaltsäquivalenteWPFApp.PlannerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
+        mc:Ignorable="d"
+        Title="PlannerWindow" Height="800" Width="1500" Loaded="Window_Loaded">
+    <Grid>
+        <Border Padding="10">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Left side of the Window, Menu list-->
+                <Border x:Name="SideMenu">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.Row="0">
+                            <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Hier kannst du die Aufgaben für die nächsten Wochen eintragen und den Kalender verwalten.</TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="LastWeekButton" Margin="5" Width="90" Click="LastWeekButton_Click">Letzte Woche</Button>
+                                <Button x:Name="NextWeekButton" Margin="5" Width="90" Click="NextWeekButton_Click">Nächste Woche</Button>
+                            </StackPanel>
+                            <Button Margin="5" x:Name="CurrentWeekButton" Click="CurrentWeekButton_Click">Aktuelle Woche</Button>
+                            <TextBlock Margin="5" TextWrapping="Wrap">Um Termine einzutragen, klicke auf den jeweiligen Tag.</TextBlock>
+                            
+                            <TextBlock TextWrapping="Wrap" Margin="5,50,5,5">Klicke auf den Button, um dir den erstellten aktuellen Kalender der ausgewählten Person als .ics Datei an die angegebene Email zu schicken. Dabei werden nur zukünftige Ereignisse berücksichtigt. Diese kannst du dann mit deinem Kalender Programm importieren/öffnen und zu deinem Kalender hinzufügen.</TextBlock>
+                            <ComboBox x:Name="ListOfNames" Margin="5">
+                                <ComboBoxItem IsSelected="True">Alle</ComboBoxItem>
+                            </ComboBox>
+                            <TextBlock Margin="5">Email-Adresse:</TextBlock>
+                            <TextBox Margin="5" x:Name="MailAdressTextBox"></TextBox>
+                            <Button x:Name="SendButton" Width="130" Click="SendButton_Click" >Als .ics-Datei schicken</Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="0" Grid.Row="1">
+                            <Button x:Name="TableButton" Content="Tabelle dieser Woche" Click="TableButton_Click" Margin="5"/>
+                            <Button x:Name="DoneTasksButton" Content="Aufgabe eintragen" Click="DoneTasksButton_Click" Margin="5"/>
+                            <Button x:Name="MainWindowButton" Content="Hauptmenü" Margin="5, 15,5,5" Click="MainWindowButton_Click"></Button>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+
+                <!--Right side of the window-->
+                <Border Margin="10" Grid.Column="1">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,10">Kalender</TextBlock>
+                            <Grid x:Name="CalendarGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

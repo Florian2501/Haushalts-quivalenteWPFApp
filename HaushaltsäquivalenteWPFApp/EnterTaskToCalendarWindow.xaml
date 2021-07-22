@@ -1,0 +1,91 @@
+﻿<Window x:Class="HaushaltsäquivalenteWPFApp.EnterTaskToCalendarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HaushaltsäquivalenteWPFApp"
+        mc:Ignorable="d"
+        Title="EnterTaskToCalendarWindow" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Border Padding="10">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Left side of the Window, Menu list-->
+                <Border x:Name="SideMenu">
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <TextBlock Text="Menü" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock x:Name="DescriptionTextBlock" Margin="5" TextWrapping="Wrap"></TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!--Right side of the window-->
+                <Border Margin="10" Grid.Column="1">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock x:Name="HeadlineTextBlock" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,10"></TextBlock>
+                            <TextBlock Margin="5">Aufgaben des Tages:</TextBlock>
+                            <ListBox x:Name="ListOfTasks" Margin="5" Width="500" HorizontalAlignment="Left" Background="LightGray" Padding="5" MaxHeight="200" SelectionChanged="ListOfTasks_SelectionChanged">
+                            </ListBox>
+
+                            <TextBlock>Details der ausgewählten Aufgabe:</TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Padding="2" Margin="5" x:Name="NameOfCurrentTask" Width="200" HorizontalAlignment="Left" SelectionChanged="NameOfCurrentTask_SelectionChanged"></ComboBox>
+                                <Button x:Name="EnterTaskButton" Margin="135 5 5 5" Width="160" Click="EnterTaskButton_Click">Aufgabe eintragen</Button>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,5,135,5">Start:</TextBlock>
+                            <TextBlock Margin="5">Ende:</TextBlock>
+                            </StackPanel>
+                                
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Padding="2" Margin="5" x:Name="StartHourOfCurrentTask" Width="50"></TextBox>
+                                <TextBlock VerticalAlignment="Center">:</TextBlock>
+                                <TextBox Padding="2" Margin="5,5,50,5" x:Name="StartMinuteOfCurrentTask" Width="50"></TextBox>
+
+                                <TextBox Padding="2" Margin="5" x:Name="EndHourOfCurrentTask" Width="50"></TextBox>
+                                <TextBlock VerticalAlignment="Center">:</TextBlock>
+                                <TextBox Padding="2" Margin="5" x:Name="EndMinuteOfCurrentTask" Width="50"></TextBox>
+
+                                <TextBlock VerticalAlignment="Center" Margin="5">Ganztägig:</TextBlock>
+                                <CheckBox x:Name="DayCheckBox" VerticalAlignment="Center" Checked="DayCheckBox_Checked" Unchecked="DayCheckBox_Unchecked"></CheckBox>
+
+                                <TextBlock VerticalAlignment="Center" Margin="5">Wöchentlich:</TextBlock>
+                                <CheckBox x:Name="WeeklyCheckBox" VerticalAlignment="Center"></CheckBox>
+
+                            </StackPanel>
+
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5,5,310,5">Aufgabenbeschreibung:</TextBlock>
+                                <TextBlock Margin="5">Punkte:</TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBox Padding="2" Margin="5" x:Name="DescriptionOfCurrentTask" Width="430" HorizontalAlignment="Left" Height="50" TextWrapping="Wrap" IsReadOnly="True"></TextBox>
+                                <TextBox Padding="2" Margin="5" x:Name="PointsOfCurrentTask" Width="60" IsReadOnly="True" Height="20" VerticalAlignment="Top"></TextBox>
+
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="DeleteTaskButton" Margin="5" Width="160" Click="DeleteTaskButton_Click">Aufgabe löschen</Button>
+                                <Button x:Name="SaveChangesButton" Margin="5" Width="160" Click="SaveChangesButton_Click">Änderungen Speichern</Button>
+                                <Button x:Name="NewTaskButton" Margin="5" Width="160" Click="NewTaskButton_Click">Als neue Aufgabe Speichern</Button>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

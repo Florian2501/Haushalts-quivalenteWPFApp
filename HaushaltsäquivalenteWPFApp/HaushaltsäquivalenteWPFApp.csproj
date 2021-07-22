@@ -8,9 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Data\Days\" />
+    <Folder Include="Data\Calendar\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ical.Net" Version="4.2.0" />
     <PackageReference Include="LiveCharts.Wpf.NetCore3" Version="0.9.7" />
   </ItemGroup>
 
