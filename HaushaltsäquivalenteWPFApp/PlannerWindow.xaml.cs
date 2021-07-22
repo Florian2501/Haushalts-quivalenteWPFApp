@@ -55,100 +55,104 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            DateTime now = DateTime.Now;
-
+            //create a new calendar
             Ical.Net.Calendar calendar = new Ical.Net.Calendar();
-
-            calendar.Name = "Kalendar - Haushaltsapp";
-
+            //Name the calendar
+            //calendar.Name = "Kalendar - Haushaltsapp";
+            //get the index of the combobox with names
             int index = ListOfNames.SelectedIndex;
 
             if(index == 0)//index 0 means "all"
             {
                 foreach(string name in Persons.Names)
                 {
-                    //Check wether a file is not in the correct format or older than one year and delete it if yes
-                    string path = @"Data\Calendar";
-                    //Get the file sfrom the data directory
-                    DirectoryInfo directoryInfo = new DirectoryInfo(path);
-                    FileInfo[] fileInfos = directoryInfo.GetFiles();
+                    //write the regular tasks in the calendar
+                    EnterRegularTasksInCalendar(calendar, name);
+                    //write the weekly tasks in the calendar
+                    EnterWeeklyTasksInCalendar(calendar, name);
+                }
+            }
+            else
+            {
+                //Get the selected name
+                string name = Persons.Names[index - 1];
+                //Write the regular tasks in the calendar
+                EnterRegularTasksInCalendar(calendar, name);
+                //write the weekly tasks in the calendar
+                EnterWeeklyTasksInCalendar(calendar, name);
+            }
 
-                    foreach (FileInfo file in fileInfos)
+            //Check if the calendar isnt empty
+            if (calendar.Events.Count == 0)
+            {
+                MessageBox.Show("Der Kalendar, der gesendet werden soll ist leer. Das Senden wird deshalb abgebrochen.");
+                return;
+            }
+
+            //Get the adress from the text block
+            string mailAdress = MailAdressTextBox.Text;
+
+            using (StreamWriter sw = new StreamWriter(PathOfCalendarFile))
+            {
+                //Write the calendar into a ics file
+                sw.AutoFlush = true;
+                var serializer = new CalendarSerializer(new SerializationContext());
+                var serializedCalendar = serializer.SerializeToString(calendar);
+                sw.WriteLine(serializedCalendar);
+            }
+
+            //Starts a new Thread where it sends the Mail, so you can click around while waiting for the mail
+            ThreadPool.QueueUserWorkItem(sendCalendar, mailAdress);
+        }
+
+        /// <summary>
+        /// Gets all tasks of a person that are in the future and adds them to the given calendar
+        /// </summary>
+        /// <param name="calendar"></param>
+        /// <param name="name"></param>
+        public void EnterRegularTasksInCalendar(Ical.Net.Calendar calendar, string name)
+        {
+            //set a date that is today
+            DateTime now = DateTime.Now;
+            //Check wether a file is not in the correct format or older than one year and delete it if yes
+            string path = @"Data\Calendar";
+            //Get the files from the data directory
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            FileInfo[] fileInfos = directoryInfo.GetFiles();
+
+            foreach (FileInfo file in fileInfos)
+            {
+                //Extract the date out of the file name and try to convert it
+                DateTime date = new DateTime();
+                string[] day = file.Name.Split(".");
+                try
+                {
+                    date = Convert.ToDateTime(day[0] + "." + day[1] + "." + day[2]);
+                }
+                //Deltete if its not in the correct format
+                catch (Exception)
+                {
+                    MessageBox.Show(file.Name + " konnte nicht gelesen werden und wird deshalb gelöscht.");
+                    File.Delete(file.FullName);
+                    continue;
+                }
+
+                //if the date is upcoming
+                if (date >= now)
+                {
+                    //Get the tasks of the certain date and person
+                    List<CalendarTask> tasksOfDay = DataReader.getTasksOfPersonOnDate(name, date, false);
+                    //check if there are tasks
+                    if (tasksOfDay != null)
                     {
-                        //Extract the date out of the file name and try to convert it
-                        DateTime date = new DateTime();
-                        string[] day = file.Name.Split(".");
-                        try
+                        //if yes go through the tasks 
+                        foreach (CalendarTask task in tasksOfDay)
                         {
-                            date = Convert.ToDateTime(day[0] + "." + day[1] + "." + day[2]);
-                        }
-                        //Deltete if its not in the correct format
-                        catch (Exception)
-                        {
-                            MessageBox.Show(file.Name + " konnte nicht gelesen werden und wird deshalb gelöscht.");
-                            File.Delete(file.FullName);
-                            continue;
-                        }
-
-                        //if the date is upcoming
-                        if (date >= now)
-                        {
-                            List<CalendarTask> tasksOfDay = DataReader.getTasksOfPersonOnDate(name, date, false);
-                            if(tasksOfDay != null)
-                            {
-                                foreach(CalendarTask task in tasksOfDay)
-                                {
-                                    DateTime start = new DateTime(date.Year, date.Month, date.Day, task.Start.Hour, task.Start.Minute, 0);
-                                    DateTime end = new DateTime(date.Year, date.Month, date.Day, task.End.Hour, task.End.Minute, 0);
-
-                                    calendar.Events.Add(new CalendarEvent
-                                    {
-                                        Class = "PUBLIC",
-                                        Summary = name + ": " + task.Name,
-                                        Created = new CalDateTime(now),
-                                        Description = task.Description,
-                                        Start = new CalDateTime(start),
-                                        End = new CalDateTime(end),
-                                        Sequence = 0,
-                                        Uid = Guid.NewGuid().ToString(),
-                                    });
-                                }
-                            }
-                        }
-                    }
-
-                    for(int i = 0; i<7; i++)
-                    {
-                        DateTime date = DateTime.Now.AddDays(i);
-
-                        List<CalendarTask> calendarTasks = new List<CalendarTask>();
-
-                        List<CalendarTask> weeklyTasks = DataReader.getTasksOfPersonOnDate(name, date, true);
-
-                        if(weeklyTasks != null)
-                        {
-                            calendarTasks.AddRange(weeklyTasks);
-                        }
-
-                        foreach(CalendarTask task in calendarTasks)
-                        {
+                            //get the times of the task
                             DateTime start = new DateTime(date.Year, date.Month, date.Day, task.Start.Hour, task.Start.Minute, 0);
                             DateTime end = new DateTime(date.Year, date.Month, date.Day, task.End.Hour, task.End.Minute, 0);
 
-                            RecurrencePattern recurrence = new RecurrencePattern
-                            {
-                                Frequency = FrequencyType.Weekly,
-                                Interval = 1,
-                                ByDay = new List<WeekDay>
-                                {
-                                    new WeekDay
-                                    {
-                                        DayOfWeek = date.DayOfWeek
-                                    }
-                                },
-                                Until = DateTime.Now.AddYears(1)
-                            };
-
+                            //add the task to the calendar
                             calendar.Events.Add(new CalendarEvent
                             {
                                 Class = "PUBLIC",
@@ -159,61 +163,70 @@ namespace HaushaltsäquivalenteWPFApp
                                 End = new CalDateTime(end),
                                 Sequence = 0,
                                 Uid = Guid.NewGuid().ToString(),
-                                RecurrenceRules = new List<RecurrencePattern>() { recurrence }
                             });
                         }
                     }
-                        
-                    
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// Gets the tasks that are weekly for a given person and enter them in the given calendar
+        /// </summary>
+        /// <param name="calendar"></param>
+        /// <param name="name"></param>
+        public void EnterWeeklyTasksInCalendar(Ical.Net.Calendar calendar, string name)
+        {
+            //Get a now value
+            DateTime now = DateTime.Now;
+            //go through every day of the week
+            for (int i = 0; i < 7; i++)
             {
-                string name = Persons.Names[index - 1];
-                //implement the logic for creating the calender for this name
+                DateTime date = DateTime.Now.AddDays(i);
+                //init the week
+                List<CalendarTask> calendarTasks = new List<CalendarTask>();
+
+                List<CalendarTask> weeklyTasks = DataReader.getTasksOfPersonOnDate(name, date, true);
+                //add the tasks to the list if they exist
+                if (weeklyTasks != null)
+                {
+                    calendarTasks.AddRange(weeklyTasks);
+                }
+                //go through the tasks and add them to the calendar
+                foreach (CalendarTask task in calendarTasks)
+                {
+                    //get starting and end time of the tasks
+                    DateTime start = new DateTime(date.Year, date.Month, date.Day, task.Start.Hour, task.Start.Minute, 0);
+                    DateTime end = new DateTime(date.Year, date.Month, date.Day, task.End.Hour, task.End.Minute, 0);
+                    //Create the pattern to repeat the task every week for the next year
+                    RecurrencePattern recurrence = new RecurrencePattern
+                    {
+                        Frequency = FrequencyType.Weekly,
+                        Interval = 1,
+                        ByDay = new List<WeekDay>
+                                        {
+                                            new WeekDay
+                                            {
+                                                DayOfWeek = date.DayOfWeek
+                                            }
+                                        },
+                        Until = DateTime.Now.AddYears(1)
+                    };
+
+                    calendar.Events.Add(new CalendarEvent
+                    {
+                        Class = "PUBLIC",
+                        Summary = name + ": " + task.Name,
+                        Created = new CalDateTime(now),
+                        Description = task.Description,
+                        Start = new CalDateTime(start),
+                        End = new CalDateTime(end),
+                        Sequence = 0,
+                        Uid = Guid.NewGuid().ToString(),
+                        RecurrenceRules = new List<RecurrencePattern>() { recurrence }
+                    });
+                }
             }
-
-            /*calendar.Events.Add(new CalendarEvent
-            {
-                Class = "PUBLIC",
-                Summary = "Perfect Sum",
-                Created = new CalDateTime(DateTime.Now),
-                Description = "PerfectDetails",
-                Start = new CalDateTime(now.AddDays(2)),
-                End = new CalDateTime(now.AddDays(3)),
-                Sequence = 0,
-                Uid = Guid.NewGuid().ToString(),
-                Location = "PerfectLocation"
-            });
-
-            calendar.Events.Add(new CalendarEvent
-            {
-                Class = "PUBLIC",
-                Summary = "Perfect Sum2",
-                Created = new CalDateTime(DateTime.Now),
-                Description = "PerfectDetails2",
-                Start = new CalDateTime(now.AddDays(3)),
-                End = new CalDateTime(now.AddDays(4)),
-                Sequence = 0,
-                Uid = Guid.NewGuid().ToString(),
-                Location = "PerfectLocation2"
-            });*/
-
-
-            //string path = @"./test.ics";
-
-            string mailAdress = MailAdressTextBox.Text;
-
-            using (StreamWriter sw = new StreamWriter(PathOfCalendarFile))
-            {
-                sw.AutoFlush = true;
-                var serializer = new CalendarSerializer(new SerializationContext());
-                var serializedCalendar = serializer.SerializeToString(calendar);
-                sw.WriteLine(serializedCalendar);
-            }
-
-            //Starts a new Thread where it sends the Mail, so you can click around while waiting for the mail
-            ThreadPool.QueueUserWorkItem(sendCalendar, mailAdress);
         }
 
         /// <summary>
@@ -227,7 +240,17 @@ namespace HaushaltsäquivalenteWPFApp
             string adress = (string) adressObject;
             MailMessage email = new MailMessage();
             email.From = new MailAddress("haushaltsappmail@gmail.com", "Haushaltsapp Mailsender");
-            email.To.Add(adress);//email.To.Add(ReceiverTextBox.Text);
+
+            try
+            {
+                email.To.Add(adress);//email.To.Add(ReceiverTextBox.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Die Email-Adresse war in einem falschen Format!", "Achtung!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             email.Subject = "Haushaltsaufgaben Kalender";
             email.Body = "Im Anhang befindet sich die Kalender Datei, welche Sie einfach in Ihr Kalenderprogramm einbinden können.";
 
@@ -249,12 +272,12 @@ namespace HaushaltsäquivalenteWPFApp
 
 
                 client.Send(email);
-                MessageBox.Show("Gesendet!", "Infofenster", MessageBoxButton.OKCancel, MessageBoxImage.Hand);
+                MessageBox.Show("Gesendet!", "Infofenster", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Nicht geklappt " + ex.Message + ex.ToString());
+                MessageBox.Show("Das Senden ist fehlgeschlagen: " + ex.Message + ex.ToString());
             }
         }
 

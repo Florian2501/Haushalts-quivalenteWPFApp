@@ -37,7 +37,7 @@
                             <ComboBox x:Name="ListOfNames" Margin="5">
                                 <ComboBoxItem IsSelected="True">Alle</ComboBoxItem>
                             </ComboBox>
-                            <TextBlock>Email-Adresse:</TextBlock>
+                            <TextBlock Margin="5">Email-Adresse:</TextBlock>
                             <TextBox Margin="5" x:Name="MailAdressTextBox"></TextBox>
                             <Button x:Name="SendButton" Width="130" Click="SendButton_Click" >Als .ics-Datei schicken</Button>
                         </StackPanel>
