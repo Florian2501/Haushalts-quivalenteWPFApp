@@ -35,3 +35,7 @@ Noch detailliertere Einsichten bekommt man, wenn man in der Tabelle auf die jewe
 Im Kalenderfenster können Aufgaben eingetragen werden, die es in Zukunft zu erledigen gilt. Dabei werden auch vergangene Aufgaben gespeichert, aber nur bis sie 1 Jahr alt sind. Die eingetragenen Aufgaben können mit Start- und Endzeit oder ganztägig eingetragen werden. Außerdem gibt es die Möglichkeit, Aufgaben als wöchentlich zu markieren, sodass sie zur eingegebenen Zeit jede Woche im Kalender erscheinen. Sobald die Aufgabe erledigt ist, kann sie direkt im Kalender als erledigt markeirt werden, wodurch die Punkte in der Tabelle auftauchen.
 
 Der in der App erstellte Kalender kann jederzeit an eine erstellte Mail-Adresse als .ics Datei geschickt werden und so in fast jedes Kalenderprogramm eingebunden werden.
+
+### Dokumentation
+
+[Hier](https://florian2501.github.io/Haushalts-quivalenteWPFApp/) ist die Dokumentation des Projektes verlinkt, welche automatisch mit Doxygen erstellt wurde. Sie wird regelmäßig aktualisiert.
