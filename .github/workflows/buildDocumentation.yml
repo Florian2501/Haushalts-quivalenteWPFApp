@@ -14,8 +14,8 @@ jobs:
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
       with:
-        doxyfile-path: "./docs/HaushaltsApp"
-        working-directory: "."
+        doxyfile-path: "./docs/HaushaltsApp" #Pfad des doxyfiles
+        working-directory: "./HaushaltsäquivalenteWPFApp" #Pfad der Dateien
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
