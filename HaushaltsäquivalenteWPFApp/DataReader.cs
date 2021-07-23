@@ -17,7 +17,7 @@ namespace HaushaltsäquivalenteWPFApp
         /// <returns></returns>
         public static int GetValueOf(string name, DateTime date)
         {
-          
+            Directory.CreateDirectory(@"Data/Days");
             //try to open the File with the correct Date
             int sum = 0;
             string path = @"Data\Days\" + date.ToString("yyyy.MM.dd") + ".txt"; 

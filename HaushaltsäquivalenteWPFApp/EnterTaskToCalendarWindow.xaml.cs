@@ -475,6 +475,7 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="calendarTasks"></param>
         private void WriteBackCalendarData(List<CalendarTask> calendarTasks)
         {
+            Directory.CreateDirectory(@"Data/Calendar");
             /////////////////////////////////////////////////////////One day tasks
             //Get the file of the date without the line of the person from the tasks that are only on one day
             string writeback = GetLinesWithoutCurrentPerson(false);

@@ -15,6 +15,7 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="name"></param>
         public static void EnterDoneTask(Task doneTask, string name, DateTime date)
         {
+            Directory.CreateDirectory(@"Data/Days");
             //create the path of the day
             string path = @"Data\Days\" + date.ToString("yyyy.MM.dd") + ".txt";
             //MessageBox.Show("Name: " + name);

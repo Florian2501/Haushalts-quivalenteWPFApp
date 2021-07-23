@@ -138,7 +138,7 @@ namespace HaushaltsäquivalenteWPFApp
                 }
 
                 //if the date is upcoming
-                if (date >= now)
+                if (date >= now.AddDays(-1))
                 {
                     //Get the tasks of the certain date and person
                     List<CalendarTask> tasksOfDay = DataReader.getTasksOfPersonOnDate(name, date, false);

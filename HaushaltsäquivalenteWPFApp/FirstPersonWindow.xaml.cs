@@ -24,6 +24,9 @@ namespace HaushaltsäquivalenteWPFApp
                 MessageBox.Show("Der Name ist ungültig.");
                 return;
             }
+
+            Directory.CreateDirectory(@"Data");
+
             //create the path
             string path = @"Data\Persons.txt";
 

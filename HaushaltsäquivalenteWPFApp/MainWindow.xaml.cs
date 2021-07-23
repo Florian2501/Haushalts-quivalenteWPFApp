@@ -45,6 +45,12 @@ namespace HaushaltsäquivalenteWPFApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //Create all Folders
+            Directory.CreateDirectory(@"Data/Days");
+            Directory.CreateDirectory(@"Data/Calendar");
+            Directory.CreateDirectory(@"Data/WeeklyTasks");
+
+
             //center the Window
             WindowPosition.CenterWindowOnScreen(this);
 

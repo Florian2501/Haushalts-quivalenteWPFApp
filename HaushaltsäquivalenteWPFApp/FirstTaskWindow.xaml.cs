@@ -54,6 +54,9 @@ namespace HaushaltsäquivalenteWPFApp
             //creates the new line that will represent the new task in the File
             string newTask = "1;" + name + ";" + description + ";" + points.ToString();
 
+
+            Directory.CreateDirectory(@"Data");
+
             string path = @"Data\Tasks.txt";
 
             //automatically utf 8 encoded writing, only adds it to the end
