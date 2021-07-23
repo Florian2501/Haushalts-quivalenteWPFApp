@@ -15,9 +15,9 @@ jobs:
       uses: mattnotmitt/doxygen-action@v1.1.0
       with:
         doxyfile-path: "./docs/HaushaltsApp"
-        working-directory: "./docs"
+        working-directory: "./docs/working"
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
+        publish_dir: ./docs/publish
